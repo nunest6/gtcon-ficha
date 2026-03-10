@@ -2708,7 +2708,7 @@ async function saveAll() {
   // Bloquear duplicidade: se for ficha NOVA e o CNPJ já existe no banco, recusar
   if (!_fichaExistente && d.cadastro.cnpj) {
     const cnpjNovo = d.cadastro.cnpj.replace(/\D/g,'');
-    const jaExiste = getClientesDB().find(c => c.cadastro?.cnpj?.replace(/\D/g,'') === cnpjNovo);
+    const jaExiste = (await getClientesDB()).find(c => c.cadastro?.cnpj?.replace(/\D/g,'') === cnpjNovo);
     if (jaExiste) {
       const nome = jaExiste.cadastro?.razao_social || cnpjNovo;
       toast(`❌ Duplicidade! "${nome}" já está cadastrado com este CNPJ. Localize-o na aba Clientes.`, 'err');
@@ -3348,8 +3348,8 @@ async function buscarCNPJNova() {
 
   _dadosCNPJNova = data;
 
-  // Checar duplicidade no banco local
-  const clientes = getClientesDB();
+  // Checar duplicidade no banco
+  const clientes = await getClientesDB();
   const jaExiste = clientes.find(c => c.cadastro?.cnpj?.replace(/\D/g,'') === raw);
   const dupEl = document.getElementById('nova-ficha-dup');
   const dupNome = document.getElementById('nova-ficha-dup-nome');
