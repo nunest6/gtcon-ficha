@@ -2519,74 +2519,100 @@ function addErro() {
 // ══════════════════════════════════════
 // CONFIGURAÇÃO DO SERVIDOR
 // ══════════════════════════════════════
-// ARMAZENAMENTO — localStorage (modo padrão)
-// O arquivo roda diretamente no navegador, sem servidor necessário.
-// Os dados ficam no localStorage do navegador.
-// Para uso compartilhado, use o botão "Exportar Banco" e compartilhe via OneDrive.
 // ══════════════════════════════════════
-const CLIENTES_KEY = 'gtcon_clientes';
+// ARMAZENAMENTO — Supabase
+// ══════════════════════════════════════
+const SB_URL = 'https://jvhkczdtfulegikcpiov.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp2aGtjemR0ZnVsZWdpa2NwaW92Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMxNTkxNjEsImV4cCI6MjA4ODczNTE2MX0.HEETVDQUNJRLG8GusxhcZ8kmxx9Uo9JoBB0MoSUdjTg';
 
-function getClientesDB() {
-  try { return JSON.parse(localStorage.getItem(CLIENTES_KEY) || '[]'); }
-  catch(e) { return []; }
+const SB_HEADERS = {
+  'Content-Type': 'application/json',
+  'apikey': SB_KEY,
+  'Authorization': `Bearer ${SB_KEY}`,
+  'Prefer': 'return=representation',
+};
+
+async function sbFetch(method, endpoint, body) {
+  const res = await fetch(`${SB_URL}/rest/v1/${endpoint}`, {
+    method,
+    headers: SB_HEADERS,
+    body: body ? JSON.stringify(body) : undefined,
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.message || `HTTP ${res.status}`);
+  }
+  if (res.status === 204) return null;
+  return res.json();
 }
 
-function setClientesDB(clientes) {
-  localStorage.setItem(CLIENTES_KEY, JSON.stringify(clientes));
-}
-
-// Camada de compatibilidade — mantém a mesma interface da API anterior
+// Camada de compatibilidade — mesma interface de antes
 async function api(method, path, body) {
-  // Simula as rotas da API usando localStorage
-  if (method === 'GET' && path === '/api/clientes') {
-    const clientes = getClientesDB();
-    return { ok: true, clientes, total: clientes.length };
+  try {
+    // GET /api/clientes
+    if (method === 'GET' && path === '/api/clientes') {
+      const rows = await sbFetch('GET', 'clientes?select=dados&order=created_at.desc');
+      const clientes = (rows || []).map(r => JSON.parse(r.dados));
+      _clientesCache = clientes;
+      return { ok: true, clientes, total: clientes.length };
+    }
+
+    // GET /api/stats
+    if (method === 'GET' && path === '/api/stats') {
+      const rows = await sbFetch('GET', 'clientes?select=dados&order=created_at.desc');
+      const clientes = (rows || []).map(r => JSON.parse(r.dados));
+      const ativos = clientes.filter(c => (c.cadastro?.situacao||'').toUpperCase().includes('ATIVA')).length;
+      return { ok: true, total: clientes.length, ativos, ultimo_salvo: clientes[0]?.meta?.savedAt || null };
+    }
+
+    // POST /api/cliente — upsert pelo CNPJ
+    if (method === 'POST' && path === '/api/cliente') {
+      const cnpj = body?.cadastro?.cnpj?.replace(/\D/g,'') || '';
+      const sci  = body?.cadastro?.codigo_sci || '';
+      body.meta.savedAt = new Date().toISOString();
+
+      // Verificar se já existe
+      const enc = encodeURIComponent;
+      let existing = null;
+      if (cnpj) {
+        const rows = await sbFetch('GET', `clientes?cnpj=eq.${enc(cnpj)}&select=id`);
+        if (rows?.length) existing = rows[0];
+      }
+      if (!existing && sci) {
+        const rows = await sbFetch('GET', `clientes?sci=eq.${enc(sci)}&select=id`);
+        if (rows?.length) existing = rows[0];
+      }
+
+      if (existing) {
+        await sbFetch('PATCH', `clientes?id=eq.${existing.id}`, { dados: JSON.stringify(body) });
+        return { ok: true, mensagem: 'Atualizado' };
+      } else {
+        await sbFetch('POST', 'clientes', { cnpj, sci, dados: JSON.stringify(body) });
+        return { ok: true, mensagem: 'Salvo' };
+      }
+    }
+
+    // DELETE /api/cliente?cnpj=
+    if (method === 'DELETE' && path.startsWith('/api/cliente')) {
+      const cnpj = new URLSearchParams(path.split('?')[1]).get('cnpj');
+      await sbFetch('DELETE', `clientes?cnpj=eq.${encodeURIComponent(cnpj)}`);
+      return { ok: true };
+    }
+
+    return { ok: false, erro: 'Rota desconhecida' };
+  } catch(e) {
+    console.error('Supabase error:', e);
+    toast(`❌ Erro ao conectar com o banco: ${e.message}`, 'err');
+    return { ok: false, erro: e.message };
   }
-  if (method === 'GET' && path === '/api/stats') {
-    const clientes = getClientesDB();
-    const ativos = clientes.filter(c => (c.cadastro?.situacao||'').toUpperCase().includes('ATIVA')).length;
-    const ultimo_salvo = clientes[0]?.meta?.savedAt || null;
-    return { ok: true, total: clientes.length, ativos, ultimo_salvo };
-  }
-  if (method === 'GET' && path.startsWith('/api/cliente')) {
-    const qs = new URLSearchParams(path.split('?')[1] || '');
-    const cnpj = qs.get('cnpj'); const sci = qs.get('sci');
-    const clientes = getClientesDB();
-    const c = clientes.find(c => {
-      const cc = c.cadastro || {};
-      if (cnpj) return cc.cnpj?.replace(/\D/g,'') === cnpj;
-      if (sci)  return cc.codigo_sci?.toLowerCase() === sci.toLowerCase();
-      return false;
-    });
-    return c ? { ok: true, cliente: c } : { ok: false, erro: 'Não encontrado' };
-  }
-  if (method === 'POST' && path === '/api/cliente') {
-    const clientes = getClientesDB();
-    const cnpj = body?.cadastro?.cnpj?.replace(/\D/g,'') || '';
-    const sci  = body?.cadastro?.codigo_sci || '';
-    body.meta.savedAt = new Date().toISOString();
-    const idx = clientes.findIndex(c => {
-      const cc = c.cadastro || {};
-      return (cnpj && cc.cnpj?.replace(/\D/g,'') === cnpj) ||
-             (sci  && cc.codigo_sci === sci);
-    });
-    if (idx >= 0) clientes[idx] = body;
-    else clientes.unshift(body);
-    setClientesDB(clientes);
-    _clientesCache = clientes;
-    return { ok: true, mensagem: idx >= 0 ? 'Atualizado' : 'Salvo', total: clientes.length };
-  }
-  if (method === 'DELETE' && path.startsWith('/api/cliente')) {
-    const qs = new URLSearchParams(path.split('?')[1] || '');
-    const cnpj = qs.get('cnpj');
-    let clientes = getClientesDB();
-    const antes = clientes.length;
-    clientes = clientes.filter(c => c.cadastro?.cnpj?.replace(/\D/g,'') !== cnpj);
-    setClientesDB(clientes);
-    _clientesCache = clientes;
-    return clientes.length < antes ? { ok: true } : { ok: false, erro: 'Não encontrado' };
-  }
-  return { ok: false, erro: 'Rota desconhecida' };
+}
+
+// Checagem de duplicidade — consulta direto no Supabase
+async function getClientesDB() {
+  try {
+    const rows = await sbFetch('GET', 'clientes?select=dados&order=created_at.desc');
+    return (rows || []).map(r => JSON.parse(r.dados));
+  } catch(e) { return []; }
 }
 
 // ══════════════════════════════════════
