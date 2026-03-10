@@ -2525,24 +2525,26 @@ function addErro() {
 const SB_URL = 'https://jvhkczdtfulegikcpiov.supabase.co';
 const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp2aGtjemR0ZnVsZWdpa2NwaW92Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMxNTkxNjEsImV4cCI6MjA4ODczNTE2MX0.HEETVDQUNJRLG8GusxhcZ8kmxx9Uo9JoBB0MoSUdjTg';
 
-const SB_HEADERS = {
-  'Content-Type': 'application/json',
-  'apikey': SB_KEY,
-  'Authorization': `Bearer ${SB_KEY}`,
-  'Prefer': 'return=representation',
-};
-
 async function sbFetch(method, endpoint, body) {
+  const headers = {
+    'Content-Type': 'application/json',
+    'apikey': SB_KEY,
+    'Authorization': `Bearer ${SB_KEY}`,
+  };
+  // Prefer só no POST/PATCH para retornar o registro
+  if (method === 'POST' || method === 'PATCH') {
+    headers['Prefer'] = 'return=minimal';
+  }
   const res = await fetch(`${SB_URL}/rest/v1/${endpoint}`, {
     method,
-    headers: SB_HEADERS,
+    headers,
     body: body ? JSON.stringify(body) : undefined,
   });
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
-    throw new Error(err.message || `HTTP ${res.status}`);
+    throw new Error(err.message || err.details || `HTTP ${res.status}`);
   }
-  if (res.status === 204) return null;
+  if (res.status === 204 || method === 'DELETE' || method === 'PATCH') return null;
   return res.json();
 }
 
@@ -2552,7 +2554,7 @@ async function api(method, path, body) {
     // GET /api/clientes
     if (method === 'GET' && path === '/api/clientes') {
       const rows = await sbFetch('GET', 'clientes?select=dados&order=created_at.desc');
-      const clientes = (rows || []).map(r => JSON.parse(r.dados));
+      const clientes = (rows || []).map(r => typeof r.dados === 'string' ? JSON.parse(r.dados) : r.dados);
       _clientesCache = clientes;
       return { ok: true, clientes, total: clientes.length };
     }
@@ -2560,7 +2562,7 @@ async function api(method, path, body) {
     // GET /api/stats
     if (method === 'GET' && path === '/api/stats') {
       const rows = await sbFetch('GET', 'clientes?select=dados&order=created_at.desc');
-      const clientes = (rows || []).map(r => JSON.parse(r.dados));
+      const clientes = (rows || []).map(r => typeof r.dados === 'string' ? JSON.parse(r.dados) : r.dados);
       const ativos = clientes.filter(c => (c.cadastro?.situacao||'').toUpperCase().includes('ATIVA')).length;
       return { ok: true, total: clientes.length, ativos, ultimo_salvo: clientes[0]?.meta?.savedAt || null };
     }
@@ -2571,23 +2573,24 @@ async function api(method, path, body) {
       const sci  = body?.cadastro?.codigo_sci || '';
       body.meta.savedAt = new Date().toISOString();
 
-      // Verificar se já existe
-      const enc = encodeURIComponent;
+      // Verificar se já existe pelo CNPJ
       let existing = null;
       if (cnpj) {
-        const rows = await sbFetch('GET', `clientes?cnpj=eq.${enc(cnpj)}&select=id`);
+        const rows = await sbFetch('GET', `clientes?cnpj=eq.${cnpj}&select=id`);
         if (rows?.length) existing = rows[0];
       }
       if (!existing && sci) {
-        const rows = await sbFetch('GET', `clientes?sci=eq.${enc(sci)}&select=id`);
+        const rows = await sbFetch('GET', `clientes?sci=eq.${encodeURIComponent(sci)}&select=id`);
         if (rows?.length) existing = rows[0];
       }
 
       if (existing) {
-        await sbFetch('PATCH', `clientes?id=eq.${existing.id}`, { dados: JSON.stringify(body) });
+        // Atualizar — dados como objeto jsonb diretamente
+        await sbFetch('PATCH', `clientes?id=eq.${existing.id}`, { dados: body });
         return { ok: true, mensagem: 'Atualizado' };
       } else {
-        await sbFetch('POST', 'clientes', { cnpj, sci, dados: JSON.stringify(body) });
+        // Inserir novo
+        await sbFetch('POST', 'clientes', { cnpj: cnpj || null, sci: sci || null, dados: body });
         return { ok: true, mensagem: 'Salvo' };
       }
     }
@@ -2595,14 +2598,14 @@ async function api(method, path, body) {
     // DELETE /api/cliente?cnpj=
     if (method === 'DELETE' && path.startsWith('/api/cliente')) {
       const cnpj = new URLSearchParams(path.split('?')[1]).get('cnpj');
-      await sbFetch('DELETE', `clientes?cnpj=eq.${encodeURIComponent(cnpj)}`);
+      await sbFetch('DELETE', `clientes?cnpj=eq.${cnpj}`);
       return { ok: true };
     }
 
     return { ok: false, erro: 'Rota desconhecida' };
   } catch(e) {
     console.error('Supabase error:', e);
-    toast(`❌ Erro ao conectar com o banco: ${e.message}`, 'err');
+    toast(`❌ Erro banco de dados: ${e.message}`, 'err');
     return { ok: false, erro: e.message };
   }
 }
@@ -2611,7 +2614,7 @@ async function api(method, path, body) {
 async function getClientesDB() {
   try {
     const rows = await sbFetch('GET', 'clientes?select=dados&order=created_at.desc');
-    return (rows || []).map(r => JSON.parse(r.dados));
+    return (rows || []).map(r => typeof r.dados === 'string' ? JSON.parse(r.dados) : r.dados);
   } catch(e) { return []; }
 }
 
