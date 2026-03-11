@@ -748,11 +748,48 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
     </div>
     <div class="login-err" id="login-err"></div>
     <button class="login-btn" onclick="fazerLogin()">Entrar →</button>
-    <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border);">
-      <button onclick="resetarUsuarios()" style="background:none;border:none;font-size:11px;color:var(--dim);cursor:pointer;text-decoration:underline;">
-        Problemas para entrar? Clique aqui para redefinir acesso
-      </button>
+  </div>
+</div>
+
+<!-- ══════ MODAL REDEFINIR SENHA ══════ -->
+<div id="modal-redef-senha" style="display:none;position:fixed;inset:0;z-index:9500;background:rgba(15,20,40,.55);backdrop-filter:blur(4px);align-items:center;justify-content:center;">
+  <div style="background:#fff;border:1px solid var(--border);border-radius:16px;padding:36px 40px;width:420px;max-width:95vw;box-shadow:0 12px 48px rgba(26,32,53,.18);">
+    <div style="font-size:20px;font-weight:700;color:var(--text);margin-bottom:6px;">🔑 Defina sua senha</div>
+    <div style="font-size:13px;color:var(--muted);margin-bottom:24px;">Este é seu primeiro acesso. Crie uma senha pessoal para continuar.</div>
+    <div class="fg" style="margin-bottom:14px;">
+      <label>Nova senha</label>
+      <input type="password" id="redef-nova" placeholder="Mínimo 6 caracteres" autocomplete="new-password">
     </div>
+    <div class="fg" style="margin-bottom:20px;">
+      <label>Confirmar senha</label>
+      <input type="password" id="redef-confirma" placeholder="Repita a senha">
+    </div>
+    <div id="redef-err" style="display:none;color:var(--danger);font-size:12px;margin-bottom:14px;padding:8px 12px;background:#fff0f0;border-radius:6px;border:1px solid #ffc9c9;"></div>
+    <button class="btn btn-ok" style="width:100%;justify-content:center;" onclick="confirmarRedefinicaoSenha()">Salvar e entrar →</button>
+  </div>
+</div>
+
+<!-- ══════ MODAL ALTERAR SENHA ADMIN ══════ -->
+<div id="modal-senha-admin" style="display:none;position:fixed;inset:0;z-index:9500;background:rgba(15,20,40,.55);backdrop-filter:blur(4px);align-items:center;justify-content:center;">
+  <div style="background:#fff;border:1px solid var(--border);border-radius:16px;padding:36px 40px;width:420px;max-width:95vw;box-shadow:0 12px 48px rgba(26,32,53,.18);">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+      <div style="font-size:18px;font-weight:700;color:var(--text);">🔐 Alterar senha do Admin</div>
+      <button onclick="fecharModalSenhaAdmin()" style="background:none;border:none;font-size:18px;color:var(--muted);cursor:pointer;">✕</button>
+    </div>
+    <div class="fg" style="margin-bottom:14px;">
+      <label>Código passe de autorização</label>
+      <input type="password" id="admin-codigo-passe" placeholder="Código de autorização">
+    </div>
+    <div class="fg" style="margin-bottom:14px;">
+      <label>Nova senha</label>
+      <input type="password" id="admin-nova-senha" placeholder="Mínimo 6 caracteres" autocomplete="new-password">
+    </div>
+    <div class="fg" style="margin-bottom:20px;">
+      <label>Confirmar nova senha</label>
+      <input type="password" id="admin-confirma-senha" placeholder="Repita a nova senha">
+    </div>
+    <div id="admin-senha-err" style="display:none;color:var(--danger);font-size:12px;margin-bottom:14px;padding:8px 12px;background:#fff0f0;border-radius:6px;border:1px solid #ffc9c9;"></div>
+    <button class="btn btn-ok" style="width:100%;justify-content:center;" onclick="confirmarSenhaAdmin()">Alterar senha</button>
   </div>
 </div>
 
@@ -1039,6 +1076,22 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
     <div class="sec-div">Outros Contatos</div>
     <div id="contatos-extras" style="display:flex;flex-direction:column;gap:10px;"></div>
     <button class="btn btn-s btn-sm" onclick="addContato()" style="margin-top:10px;">+ Adicionar contato</button>
+
+    <div class="sec-div" style="margin-top:18px;">Contabilidade Anterior</div>
+    <div class="g g3">
+      <div class="fg s2">
+        <label>Nome do Escritório Anterior</label>
+        <input type="text" id="escrit_anterior_nome" placeholder="Razão social ou nome fantasia">
+      </div>
+      <div class="fg">
+        <label>Telefone do Escritório Anterior</label>
+        <input type="tel" id="escrit_anterior_tel" placeholder="(00) 00000-0000">
+      </div>
+      <div class="fg s2">
+        <label>E-mail do Escritório Anterior</label>
+        <input type="email" id="escrit_anterior_email" placeholder="contato@escritorio.com.br">
+      </div>
+    </div>
   </div>
 
   <!-- ESTRUTURA SOCIETÁRIA -->
@@ -1169,6 +1222,10 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
   <div class="card">
     <div class="card-title"><span class="ct-icon">🤝</span> Identificação do Comercial</div>
     <div class="g g2">
+      <div class="fg">
+        <label>Usuário Responsável <span class="req">*</span> <span style="font-size:10px;color:var(--muted);font-weight:400;">(preenchido automaticamente)</span></label>
+        <input type="text" id="consultor_usuario" placeholder="Login do usuário" class="api-filled">
+      </div>
       <div class="fg">
         <label>Nome do Consultor/Comercial <span class="req">*</span></label>
         <input type="text" id="consultor_nome" placeholder="Nome do responsável GTCON">
@@ -1698,33 +1755,67 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
   </div>
 
   <div class="card">
-    <div class="card-title"><span class="ct-icon">🙋</span> Responsáveis no Cliente (Key Users)</div>
+    <div class="card-title"><span class="ct-icon">🙋</span> Responsáveis no Cliente</div>
+
+    <div class="sec-div">Implantação</div>
     <div class="g g2">
       <div class="fg">
-        <label>Key User — Financeiro</label>
-        <input type="text" id="key_financeiro" placeholder="Nome">
+        <label>Implantação Contábil</label>
+        <input type="text" id="imp_contabil" placeholder="Nome do responsável">
       </div>
       <div class="fg">
-        <label>E-mail — Financeiro</label>
-        <input type="email" id="key_financeiro_email" placeholder="email@empresa.com.br">
+        <label>E-mail</label>
+        <input type="email" id="imp_contabil_email" placeholder="email@empresa.com.br">
       </div>
       <div class="fg">
-        <label>Key User — RH / Ponto</label>
-        <input type="text" id="key_rh" placeholder="Nome">
+        <label>Implantação Fiscal</label>
+        <input type="text" id="imp_fiscal" placeholder="Nome do responsável">
       </div>
       <div class="fg">
-        <label>E-mail — RH / Ponto</label>
-        <input type="email" id="key_rh_email" placeholder="email@empresa.com.br">
+        <label>E-mail</label>
+        <input type="email" id="imp_fiscal_email" placeholder="email@empresa.com.br">
       </div>
       <div class="fg">
-        <label>Key User — Fiscal / NF</label>
-        <input type="text" id="key_fiscal" placeholder="Nome">
+        <label>Implantação DP</label>
+        <input type="text" id="imp_dp" placeholder="Nome do responsável">
       </div>
       <div class="fg">
-        <label>E-mail — Fiscal / NF</label>
-        <input type="email" id="key_fiscal_email" placeholder="email@empresa.com.br">
+        <label>E-mail</label>
+        <input type="email" id="imp_dp_email" placeholder="email@empresa.com.br">
       </div>
     </div>
+
+    <div class="sec-div" style="margin-top:14px;">Operacional</div>
+    <div class="g g2">
+      <div class="fg">
+        <label>Operacional Contábil</label>
+        <input type="text" id="op_contabil" placeholder="Nome do responsável">
+      </div>
+      <div class="fg">
+        <label>E-mail</label>
+        <input type="email" id="op_contabil_email" placeholder="email@empresa.com.br">
+      </div>
+      <div class="fg">
+        <label>Operacional Fiscal</label>
+        <input type="text" id="op_fiscal" placeholder="Nome do responsável">
+      </div>
+      <div class="fg">
+        <label>E-mail</label>
+        <input type="email" id="op_fiscal_email" placeholder="email@empresa.com.br">
+      </div>
+      <div class="fg">
+        <label>Operacional DP</label>
+        <input type="text" id="op_dp" placeholder="Nome do responsável">
+      </div>
+      <div class="fg">
+        <label>E-mail</label>
+        <input type="email" id="op_dp_email" placeholder="email@empresa.com.br">
+      </div>
+    </div>
+
+    <div class="sec-div" style="margin-top:14px;">Outros Responsáveis</div>
+    <div id="resp-extras" style="display:flex;flex-direction:column;gap:10px;"></div>
+    <button class="btn btn-s btn-sm" onclick="addRespExtra()" style="margin-top:8px;">+ Adicionar responsável</button>
   </div>
 
   <div class="card">
@@ -1881,9 +1972,12 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
 
 <!-- ════════════════ ADMIN — USUÁRIOS ════════════════ -->
 <div class="panel tab-admin" id="panel-admin">
-  <div class="panel-head">
-    <div class="panel-title">🔐 <span>Gerenciamento de Usuários</span></div>
-    <div class="panel-desc">Apenas administradores podem visualizar e editar esta seção</div>
+  <div class="panel-head" style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+    <div>
+      <div class="panel-title">🔐 <span>Gerenciamento de Usuários</span></div>
+      <div class="panel-desc">Apenas administradores podem visualizar e editar esta seção</div>
+    </div>
+    <button class="btn btn-s btn-sm" onclick="abrirModalSenhaAdmin()" style="margin-top:4px;white-space:nowrap;">🔑 Alterar senha do Admin</button>
   </div>
 
   <div class="card">
@@ -1898,10 +1992,6 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
           <label>Usuário</label>
           <input type="text" id="new-user-usuario" placeholder="Ex: joao.silva" autocomplete="off"
             oninput="this.value=this.value.toLowerCase().replace(/\s+/g,'.')">
-        </div>
-        <div class="fg">
-          <label>Senha de Acesso</label>
-          <input type="text" id="new-user-senha" placeholder="Defina uma senha">
         </div>
         <div class="fg">
           <label>Departamento</label>
@@ -1950,6 +2040,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
         <option value="ficha">Fichas de Clientes</option>
         <option value="usuario">Usuários</option>
       </select>
+      <button class="btn btn-s btn-sm" onclick="exportarLogCSV()" style="margin-left:4px;">📥 Exportar CSV</button>
       <button class="btn btn-d btn-sm" onclick="limparLog()">🗑 Limpar Log</button>
     </div>
     <div id="log-container">
@@ -2110,21 +2201,44 @@ function registrarLog(tipo, acao, detalhes = {}) {
 }
 
 function registrarDiff(clienteAntes, clienteDepois) {
-  // Compara campos e registra cada de/para
   const campos = [
     ['cadastro.razao_social','Razão Social'],
     ['cadastro.nome_fantasia','Nome Fantasia'],
+    ['cadastro.cnpj','CNPJ'],
     ['cadastro.regime','Regime Tributário'],
     ['cadastro.situacao','Situação'],
     ['cadastro.fat_mensal','Fat. Mensal'],
     ['cadastro.fat_anual','Fat. Anual'],
     ['cadastro.resp_legal','Responsável Legal'],
+    ['cadastro.resp_cpf','CPF Responsável'],
     ['cadastro.email_assinatura','E-mail Assinatura'],
+    ['cadastro.telefone','Telefone'],
+    ['cadastro.porte','Porte'],
+    ['cadastro.data_abertura','Data Abertura'],
+    ['cadastro.endereco','Endereço'],
+    ['cadastro.escrit_anterior_nome','Escritório Anterior'],
+    ['cadastro.escrit_anterior_tel','Tel. Escritório Anterior'],
+    ['cadastro.escrit_anterior_email','E-mail Escritório Anterior'],
     ['comercial.consultor','Consultor'],
+    ['comercial.consultor_usuario','Usuário Consultor'],
+    ['comercial.lead_origem','Origem Lead'],
     ['dp.clt','CLT'],
+    ['dp.estagiarios','Estagiários'],
+    ['dp.prolabore','Pró-labore'],
+    ['dp.sind_patronal','Sindicato Patronal'],
+    ['dp.sind_laboral','Sindicato Laboral'],
     ['fiscal.apuracao','Apuração Fiscal'],
+    ['fiscal.emissor','Emissor NF'],
     ['contabil.erp','ERP'],
+    ['contabil.balancete','Balancete'],
     ['parametros.dia_ponto','Dia Ponto'],
+    ['parametros.dia_guias','Dia Guias'],
+    ['parametros.imp_contabil','Implantação Contábil'],
+    ['parametros.imp_fiscal','Implantação Fiscal'],
+    ['parametros.imp_dp','Implantação DP'],
+    ['parametros.op_contabil','Operacional Contábil'],
+    ['parametros.op_fiscal','Operacional Fiscal'],
+    ['parametros.op_dp','Operacional DP'],
   ];
 
   const diffs = [];
@@ -2132,7 +2246,7 @@ function registrarDiff(clienteAntes, clienteDepois) {
     const keys = path.split('.');
     const antes  = keys.reduce((o,k) => o?.[k], clienteAntes);
     const depois = keys.reduce((o,k) => o?.[k], clienteDepois);
-    if (antes !== depois && (antes || depois)) {
+    if (String(antes||'').trim() !== String(depois||'').trim() && (antes || depois)) {
       diffs.push({ campo: label, de: antes || '—', para: depois || '—' });
     }
   });
@@ -2152,6 +2266,35 @@ function registrarDiff(clienteAntes, clienteDepois) {
     detalhes: { cliente: nome, diffs },
   });
   saveLogs(logs);
+}
+
+function exportarLogCSV() {
+  const logs = getLogs().slice().reverse();
+  if (!logs.length) { toast('Nenhum registro no log.', 'err'); return; }
+
+  const linhas = [['Data/Hora','Usuário','Login','Dept','Tipo','Ação','Campo','De','Para']];
+
+  logs.forEach(l => {
+    const dt = new Date(l.ts).toLocaleString('pt-BR');
+    const diffs = l.detalhes?.diffs || [];
+    if (diffs.length) {
+      diffs.forEach(d => {
+        linhas.push([dt, l.usuario, l.login, l.dept, l.tipo, l.acao, d.campo, d.de, d.para]);
+      });
+    } else {
+      linhas.push([dt, l.usuario, l.login, l.dept, l.tipo, l.acao, '', '', '']);
+    }
+  });
+
+  const csv = linhas.map(row => row.map(c => `"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `gtcon_log_${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+  toast('📥 Log exportado com sucesso!', 'ok');
 }
 
 function renderLog() {
@@ -2380,6 +2523,36 @@ function sv(id, val) { const el = document.getElementById(id); if(el) el.value =
 let partCnt=0, socioCnt=2, bancoCnt=2, filialRows=0, erroCnt=0, riscoCnt=5;
 
 let contatoCnt = 0;
+function aplicarBloqueioConsultor() {
+  const isAdmin = currentUser?.perfil === 'admin';
+  const isComercialUser = currentUser?.dept === 'Comercial' && !isAdmin;
+  ['consultor_usuario', 'consultor_nome'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    if (isComercialUser) {
+      el.classList.add('api-filled');
+      el.style.pointerEvents = 'none';
+    } else if (isAdmin) {
+      el.classList.remove('api-filled');
+      el.style.pointerEvents = '';
+    }
+  });
+}
+
+function addRespExtra(dados = {}) {
+  const container = document.getElementById('resp-extras');
+  if (!container) return;
+  const div = document.createElement('div');
+  div.className = 'resp-extra-item';
+  div.style.cssText = 'display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:8px;align-items:flex-end;';
+  div.innerHTML = `
+    <div class="fg"><label>Nome</label><input type="text" class="re-nome" placeholder="Nome do responsável" value="${dados.nome||''}"></div>
+    <div class="fg"><label>Cargo / Área</label><input type="text" class="re-cargo" placeholder="Ex: Financeiro" value="${dados.cargo||''}"></div>
+    <div class="fg"><label>E-mail</label><input type="email" class="re-email" placeholder="email@empresa.com.br" value="${dados.email||''}"></div>
+    <div style="padding-bottom:2px;"><button class="btn btn-d btn-sm" onclick="this.closest('.resp-extra-item').remove()">✕</button></div>`;
+  container.appendChild(div);
+}
+
 function addContato() {
   contatoCnt++;
   const id = 'contato-' + contatoCnt;
@@ -2655,13 +2828,18 @@ function collectData() {
       })).filter(p => p.nome || p.login),
       resp_legal: gv('resp_legal'), resp_cpf: gv('resp_cpf'),
       email_assinatura: gv('email_assinatura'), telefone: gv('telefone'),
+      escrit_anterior_nome: gv('escrit_anterior_nome'),
+      escrit_anterior_tel: gv('escrit_anterior_tel'),
+      escrit_anterior_email: gv('escrit_anterior_email'),
       licitacoes: gr('licitacoes'), ecommerce: gr('ecommerce'),
       ecommerce_plat: gv('ecommerce_plat'), cert: gr('cert_digital'),
       cert_venc: gv('cert_vencimento'),
     },
     comercial: {
+      consultor_usuario: gv('consultor_usuario'),
       consultor: gv('consultor_nome'), data: gv('data_diagnostico'),
-      lead_origem: gr('lead_origem'), gtcon: gv('participantes_gtcon'),
+      lead_origem: gr('lead_origem'), lead_outros: gv('lead_outros'),
+      gtcon: gv('participantes_gtcon'),
     },
     dp: {
       clt: gv('dp_clt'), estagiarios: gv('dp_estagiarios'),
@@ -2686,8 +2864,18 @@ function collectData() {
     },
     parametros: {
       dia_ponto: gv('dia_ponto'), dia_extratos: gv('dia_extratos'), dia_guias: gv('dia_guias'),
-      envio_guias: gr('envio_guias'), key_fin: gv('key_financeiro'),
-      key_rh: gv('key_rh'), key_fiscal: gv('key_fiscal'),
+      envio_guias: gr('envio_guias'),
+      imp_contabil: gv('imp_contabil'), imp_contabil_email: gv('imp_contabil_email'),
+      imp_fiscal: gv('imp_fiscal'), imp_fiscal_email: gv('imp_fiscal_email'),
+      imp_dp: gv('imp_dp'), imp_dp_email: gv('imp_dp_email'),
+      op_contabil: gv('op_contabil'), op_contabil_email: gv('op_contabil_email'),
+      op_fiscal: gv('op_fiscal'), op_fiscal_email: gv('op_fiscal_email'),
+      op_dp: gv('op_dp'), op_dp_email: gv('op_dp_email'),
+      resp_extras: Array.from(document.querySelectorAll('.resp-extra-item')).map(el => ({
+        nome: el.querySelector('.re-nome')?.value || '',
+        email: el.querySelector('.re-email')?.value || '',
+        cargo: el.querySelector('.re-cargo')?.value || '',
+      })).filter(r => r.nome),
       resp_tecnico: gv('resp_tecnico'), data_corte: gv('data_corte'),
       outros_relatorios: gv('outros_relatorios'),
     },
@@ -2705,7 +2893,11 @@ async function saveAll() {
     toast('Preencha ao menos o CNPJ ou Razão Social antes de salvar', 'err'); return;
   }
 
-  // Bloquear duplicidade: se for ficha NOVA e o CNPJ já existe no banco, recusar
+  // Confirmar alterações em ficha existente
+  if (_fichaExistente) {
+    const nome = d.cadastro?.razao_social || d.cadastro?.cnpj || 'este cliente';
+    if (!confirm(`Confirmar alterações em "${nome}"?`)) return;
+  }
   if (!_fichaExistente && d.cadastro.cnpj) {
     const cnpjNovo = d.cadastro.cnpj.replace(/\D/g,'');
     const jaExiste = (await getClientesDB()).find(c => c.cadastro?.cnpj?.replace(/\D/g,'') === cnpjNovo);
@@ -2716,11 +2908,12 @@ async function saveAll() {
     }
   }
 
-  // Comercial: atribuir consultor automaticamente
-  if (currentUser && currentUser.dept === 'Comercial') {
+  // Comercial: atribuir consultor e usuário automaticamente, campo bloqueado para não-admin
+  if (currentUser && currentUser.dept === 'Comercial' && currentUser.perfil !== 'admin') {
+    d.comercial.consultor_usuario = currentUser.usuario;
     d.comercial.consultor = currentUser.nome;
-    const inputConsultor = document.getElementById('consultor_nome');
-    if (inputConsultor) inputConsultor.value = currentUser.nome;
+    sv('consultor_usuario', currentUser.usuario);
+    sv('consultor_nome', currentUser.nome);
   }
 
   // Registrar no log — buscar versão anterior para diff
@@ -2908,9 +3101,15 @@ function loadClient(data) {
     }
   }
 
+  sv('consultor_usuario', data.comercial?.consultor_usuario);
   sv('consultor_nome', data.comercial?.consultor);
   sv('data_diagnostico', data.comercial?.data);
+  sv('lead_outros', data.comercial?.lead_outros);
   sv('participantes_gtcon', data.comercial?.gtcon);
+
+  sv('escrit_anterior_nome',  data.cadastro?.escrit_anterior_nome);
+  sv('escrit_anterior_tel',   data.cadastro?.escrit_anterior_tel);
+  sv('escrit_anterior_email', data.cadastro?.escrit_anterior_email);
 
   sv('dp_clt', data.dp?.clt);
   sv('dp_estagiarios', data.dp?.estagiarios);
@@ -2935,6 +3134,24 @@ function loadClient(data) {
   sv('dia_ponto', data.parametros?.dia_ponto);
   sv('dia_extratos', data.parametros?.dia_extratos);
   sv('dia_guias', data.parametros?.dia_guias);
+  sv('imp_contabil',       data.parametros?.imp_contabil);
+  sv('imp_contabil_email', data.parametros?.imp_contabil_email);
+  sv('imp_fiscal',         data.parametros?.imp_fiscal);
+  sv('imp_fiscal_email',   data.parametros?.imp_fiscal_email);
+  sv('imp_dp',             data.parametros?.imp_dp);
+  sv('imp_dp_email',       data.parametros?.imp_dp_email);
+  sv('op_contabil',        data.parametros?.op_contabil);
+  sv('op_contabil_email',  data.parametros?.op_contabil_email);
+  sv('op_fiscal',          data.parametros?.op_fiscal);
+  sv('op_fiscal_email',    data.parametros?.op_fiscal_email);
+  sv('op_dp',              data.parametros?.op_dp);
+  sv('op_dp_email',        data.parametros?.op_dp_email);
+  // Restaurar responsáveis extras
+  const respExtrasContainer = document.getElementById('resp-extras');
+  if (respExtrasContainer) {
+    respExtrasContainer.innerHTML = '';
+    (data.parametros?.resp_extras || []).forEach(r => addRespExtra(r));
+  }
   sv('key_financeiro', data.parametros?.key_fin);
   sv('key_rh', data.parametros?.key_rh);
   sv('key_fiscal', data.parametros?.key_fiscal);
@@ -3038,8 +3255,9 @@ async function renderDBTable() {
 }
 
 function abrirCliente(data) {
-  _fichaExistente = true;   // marcar ANTES do resetForm interno do loadClient
+  _fichaExistente = true;
   loadClient(data);
+  aplicarBloqueioConsultor();
   showTab('cadastro', document.querySelector('.tab-btn'));
   atualizarChipCliente(data.cadastro?.razao_social || data.cadastro?.cnpj || 'Cliente');
 }
@@ -3176,14 +3394,15 @@ function loadUsuarios() {
     return u;
   });
 
-  // Garantir que o admin master sempre existe e está atualizado
+  // Garantir que o admin master sempre existe — preservando senha customizada
   const masterIdx = usuariosDB.findIndex(u => u.master);
   if (masterIdx === -1) {
     usuariosDB.unshift({ ...ADMIN_MASTER, id: 'master' });
     precisaSalvar = true;
   } else {
-    // Atualizar campos do master caso estejam desatualizados
-    usuariosDB[masterIdx] = { ...ADMIN_MASTER, id: 'master', senha: usuariosDB[masterIdx].senha || ADMIN_MASTER.senha };
+    // Preservar senha atual do master, atualizar outros campos
+    const senhaSalva = usuariosDB[masterIdx].senha || ADMIN_MASTER.senha;
+    usuariosDB[masterIdx] = { ...ADMIN_MASTER, id: 'master', senha: senhaSalva };
     precisaSalvar = true;
   }
 
@@ -3232,20 +3451,109 @@ function fazerLogin() {
   }
 
   err.classList.remove('show');
-  currentUser = { ...match }; // dept já está dentro do match
+  currentUser = { ...match };
+
+  // Primeiro acesso — obrigar redefinição de senha
+  if (match.primeiroAcesso) {
+    document.getElementById('redef-nova').value = '';
+    document.getElementById('redef-confirma').value = '';
+    document.getElementById('redef-err').style.display = 'none';
+    document.getElementById('modal-redef-senha').style.display = 'flex';
+    setTimeout(() => document.getElementById('redef-nova').focus(), 100);
+    return;
+  }
+
   aplicarSessao();
+}
+
+function confirmarRedefinicaoSenha() {
+  const nova     = document.getElementById('redef-nova').value;
+  const confirma = document.getElementById('redef-confirma').value;
+  const errEl    = document.getElementById('redef-err');
+
+  if (nova.length < 6) {
+    errEl.textContent = 'A senha deve ter pelo menos 6 caracteres.';
+    errEl.style.display = 'block'; return;
+  }
+  if (nova !== confirma) {
+    errEl.textContent = 'As senhas não coincidem. Verifique e tente novamente.';
+    errEl.style.display = 'block'; return;
+  }
+
+  // Salvar nova senha e remover flag de primeiro acesso
+  loadUsuarios();
+  const idx = usuariosDB.findIndex(u => u.usuario === currentUser.usuario);
+  if (idx >= 0) {
+    usuariosDB[idx].senha = nova;
+    delete usuariosDB[idx].primeiroAcesso;
+    saveUsuarios();
+    currentUser = { ...usuariosDB[idx] };
+  }
+
+  document.getElementById('modal-redef-senha').style.display = 'none';
+  registrarLog('usuario', `Senha redefinida pelo usuário: @${currentUser.usuario}`);
+  aplicarSessao();
+}
+
+function abrirModalSenhaAdmin() {
+  document.getElementById('admin-codigo-passe').value = '';
+  document.getElementById('admin-nova-senha').value = '';
+  document.getElementById('admin-confirma-senha').value = '';
+  document.getElementById('admin-senha-err').style.display = 'none';
+  document.getElementById('modal-senha-admin').style.display = 'flex';
+  setTimeout(() => document.getElementById('admin-codigo-passe').focus(), 100);
+}
+
+function fecharModalSenhaAdmin() {
+  document.getElementById('modal-senha-admin').style.display = 'none';
+}
+
+function confirmarSenhaAdmin() {
+  const codigo   = document.getElementById('admin-codigo-passe').value;
+  const nova     = document.getElementById('admin-nova-senha').value;
+  const confirma = document.getElementById('admin-confirma-senha').value;
+  const errEl    = document.getElementById('admin-senha-err');
+
+  if (codigo !== '3829E7d1#') {
+    errEl.textContent = 'Código de autorização incorreto.';
+    errEl.style.display = 'block';
+    document.getElementById('admin-codigo-passe').value = '';
+    document.getElementById('admin-codigo-passe').focus();
+    return;
+  }
+  if (nova.length < 6) {
+    errEl.textContent = 'A senha deve ter pelo menos 6 caracteres.';
+    errEl.style.display = 'block'; return;
+  }
+  if (nova !== confirma) {
+    errEl.textContent = 'As senhas não coincidem.';
+    errEl.style.display = 'block'; return;
+  }
+
+  // Atualizar senha do admin master
+  loadUsuarios();
+  const idx = usuariosDB.findIndex(u => u.master);
+  if (idx >= 0) {
+    usuariosDB[idx].senha = nova;
+    // Atualizar ADMIN_MASTER em memória também
+    ADMIN_MASTER.senha = nova;
+    saveUsuarios();
+  }
+
+  fecharModalSenhaAdmin();
+  registrarLog('usuario', 'Senha do admin master alterada via código passe');
+  toast('✅ Senha do admin atualizada com sucesso!', 'ok');
 }
 
 function fazerLogout() {
   if (currentUser) registrarLog('login', 'Logout realizado');
   currentUser = null;
+  resetForm();
   document.getElementById('user-chip').style.display = 'none';
-  document.querySelectorAll('.tab-admin-only').forEach(el => el.style.display = 'none');
+  document.getElementById('login-overlay').classList.remove('hidden');
+  document.getElementById('login-error').style.display = 'none';
   document.getElementById('login-usuario').value = '';
   document.getElementById('login-senha').value = '';
-  document.getElementById('login-err').classList.remove('show');
-  document.getElementById('login-overlay').classList.remove('hidden');
-  setTimeout(() => document.getElementById('login-usuario')?.focus(), 100);
 }
 
 // ══════════════════════════════════════
@@ -3398,6 +3706,15 @@ function criarFicha() {
     }
   }
 
+  // Pré-Análise como status padrão
+  selStatus(document.querySelector('#status-onboarding .status-chip'), 'status-onboarding', 'sel-blue');
+
+  // Preencher consultor se for Comercial
+  if (currentUser?.dept === 'Comercial' && currentUser?.perfil !== 'admin') {
+    sv('consultor_usuario', currentUser.usuario);
+    sv('consultor_nome', currentUser.nome);
+  }
+
   atualizarChipCliente(dadosCapturados?.razao_social || dadosCapturados?.nome || '');
   showTab('cadastro', document.querySelector('.tab-btn'));
 }
@@ -3406,6 +3723,16 @@ function criarFichaSemCNPJ() {
   fecharNovaFicha();
   resetForm();
   _fichaExistente = false;
+
+  // Pré-Análise como status padrão
+  selStatus(document.querySelector('#status-onboarding .status-chip'), 'status-onboarding', 'sel-blue');
+
+  // Preencher consultor se for Comercial
+  if (currentUser?.dept === 'Comercial' && currentUser?.perfil !== 'admin') {
+    sv('consultor_usuario', currentUser.usuario);
+    sv('consultor_nome', currentUser.nome);
+  }
+
   showTab('cadastro', document.querySelector('.tab-btn'));
 }
 
@@ -3427,6 +3754,7 @@ function aplicarSessao() {
   if (btnLimpar) btnLimpar.style.display = isAdmin ? '' : 'none';
 
   applyTabPermissions();
+  aplicarBloqueioConsultor();
   registrarLog('login', 'Login realizado');
 
   // Abre direto na aba Clientes
@@ -3439,11 +3767,10 @@ function aplicarSessao() {
 function adicionarUsuario() {
   const nome    = document.getElementById('new-user-nome').value.trim();
   const usuario = document.getElementById('new-user-usuario').value.trim().toLowerCase();
-  const senha   = document.getElementById('new-user-senha').value.trim();
   const dept    = document.getElementById('new-user-dept').value;
   const perfil  = document.getElementById('new-user-perfil').value;
 
-  if (!nome || !usuario || !senha || !dept) {
+  if (!nome || !usuario || !dept) {
     toast('Preencha todos os campos do usuário.', 'err'); return;
   }
 
@@ -3452,27 +3779,28 @@ function adicionarUsuario() {
     toast(`Usuário "@${usuario}" já existe.`, 'err'); return;
   }
 
-  usuariosDB.push({ id: Date.now().toString(), nome, usuario, dept, senha, perfil });
+  // Senha padrão 123456 — usuário será obrigado a redefinir no primeiro login
+  usuariosDB.push({ id: Date.now().toString(), nome, usuario, dept, perfil, senha: '123456', primeiroAcesso: true });
   saveUsuarios();
   document.getElementById('new-user-nome').value = '';
   document.getElementById('new-user-usuario').value = '';
-  document.getElementById('new-user-senha').value = '';
   document.getElementById('new-user-dept').value = '';
   document.getElementById('new-user-perfil').value = 'usuario';
   renderAdminUserList();
   registrarLog('usuario', `Usuário criado: ${nome} (@${usuario}) — ${dept} [${perfil}]`);
-  toast(`✅ "${nome}" (@${usuario}) adicionado!`, 'ok');
+  toast(`✅ "${nome}" (@${usuario}) adicionado! Senha padrão: 123456`, 'ok');
 }
 
 function alterarSenha(id) {
   const u = usuariosDB.find(u => u.id === id);
   if (!u) return;
-  const nova = prompt(`Nova senha para "${u.nome}" (@${u.usuario}):`);
-  if (nova === null) return;
-  if (!nova.trim()) { toast('Senha não pode ser vazia.', 'err'); return; }
-  u.senha = nova.trim();
+  if (u.master) { toast('Use o botão "Alterar senha do Admin" para o admin master.', 'err'); return; }
+  if (!confirm(`Resetar senha de "${u.nome}" (@${u.usuario}) para o padrão 123456?\n\nO usuário será solicitado a criar uma nova senha no próximo login.`)) return;
+  u.senha = '123456';
+  u.primeiroAcesso = true;
   saveUsuarios();
-  toast(`🔑 Senha de "@${u.usuario}" atualizada.`, 'ok');
+  renderAdminUserList();
+  toast(`🔑 Senha de "@${u.usuario}" resetada para 123456.`, 'ok');
 }
 
 function removerUsuario(id) {
