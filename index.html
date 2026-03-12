@@ -793,6 +793,31 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
   </div>
 </div>
 
+<!-- ══════ MODAL IMPORTAÇÃO ══════ -->
+<div id="modal-importacao" style="display:none;position:fixed;inset:0;z-index:8500;background:rgba(15,20,40,.5);backdrop-filter:blur(4px);align-items:center;justify-content:center;">
+  <div style="background:#fff;border:1px solid var(--border);border-radius:16px;padding:36px 40px;width:520px;max-width:95vw;box-shadow:0 12px 48px rgba(26,32,53,.15);">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+      <div style="font-size:18px;font-weight:700;color:var(--text);">📥 Importar Clientes</div>
+      <button onclick="fecharModalImportacao()" style="background:none;border:none;font-size:18px;color:var(--muted);cursor:pointer;">✕</button>
+    </div>
+    <div style="font-size:13px;color:var(--muted);margin-bottom:20px;">Importe clientes via arquivo <strong>JSON</strong> (exportado pelo sistema) ou <strong>CSV</strong> no formato GTCON.</div>
+    <div style="background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:16px;">
+      <div style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:8px;">📋 Colunas esperadas no CSV:</div>
+      <div style="font-size:11px;color:var(--muted);font-family:var(--mono);">Razão Social · Nome Fantasia · CNPJ · Código SCI · Regime Tributário · Telefone · E-mail · Consultor</div>
+      <button class="btn btn-s btn-sm" onclick="baixarTemplateCSV()" style="margin-top:10px;">⬇ Baixar Template CSV</button>
+    </div>
+    <div class="fg" style="margin-bottom:16px;">
+      <label>Selecione o arquivo (.json ou .csv)</label>
+      <input type="file" id="import-file" accept=".json,.csv" style="padding:8px;border:1.5px solid var(--border);border-radius:8px;width:100%;font-size:13px;cursor:pointer;">
+    </div>
+    <div id="import-resultado" style="display:none;padding:10px 14px;background:#f0fdf4;border:1px solid #a7f3d0;border-radius:8px;font-size:13px;margin-bottom:14px;color:#065f46;"></div>
+    <div style="display:flex;gap:10px;justify-content:flex-end;">
+      <button class="btn btn-s" onclick="fecharModalImportacao()">Cancelar</button>
+      <button class="btn btn-ok" onclick="processarImportacao()">📥 Importar</button>
+    </div>
+  </div>
+</div>
+
 <!-- ══════ MODAL NOVA FICHA ══════ -->
 <div id="nova-ficha-modal" style="display:none;position:fixed;inset:0;z-index:8000;background:rgba(15,20,40,.45);backdrop-filter:blur(4px);align-items:center;justify-content:center;" onclick="if(event.target===this)fecharNovaFicha()">
   <div style="background:#fff;border:1px solid var(--border);border-radius:16px;padding:36px 40px;width:480px;max-width:95vw;box-shadow:0 12px 48px rgba(26,32,53,.15);">
@@ -867,6 +892,8 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
     </div>
     <button class="btn btn-s btn-sm" onclick="clearAll()">🗑 Limpar</button>
     <button class="btn btn-s btn-sm" onclick="exportJSON()">⬇ JSON</button>
+    <button class="btn btn-s btn-sm" onclick="exportarExcel()">📊 Excel</button>
+    <button class="btn btn-s btn-sm" onclick="gerarPDF()">📄 PDF</button>
     <button class="btn btn-ok btn-sm" onclick="saveAll()">💾 Salvar</button>
     <div class="user-chip" id="user-chip" style="display:none;">
       <div class="user-avatar" id="user-avatar"></div>
@@ -1587,34 +1614,6 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
   </div>
 
   <div class="card">
-    <div class="card-title"><span class="ct-icon">💻</span> Software de Gestão (ERP)</div>
-    <div class="g g2">
-      <div class="fg">
-        <label>Sistema ERP / Financeiro</label>
-        <div class="radio-row">
-          <label class="ro" onclick="selR(this,'erp')"><input type="radio" name="erp" value="omie">Omie</label>
-          <label class="ro" onclick="selR(this,'erp')"><input type="radio" name="erp" value="contaazul">ContaAzul</label>
-          <label class="ro" onclick="selR(this,'erp')"><input type="radio" name="erp" value="tiny">Tiny</label>
-          <label class="ro" onclick="selR(this,'erp')"><input type="radio" name="erp" value="nao">Não usa</label>
-          <label class="ro" onclick="selR(this,'erp')"><input type="radio" name="erp" value="outro">Outro</label>
-        </div>
-      </div>
-      <div class="fg">
-        <label>Qual ERP? (se Outro)</label>
-        <input type="text" id="erp_outro" placeholder="Nome do sistema">
-      </div>
-      <div class="fg">
-        <label>Forma de Integração</label>
-        <div class="radio-row">
-          <label class="ro" onclick="selR(this,'erp_integ')"><input type="radio" name="erp_integ" value="api">API</label>
-          <label class="ro" onclick="selR(this,'erp_integ')"><input type="radio" name="erp_integ" value="ofx">Importação OFX</label>
-          <label class="ro" onclick="selR(this,'erp_integ')"><input type="radio" name="erp_integ" value="manual">Manual</label>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="card">
     <div class="card-title"><span class="ct-icon">🏦</span> Contas Bancárias (PJ)</div>
     <div id="bancos-container">
       <div class="g g4" style="margin-bottom:8px;" id="banco-1">
@@ -1879,6 +1878,49 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
   </div>
 
   <div class="card">
+    <div class="card-title"><span class="ct-icon">💻</span> Sistema ERP / Financeiro</div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:12px;">Informação transversal — selecione os departamentos impactados por este sistema.</div>
+    <div class="g g2">
+      <div class="fg">
+        <label>Sistema utilizado</label>
+        <div class="radio-row">
+          <label class="ro" onclick="selR(this,'erp')"><input type="radio" name="erp" value="omie">Omie</label>
+          <label class="ro" onclick="selR(this,'erp')"><input type="radio" name="erp" value="contaazul">ContaAzul</label>
+          <label class="ro" onclick="selR(this,'erp')"><input type="radio" name="erp" value="tiny">Tiny</label>
+          <label class="ro" onclick="selR(this,'erp')"><input type="radio" name="erp" value="nao">Não usa</label>
+          <label class="ro" onclick="selR(this,'erp')"><input type="radio" name="erp" value="outro">Outro</label>
+        </div>
+      </div>
+      <div class="fg">
+        <label>Qual ERP? (se Outro)</label>
+        <input type="text" id="erp_outro" placeholder="Nome do sistema">
+      </div>
+      <div class="fg">
+        <label>Forma de Integração</label>
+        <div class="radio-row">
+          <label class="ro" onclick="selR(this,'erp_integ')"><input type="radio" name="erp_integ" value="api">API</label>
+          <label class="ro" onclick="selR(this,'erp_integ')"><input type="radio" name="erp_integ" value="ofx">Importação OFX</label>
+          <label class="ro" onclick="selR(this,'erp_integ')"><input type="radio" name="erp_integ" value="manual">Manual</label>
+        </div>
+      </div>
+      <div class="fg">
+        <label>Departamentos impactados</label>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;">
+          <label style="display:flex;align-items:center;gap:5px;padding:6px 14px;border-radius:20px;border:1.5px solid var(--border);cursor:pointer;font-size:13px;font-weight:600;transition:all .15s;" id="flag-dp-label">
+            <input type="checkbox" id="erp_flag_dp" onchange="toggleErpFlag(this,'flag-dp-label','#059669')" style="display:none;"> 👷 DP
+          </label>
+          <label style="display:flex;align-items:center;gap:5px;padding:6px 14px;border-radius:20px;border:1.5px solid var(--border);cursor:pointer;font-size:13px;font-weight:600;transition:all .15s;" id="flag-fiscal-label">
+            <input type="checkbox" id="erp_flag_fiscal" onchange="toggleErpFlag(this,'flag-fiscal-label','#d97706')" style="display:none;"> 🧾 Fiscal
+          </label>
+          <label style="display:flex;align-items:center;gap:5px;padding:6px 14px;border-radius:20px;border:1.5px solid var(--border);cursor:pointer;font-size:13px;font-weight:600;transition:all .15s;" id="flag-contabil-label">
+            <input type="checkbox" id="erp_flag_contabil" onchange="toggleErpFlag(this,'flag-contabil-label','#7c3aed')" style="display:none;"> 📊 Contábil
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
     <div class="card-title"><span class="ct-icon">⚠️</span> Erros Encontrados</div>
     <div id="erros-container"></div>
     <button class="btn btn-s btn-sm" onclick="addErro()">+ Registrar erro</button>
@@ -1957,7 +1999,8 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
           oninput="renderDBTable()"
           style="width:100%;padding:9px 12px 9px 34px;border:1px solid var(--border);border-radius:var(--rsm);background:var(--surface2);font-family:var(--sans);font-size:13px;outline:none;">
       </div>
-      <button class="btn btn-s btn-sm" onclick="exportAllJSON()">⬇ Exportar</button>
+      <button class="btn btn-s btn-sm" onclick="exportAllJSON()">⬇ Exportar JSON</button>
+      <button class="btn btn-s btn-sm" onclick="abrirModalImportacao()">📥 Importar</button>
       <button class="btn btn-ok btn-sm" onclick="novaFicha()">➕ Nova Ficha</button>
     </div>
     <div class="db-table-wrap" id="db-table-wrap">
@@ -2374,6 +2417,26 @@ function selStatus(el, groupId, cls) {
   });
   el.classList.add(cls);
 }
+function toggleErpFlag(cb, labelId, color) {
+  const lbl = document.getElementById(labelId);
+  if (!lbl) return;
+  if (cb.checked) {
+    lbl.style.background = color + '18';
+    lbl.style.borderColor = color;
+    lbl.style.color = color;
+  } else {
+    lbl.style.background = '';
+    lbl.style.borderColor = '';
+    lbl.style.color = '';
+  }
+}
+
+function restoreErpFlags(flags = {}) {
+  if (flags.dp)      { document.getElementById('erp_flag_dp').checked = true;      toggleErpFlag(document.getElementById('erp_flag_dp'),'flag-dp-label','#059669'); }
+  if (flags.fiscal)  { document.getElementById('erp_flag_fiscal').checked = true;  toggleErpFlag(document.getElementById('erp_flag_fiscal'),'flag-fiscal-label','#d97706'); }
+  if (flags.contabil){ document.getElementById('erp_flag_contabil').checked = true; toggleErpFlag(document.getElementById('erp_flag_contabil'),'flag-contabil-label','#7c3aed'); }
+}
+
 function toggleCheckLine(el) {
   el.classList.toggle('checked');
   if (el.classList.contains('checked')) el.querySelector('.check-box').textContent = '✓';
@@ -2856,7 +2919,7 @@ function collectData() {
       sped: gr('sped'), obs: gv('obs_fiscal'),
     },
     contabil: {
-      erp: gr('erp'), erp_outro: gv('erp_outro'),
+      // ERP movido para particularidades
       balancete: gr('balancete'), imobilizado: gr('imobilizado'),
       contab_anterior: gv('contab_anterior'),
       r_cadastral: gv('risco_cadastral'), r_tributario: gv('risco_tributario'),
@@ -2880,6 +2943,12 @@ function collectData() {
       outros_relatorios: gv('outros_relatorios'),
     },
     particularidades: {
+      erp: gr('erp'), erp_outro: gv('erp_outro'), erp_integ: gr('erp_integ'),
+      erp_flags: {
+        dp:      document.getElementById('erp_flag_dp')?.checked || false,
+        fiscal:  document.getElementById('erp_flag_fiscal')?.checked || false,
+        contabil:document.getElementById('erp_flag_contabil')?.checked || false,
+      },
       instrucoes: gv('part_instrucoes'), avisos: gv('part_avisos'),
       obs_gerais: gv('obs_gerais'), diagnostico: gv('diagnostico_final'),
       resumo: gv('resumo_reuniao'),
@@ -2893,17 +2962,19 @@ async function saveAll() {
     toast('Preencha ao menos o CNPJ ou Razão Social antes de salvar', 'err'); return;
   }
 
-  // Confirmar alterações em ficha existente
+  // Cliente ativo sempre atualiza — sem checar duplicidade
+  const nomeCliente = d.cadastro?.razao_social || d.cadastro?.cnpj || 'este cliente';
   if (_fichaExistente) {
-    const nome = d.cadastro?.razao_social || d.cadastro?.cnpj || 'este cliente';
-    if (!confirm(`Confirmar alterações em "${nome}"?`)) return;
-  }
-  if (!_fichaExistente && d.cadastro.cnpj) {
+    if (!confirm(`Confirmar alterações em "${nomeCliente}"?`)) return;
+  } else if (d.cadastro.cnpj) {
+    // Só checa duplicidade em ficha NOVA
     const cnpjNovo = d.cadastro.cnpj.replace(/\D/g,'');
     const jaExiste = (await getClientesDB()).find(c => c.cadastro?.cnpj?.replace(/\D/g,'') === cnpjNovo);
     if (jaExiste) {
       const nome = jaExiste.cadastro?.razao_social || cnpjNovo;
-      toast(`❌ Duplicidade! "${nome}" já está cadastrado com este CNPJ. Localize-o na aba Clientes.`, 'err');
+      if (confirm(`"${nome}" já está cadastrado.\n\nDeseja abrir a ficha existente para edição?`)) {
+        abrirCliente(jaExiste);
+      }
       return;
     }
   }
@@ -2933,7 +3004,9 @@ async function saveAll() {
   const res = await api('POST', '/api/cliente', d);
   if (btn) { btn.disabled = false; btn.innerHTML = '💾 Salvar'; }
   if (res?.ok) {
-    toast(`✅ ${res.mensagem} — ${res.total} cliente(s) no banco.`, 'ok');
+    _fichaExistente = true; // após salvar, sempre em modo edição
+    const msg = res.mensagem || 'Salvo';
+    toast(`✅ ${msg} com sucesso!`, 'ok');
     updateClientCountBadge();
   }
 }
@@ -2957,6 +3030,340 @@ async function exportAllJSON() {
   a.download = `gtcon_clientes_${new Date().toISOString().split('T')[0]}.json`;
   a.click();
   toast(`${res.clientes.length} fichas exportadas!`, 'inf');
+}
+
+
+// ══════════════════════════════════════
+// EXPORTAR EXCEL (CSV formatado)
+// ══════════════════════════════════════
+function exportarExcel() {
+  const d = collectData();
+  const nome = d.cadastro?.razao_social || d.cadastro?.cnpj || 'Cliente';
+
+  const rows = [
+    ['GTCON — Ficha Técnica de Cliente', ''],
+    ['Exportado em', new Date().toLocaleString('pt-BR')],
+    ['', ''],
+    ['── CADASTRO GERAL ──', ''],
+    ['Razão Social', d.cadastro?.razao_social || ''],
+    ['Nome Fantasia', d.cadastro?.nome_fantasia || ''],
+    ['CNPJ', d.cadastro?.cnpj || ''],
+    ['Código SCI', d.cadastro?.codigo_sci || ''],
+    ['Data de Abertura', d.cadastro?.data_abertura || ''],
+    ['Porte', d.cadastro?.porte || ''],
+    ['Situação', d.cadastro?.situacao || ''],
+    ['Regime Tributário', d.cadastro?.regime || ''],
+    ['Fat. Mensal Est.', d.cadastro?.fat_mensal || ''],
+    ['Fat. Anual Est.', d.cadastro?.fat_anual || ''],
+    ['Endereço', d.cadastro?.endereco || ''],
+    ['Responsável Legal', d.cadastro?.resp_legal || ''],
+    ['CPF Responsável', d.cadastro?.resp_cpf || ''],
+    ['E-mail Assinatura', d.cadastro?.email_assinatura || ''],
+    ['Telefone', d.cadastro?.telefone || ''],
+    ['Escritório Anterior', d.cadastro?.escrit_anterior_nome || ''],
+    ['Tel. Escritório Anterior', d.cadastro?.escrit_anterior_tel || ''],
+    ['E-mail Escritório Anterior', d.cadastro?.escrit_anterior_email || ''],
+    ['', ''],
+    ['── COMERCIAL ──', ''],
+    ['Consultor', d.comercial?.consultor || ''],
+    ['Usuário Responsável', d.comercial?.consultor_usuario || ''],
+    ['Origem do Lead', d.comercial?.lead_origem || ''],
+    ['Data Diagnóstico', d.comercial?.data || ''],
+    ['', ''],
+    ['── FISCAL ──', ''],
+    ['Apuração Fiscal', d.fiscal?.apuracao || ''],
+    ['ICMS-ST', d.fiscal?.icms_st || ''],
+    ['Emissor NF', d.fiscal?.emissor || ''],
+    ['Vol. Saída Mensal', d.fiscal?.vol_saida || ''],
+    ['Vol. Entrada Mensal', d.fiscal?.vol_entrada || ''],
+    ['Estoque', d.fiscal?.estoque || ''],
+    ['Observações Fiscal', d.fiscal?.obs || ''],
+    ['', ''],
+    ['── CONTÁBIL ──', ''],
+    ['Balancete Fechado', d.contabil?.balancete || ''],
+    ['Imobilizado', d.contabil?.imobilizado || ''],
+    ['Risco Cadastral', d.contabil?.r_cadastral || ''],
+    ['Risco Tributário', d.contabil?.r_tributario || ''],
+    ['Risco Trabalhista', d.contabil?.r_trabalhista || ''],
+    ['Risco Tecnológico', d.contabil?.r_tecnologico || ''],
+    ['', ''],
+    ['── DEP. PESSOAL ──', ''],
+    ['CLT', d.dp?.clt || ''],
+    ['Estagiários', d.dp?.estagiarios || ''],
+    ['Pró-labore', d.dp?.prolabore || ''],
+    ['Autônomos', d.dp?.autonomos || ''],
+    ['Sindicato Patronal', d.dp?.sind_patronal || ''],
+    ['Sindicato Laboral', d.dp?.sind_laboral || ''],
+    ['', ''],
+    ['── SISTEMA ERP ──', ''],
+    ['Sistema ERP', d.particularidades?.erp || ''],
+    ['ERP (outro)', d.particularidades?.erp_outro || ''],
+    ['Integração', d.particularidades?.erp_integ || ''],
+    ['Impacta DP', d.particularidades?.erp_flags?.dp ? 'Sim' : 'Não'],
+    ['Impacta Fiscal', d.particularidades?.erp_flags?.fiscal ? 'Sim' : 'Não'],
+    ['Impacta Contábil', d.particularidades?.erp_flags?.contabil ? 'Sim' : 'Não'],
+    ['', ''],
+    ['── PARÂMETROS ──', ''],
+    ['Dia Ponto', d.parametros?.dia_ponto || ''],
+    ['Dia Guias', d.parametros?.dia_guias || ''],
+    ['Implantação Contábil', d.parametros?.imp_contabil || ''],
+    ['Implantação Fiscal', d.parametros?.imp_fiscal || ''],
+    ['Implantação DP', d.parametros?.imp_dp || ''],
+    ['Operacional Contábil', d.parametros?.op_contabil || ''],
+    ['Operacional Fiscal', d.parametros?.op_fiscal || ''],
+    ['Operacional DP', d.parametros?.op_dp || ''],
+    ['', ''],
+    ['── PARTICULARIDADES ──', ''],
+    ['Instruções ao Time', d.particularidades?.instrucoes || ''],
+    ['Avisos/Alertas', d.particularidades?.avisos || ''],
+    ['Observações Gerais', d.particularidades?.obs_gerais || ''],
+    ['Diagnóstico Final', d.particularidades?.diagnostico || ''],
+  ];
+
+  const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `GTCON_${nome.replace(/[^a-zA-Z0-9]/g,'_')}_${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+  toast('📊 Excel exportado com sucesso!', 'ok');
+}
+
+// ══════════════════════════════════════
+// GERAR PDF DA FICHA
+// ══════════════════════════════════════
+function gerarPDF() {
+  const d = collectData();
+  const nome = d.cadastro?.razao_social || d.cadastro?.cnpj || 'Cliente';
+  const data = new Date().toLocaleDateString('pt-BR');
+
+  const flagsErp = [];
+  if (d.particularidades?.erp_flags?.dp)      flagsErp.push('DP');
+  if (d.particularidades?.erp_flags?.fiscal)  flagsErp.push('Fiscal');
+  if (d.particularidades?.erp_flags?.contabil)flagsErp.push('Contábil');
+
+  const row = (label, value) => value
+    ? `<tr><td style="padding:6px 10px;font-weight:600;color:#1e3a5f;width:38%;border-bottom:1px solid #f0f4ff;">${label}</td><td style="padding:6px 10px;color:#1e293b;border-bottom:1px solid #f0f4ff;">${value}</td></tr>`
+    : '';
+  const section = (title, icon, content) => `
+    <div style="margin-bottom:20px;break-inside:avoid;">
+      <div style="background:#1e3a5f;color:#fff;padding:8px 14px;border-radius:6px 6px 0 0;font-weight:700;font-size:13px;letter-spacing:.5px;">${icon} ${title}</div>
+      <table style="width:100%;border-collapse:collapse;background:#fff;border-radius:0 0 6px 6px;border:1px solid #dbeafe;border-top:none;">${content}</table>
+    </div>`;
+
+  const html = `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">
+  <title>Ficha — ${nome}</title>
+  <style>
+    * { box-sizing:border-box; margin:0; padding:0; }
+    body { font-family:Arial,sans-serif; font-size:12px; color:#1e293b; background:#f8fafc; }
+    @media print {
+      body { background:#fff; }
+      .no-print { display:none; }
+      @page { margin:15mm; size:A4; }
+    }
+    .page { max-width:800px; margin:0 auto; padding:20px; background:#fff; }
+    .header { display:flex; align-items:center; justify-content:space-between; border-bottom:3px solid #1e3a5f; padding-bottom:14px; margin-bottom:20px; }
+    .logo-text { font-size:28px; font-weight:900; color:#1e3a5f; letter-spacing:-1px; }
+    .logo-sub { font-size:11px; color:#64748b; margin-top:2px; }
+    .title-block { text-align:right; }
+    .client-name { font-size:18px; font-weight:700; color:#1e3a5f; }
+    .client-cnpj { font-size:11px; color:#64748b; margin-top:2px; }
+    .meta { font-size:10px; color:#94a3b8; margin-top:4px; }
+    .badge { display:inline-block; padding:3px 10px; border-radius:20px; font-size:10px; font-weight:700; margin-right:4px; }
+    .badge-blue { background:#dbeafe; color:#1d4ed8; }
+    .badge-green { background:#d1fae5; color:#065f46; }
+    .badge-orange { background:#fef3c7; color:#92400e; }
+    .footer { margin-top:30px; border-top:2px solid #1e3a5f; padding-top:10px; display:flex; justify-content:space-between; font-size:10px; color:#94a3b8; }
+    .print-btn { position:fixed; top:20px; right:20px; background:#2563eb; color:#fff; border:none; padding:10px 20px; border-radius:8px; font-size:14px; font-weight:700; cursor:pointer; box-shadow:0 4px 12px rgba(37,99,235,.3); }
+    .print-btn:hover { background:#1d4ed8; }
+    .columns { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+    @media print { .columns { grid-template-columns:1fr 1fr; } }
+  </style></head><body>
+  <button class="print-btn no-print" onclick="window.print()">🖨️ Imprimir / Salvar PDF</button>
+  <div class="page">
+    <div class="header">
+      <div>
+        <div class="logo-text">GTCON</div>
+        <div class="logo-sub">Assessoria Contábil</div>
+      </div>
+      <div class="title-block">
+        <div class="client-name">${d.cadastro?.razao_social || '—'}</div>
+        ${d.cadastro?.nome_fantasia ? `<div class="client-cnpj">${d.cadastro.nome_fantasia}</div>` : ''}
+        <div class="client-cnpj">CNPJ: ${d.cadastro?.cnpj || '—'}</div>
+        <div class="meta">Ficha gerada em ${data} · Consultor: ${d.comercial?.consultor || '—'}</div>
+        <div style="margin-top:6px;">
+          ${d.cadastro?.situacao ? `<span class="badge badge-green">${d.cadastro.situacao}</span>` : ''}
+          ${d.cadastro?.regime ? `<span class="badge badge-blue">${d.cadastro.regime}</span>` : ''}
+          ${d.cadastro?.porte ? `<span class="badge badge-orange">${d.cadastro.porte}</span>` : ''}
+        </div>
+      </div>
+    </div>
+
+    <div class="columns">
+      <div>
+        ${section('Cadastro Geral', '🏢', `
+          ${row('Endereço', d.cadastro?.endereco)}
+          ${row('Abertura', d.cadastro?.data_abertura)}
+          ${row('Fat. Mensal', d.cadastro?.fat_mensal)}
+          ${row('Fat. Anual', d.cadastro?.fat_anual)}
+          ${row('Responsável Legal', d.cadastro?.resp_legal)}
+          ${row('CPF', d.cadastro?.resp_cpf)}
+          ${row('E-mail Assinatura', d.cadastro?.email_assinatura)}
+          ${row('Telefone', d.cadastro?.telefone)}
+        `)}
+        ${section('Comercial', '🤝', `
+          ${row('Consultor', d.comercial?.consultor)}
+          ${row('Usuário', d.comercial?.consultor_usuario)}
+          ${row('Origem Lead', d.comercial?.lead_origem)}
+          ${row('Data Diagnóstico', d.comercial?.data)}
+        `)}
+        ${section('Dep. Pessoal', '👷', `
+          ${row('CLT', d.dp?.clt)}
+          ${row('Estagiários', d.dp?.estagiarios)}
+          ${row('Pró-labore', d.dp?.prolabore)}
+          ${row('Autônomos', d.dp?.autonomos)}
+          ${row('Sind. Patronal', d.dp?.sind_patronal)}
+          ${row('Sind. Laboral', d.dp?.sind_laboral)}
+        `)}
+      </div>
+      <div>
+        ${section('Fiscal', '🧾', `
+          ${row('Apuração', d.fiscal?.apuracao)}
+          ${row('Emissor NF', d.fiscal?.emissor)}
+          ${row('ICMS-ST', d.fiscal?.icms_st)}
+          ${row('Vol. Saída', d.fiscal?.vol_saida)}
+          ${row('Vol. Entrada', d.fiscal?.vol_entrada)}
+          ${row('Observações', d.fiscal?.obs)}
+        `)}
+        ${section('Contábil', '📊', `
+          ${row('Balancete', d.contabil?.balancete)}
+          ${row('Imobilizado', d.contabil?.imobilizado)}
+          ${row('Contab. Anterior', d.contabil?.contab_anterior)}
+          ${row('Risco Cadastral', d.contabil?.r_cadastral)}
+          ${row('Risco Tributário', d.contabil?.r_tributario)}
+        `)}
+        ${section('ERP / Sistema', '💻', `
+          ${row('Sistema', d.particularidades?.erp)}
+          ${row('Outro ERP', d.particularidades?.erp_outro)}
+          ${row('Integração', d.particularidades?.erp_integ)}
+          ${row('Depto. Impactados', flagsErp.length ? flagsErp.join(', ') : '—')}
+        `)}
+        ${section('Parâmetros', '⚙️', `
+          ${row('Dia Ponto', d.parametros?.dia_ponto)}
+          ${row('Dia Guias', d.parametros?.dia_guias)}
+          ${row('Implant. Contábil', d.parametros?.imp_contabil)}
+          ${row('Implant. Fiscal', d.parametros?.imp_fiscal)}
+          ${row('Implant. DP', d.parametros?.imp_dp)}
+          ${row('Op. Contábil', d.parametros?.op_contabil)}
+          ${row('Op. Fiscal', d.parametros?.op_fiscal)}
+          ${row('Op. DP', d.parametros?.op_dp)}
+        `)}
+      </div>
+    </div>
+
+    ${(d.particularidades?.instrucoes || d.particularidades?.avisos || d.particularidades?.obs_gerais || d.particularidades?.diagnostico) ? `
+    <div style="margin-top:16px;">
+      ${section('Particularidades e Instruções ao Time', '📝', `
+        ${row('Instruções Mensais', d.particularidades?.instrucoes?.replace(/\n/g,' '))}
+        ${row('Avisos/Alertas', d.particularidades?.avisos?.replace(/\n/g,' '))}
+        ${row('Observações Gerais', d.particularidades?.obs_gerais?.replace(/\n/g,' '))}
+        ${row('Diagnóstico Final', d.particularidades?.diagnostico?.replace(/\n/g,' '))}
+      `)}
+    </div>` : ''}
+
+    <div class="footer">
+      <span>GTCON Assessoria Contábil — Documento interno gerado automaticamente</span>
+      <span>Versão 1.3.0 · ${data}</span>
+    </div>
+  </div>
+</body></html>`;
+
+  const win = window.open('', '_blank');
+  if (!win) { toast('❌ Permita pop-ups para gerar o PDF', 'err'); return; }
+  win.document.write(html);
+  win.document.close();
+  toast('📄 PDF aberto — use Ctrl+P ou o botão para salvar/imprimir.', 'ok');
+}
+
+// ══════════════════════════════════════
+// IMPORTAÇÃO DE CLIENTES (CSV/JSON)
+// ══════════════════════════════════════
+function abrirModalImportacao() {
+  document.getElementById('modal-importacao').style.display = 'flex';
+}
+function fecharModalImportacao() {
+  document.getElementById('modal-importacao').style.display = 'none';
+  document.getElementById('import-resultado').style.display = 'none';
+  document.getElementById('import-file').value = '';
+}
+
+async function processarImportacao() {
+  const file = document.getElementById('import-file').files[0];
+  if (!file) { toast('Selecione um arquivo para importar.', 'err'); return; }
+
+  const txt = await file.text();
+  let clientes = [];
+
+  try {
+    if (file.name.endsWith('.json')) {
+      const parsed = JSON.parse(txt);
+      clientes = Array.isArray(parsed) ? parsed : [parsed];
+    } else if (file.name.endsWith('.csv')) {
+      // CSV simples: primeira linha = cabeçalhos
+      const lines = txt.split('\n').filter(l => l.trim());
+      const headers = lines[0].split(',').map(h => h.replace(/"/g,'').trim());
+      for (let i = 1; i < lines.length; i++) {
+        const vals = lines[i].match(/(".*?"|[^,]+)/g) || [];
+        const obj = {};
+        headers.forEach((h, idx) => { obj[h] = (vals[idx]||'').replace(/^"|"$/g,'').trim(); });
+        if (obj['Razão Social'] || obj['CNPJ']) {
+          clientes.push({
+            meta: { savedAt: new Date().toISOString(), importado: true },
+            cadastro: {
+              razao_social: obj['Razão Social'] || '',
+              nome_fantasia: obj['Nome Fantasia'] || '',
+              cnpj: obj['CNPJ'] || '',
+              codigo_sci: obj['Código SCI'] || '',
+              regime: obj['Regime Tributário'] || '',
+              telefone: obj['Telefone'] || '',
+              email_assinatura: obj['E-mail'] || '',
+            },
+            comercial: { consultor: obj['Consultor'] || currentUser?.nome || '' },
+            dp: {}, fiscal: {}, contabil: {}, parametros: {}, particularidades: {},
+          });
+        }
+      }
+    }
+  } catch(e) {
+    toast('❌ Erro ao ler arquivo: ' + e.message, 'err'); return;
+  }
+
+  if (!clientes.length) { toast('Nenhum cliente encontrado no arquivo.', 'err'); return; }
+
+  let salvos = 0, erros = 0;
+  for (const c of clientes) {
+    if (!c.meta) c.meta = { savedAt: new Date().toISOString() };
+    const res = await api('POST', '/api/cliente', c);
+    if (res?.ok) salvos++; else erros++;
+  }
+
+  const res = document.getElementById('import-resultado');
+  res.style.display = 'block';
+  res.innerHTML = `✅ <strong>${salvos}</strong> cliente(s) importado(s) com sucesso.${erros ? ` ⚠️ ${erros} erro(s).` : ''}`;
+  updateClientCountBadge();
+  registrarLog('ficha', `Importação: ${salvos} clientes importados via ${file.name}`);
+}
+
+function baixarTemplateCSV() {
+  const header = ['Razão Social','Nome Fantasia','CNPJ','Código SCI','Regime Tributário','Telefone','E-mail','Consultor'];
+  const exemplo = ['Empresa Exemplo Ltda','Exemplo','00.000.000/0001-00','SCI001','Simples Nacional','(11) 99999-0000','contato@exemplo.com.br','João Silva'];
+  const csv = [header, exemplo].map(r => r.map(c => `"${c}"`).join(',')).join('\n');
+  const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'GTCON_Template_Importacao.csv';
+  a.click();
+  toast('📥 Template baixado!', 'ok');
 }
 
 function resetForm() {
@@ -3124,7 +3531,10 @@ function loadClient(data) {
   sv('vol_entrada', data.fiscal?.vol_entrada);
   sv('obs_fiscal', data.fiscal?.obs);
 
-  sv('erp_outro', data.contabil?.erp_outro);
+  sv('erp_outro', data.particularidades?.erp_outro || data.contabil?.erp_outro);
+  setRadio('erp',      data.particularidades?.erp || data.contabil?.erp);
+  setRadio('erp_integ',data.particularidades?.erp_integ);
+  restoreErpFlags(data.particularidades?.erp_flags || {});
   sv('contab_anterior', data.contabil?.contab_anterior);
   sv('risco_cadastral', data.contabil?.r_cadastral);
   sv('risco_tributario', data.contabil?.r_tributario);
@@ -3192,7 +3602,6 @@ function loadClient(data) {
   setRadio('icms_st',       data.fiscal?.icms_st);
   setRadio('estoque',       data.fiscal?.estoque);
   setRadio('sped',          data.fiscal?.sped);
-  setRadio('erp',           data.contabil?.erp);
   setRadio('balancete',     data.contabil?.balancete);
   setRadio('imobilizado',   data.contabil?.imobilizado);
   setRadio('lead_origem',   data.comercial?.lead_origem);
