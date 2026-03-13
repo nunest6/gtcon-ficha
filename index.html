@@ -2289,7 +2289,7 @@ function updateSidebar(tab) {
   sb.innerHTML = '<div class="sidebar-group"><div class="sidebar-label">Nesta aba</div>' +
     items.map(i => `<button class="side-btn"><span class="side-icon">›</span>${i}</button>`).join('') +
     '</div>';
-  if (tab === 'db') { renderDBTable(); updateDBStats(); }
+  if (tab === 'db') { renderDBTable().catch(e => console.error(e)); updateDBStats(); }
   if (tab === 'admin') renderAdminUserList();
   if (tab === 'log') renderLog();
 }
@@ -3941,9 +3941,15 @@ let _clientesCache = [];
 let _fichaExistente = false; // true quando ficha foi aberta da lista (edição), false quando é nova
 
 async function getAllClients() {
-  const res = await api('GET', '/api/clientes');
-  if (res?.ok) { _clientesCache = res.clientes; return res.clientes; }
-  return _clientesCache; // fallback para cache se servidor cair
+  try {
+    const res = await api('GET', '/api/clientes');
+    if (res?.ok) { _clientesCache = res.clientes; return res.clientes; }
+    console.warn('getAllClients: resposta não ok', res);
+  } catch(e) {
+    console.error('getAllClients erro:', e);
+    toast('❌ Erro ao carregar clientes: ' + e.message, 'err');
+  }
+  return _clientesCache;
 }
 
 async function updateClientCountBadge() {
@@ -4184,56 +4190,63 @@ function loadClient(data) {
   toast(`"${nm || 'Ficha'}" carregada com sucesso!`, 'ok');
 }
 
+// Cache do último array renderizado — usado pelo onclick da tabela
+let _lastRenderedClientes = [];
+
 async function renderDBTable() {
   const wrap = document.getElementById('db-table-wrap');
   if (!wrap) return;
-  wrap.innerHTML = `<div style="text-align:center;padding:30px;color:var(--muted);font-size:13px;">⏳ Carregando...</div>`;
+  wrap.innerHTML = `<div style="text-align:center;padding:30px;color:var(--muted);font-size:13px;">⏳ Carregando clientes...</div>`;
 
-  const q         = (document.getElementById('db-search-input')?.value || '').toLowerCase();
-  const grupoFiltro = document.getElementById('db-filter-grupo')?.value || '';
+  try {
+    const q           = (document.getElementById('db-search-input')?.value || '').toLowerCase();
+    const grupoFiltro = document.getElementById('db-filter-grupo')?.value || '';
 
-  // Popular select de grupos
-  const selGrupo = document.getElementById('db-filter-grupo');
-  if (selGrupo) {
-    const grupos = getGrupos();
-    const opcAtual = selGrupo.value;
-    selGrupo.innerHTML = '<option value="">🏢 Todos os grupos</option>' +
-      '<option value="__sem__">— Sem grupo</option>' +
-      grupos.map(g => `<option value="${g.id}" ${g.id===opcAtual?'selected':''}>${g.nome}</option>`).join('');
-  }
+    // Carregar grupos (falha silenciosa — não bloqueia a lista)
+    try { await popularSelectGrupos(); } catch(e) { console.warn('grupos (ignorado):', e.message); }
 
-  const all = (await getAllClients())
-    .filter(c => clientePertenceAoUsuario(c))
-    .filter(c => {
-      if (!q) return true;
-      return (c.cadastro?.razao_social||'').toLowerCase().includes(q)
-        || (c.cadastro?.cnpj||'').replace(/\D/g,'').includes(q.replace(/\D/g,''))
-        || (c.cadastro?.nome_fantasia||'').toLowerCase().includes(q)
-        || (c.cadastro?.codigo_sci||'').toLowerCase().includes(q)
-        || (c.cadastro?.grupo_eco_nome||'').toLowerCase().includes(q);
-    })
-    .filter(c => {
-      if (!grupoFiltro) return true;
-      if (grupoFiltro === '__sem__') return !c.cadastro?.grupo_eco_id;
-      return c.cadastro?.grupo_eco_id === grupoFiltro;
-    });
+    // Carregar clientes do Supabase
+    wrap.innerHTML = `<div style="text-align:center;padding:30px;color:var(--muted);font-size:13px;">⏳ Buscando no banco...</div>`;
+    const todos = await getAllClients();
 
-  if (!all.length) {
-    const msg = (q || grupoFiltro) ? 'Nenhum resultado encontrado com os filtros aplicados.' : 'Nenhum cliente cadastrado ainda.';
-    const sub = (q || grupoFiltro) ? 'Tente outros termos ou limpe o filtro de grupo.' : 'Clique em "Nova Ficha" para começar.';
-    wrap.innerHTML = `<div class="db-empty"><div class="de-icon">📂</div><p>${msg}</p><small>${sub}</small></div>`;
-    return;
-  }
+    if (!todos || todos.length === 0) {
+      wrap.innerHTML = `<div class="db-empty"><div class="de-icon">📂</div><p>Nenhum cliente cadastrado ainda.</p><small>Clique em "Nova Ficha" para começar.</small></div>`;
+      return;
+    }
 
-  // Agrupar visualmente por grupo se filtro de grupo está vazio
-  const grupos = getGrupos();
+    const all = todos
+      .filter(c => clientePertenceAoUsuario(c))
+      .filter(c => {
+        if (!q) return true;
+        return (c.cadastro?.razao_social||'').toLowerCase().includes(q)
+          || (c.cadastro?.cnpj||'').replace(/\D/g,'').includes(q.replace(/\D/g,''))
+          || (c.cadastro?.nome_fantasia||'').toLowerCase().includes(q)
+          || (c.cadastro?.codigo_sci||'').toLowerCase().includes(q)
+          || (c.cadastro?.grupo_eco_nome||'').toLowerCase().includes(q);
+      })
+      .filter(c => {
+        if (!grupoFiltro) return true;
+        if (grupoFiltro === '__sem__') return !c.cadastro?.grupo_eco_id;
+        return c.cadastro?.grupo_eco_id === grupoFiltro;
+      });
+
+    if (!all.length) {
+      const msg = (q || grupoFiltro) ? 'Nenhum resultado com os filtros aplicados.' : 'Nenhum cliente cadastrado ainda.';
+      const sub = (q || grupoFiltro) ? 'Tente outros termos ou limpe o filtro de grupo.' : 'Clique em "Nova Ficha" para começar.';
+      wrap.innerHTML = `<div class="db-empty"><div class="de-icon">📂</div><p>${msg}</p><small>${sub}</small></div>`;
+      return;
+    }
+
+  // Resolver nome do grupo a partir do cache (já carregado pelo popularSelectGrupos acima)
+  const grupos = _gruposCache || [];
   const nomeGrupo = id => grupos.find(g => g.id === id)?.nome || '';
 
-  wrap.innerHTML = `<table class="db-table">
+    _lastRenderedClientes = all;
+    wrap.innerHTML = `<table class="db-table">
     <thead><tr>
       <th>Cód. SCI</th><th>Razão Social</th><th>CNPJ</th><th>Grupo Econômico</th><th>Regime</th><th>Situação</th><th>Atualizado</th>${currentUser?.perfil === 'admin' ? '<th></th>' : ''}
     </tr></thead>
-    <tbody>${all.map(c => {
+    <tbody>${all.map((c, idx) => {
       const cnpjRaw = c.cadastro?.cnpj?.replace(/\D/g,'') || '';
       const dt = c.meta?.savedAt ? new Date(c.meta.savedAt).toLocaleDateString('pt-BR') : '—';
       const sit = c.cadastro?.situacao || '—';
@@ -4245,7 +4258,7 @@ async function renderDBTable() {
       const grupoBadge = grupo
         ? `<span style="display:inline-block;padding:2px 8px;background:rgba(37,99,235,.08);color:var(--accent2);border-radius:10px;font-size:10.5px;font-weight:600;cursor:pointer;" onclick="event.stopPropagation();document.getElementById('db-filter-grupo').value='${c.cadastro?.grupo_eco_id||''}';renderDBTable();">🏢 ${grupo}</span>`
         : '<span style="color:var(--muted);font-size:11px;">—</span>';
-      return `<tr style="cursor:pointer;" onclick='abrirCliente(${JSON.stringify(c)})' title="Clique para abrir a ficha">
+      return `<tr style="cursor:pointer;" onclick='abrirClientePorIdx(${idx})' title="Clique para abrir a ficha">
         <td><span style="font-family:var(--mono);font-size:12px;color:var(--accent2);font-weight:600;">${sci}</span></td>
         <td>
           <div class="db-razao">${c.cadastro?.razao_social||'(sem nome)'}</div>
@@ -4261,6 +4274,21 @@ async function renderDBTable() {
       </tr>`;
     }).join('')}</tbody>
   </table>`;
+  } catch(err) {
+    console.error('renderDBTable erro:', err);
+    wrap.innerHTML = `<div class="db-empty" style="color:var(--danger);">
+      <div class="de-icon">⚠️</div>
+      <p><strong>Erro ao carregar clientes</strong></p>
+      <small>${err.message}</small><br>
+      <button class="btn btn-s btn-sm" onclick="renderDBTable()" style="margin-top:12px;">🔄 Tentar novamente</button>
+    </div>`;
+  }
+}
+
+function abrirClientePorIdx(idx) {
+  const data = _lastRenderedClientes[idx];
+  if (!data) { toast('Erro ao abrir ficha. Recarregue a lista.', 'err'); return; }
+  abrirCliente(data);
 }
 
 function abrirCliente(data) {
