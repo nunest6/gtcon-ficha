@@ -2779,12 +2779,23 @@ async function sbDeleteGrupo(id) {
 async function getGrupos() {
   if (_gruposCache !== null) return _gruposCache;
   if (_gruposCarregando) {
-    await new Promise(r => { const t = setInterval(() => { if (!_gruposCarregando) { clearInterval(t); r(); } }, 60); });
+    // Esperar no máximo 3s para evitar deadlock
+    let waited = 0;
+    while (_gruposCarregando && waited < 3000) {
+      await new Promise(r => setTimeout(r, 100));
+      waited += 100;
+    }
     return _gruposCache || [];
   }
   _gruposCarregando = true;
-  try { _gruposCache = await sbGetGrupos(); } catch(e) { _gruposCache = []; }
-  _gruposCarregando = false;
+  try {
+    _gruposCache = await sbGetGrupos();
+  } catch(e) {
+    console.warn('getGrupos falhou, usando array vazio:', e.message);
+    _gruposCache = [];
+  } finally {
+    _gruposCarregando = false; // sempre libera, mesmo com erro
+  }
   return _gruposCache;
 }
 function invalidarCacheGrupos() { _gruposCache = null; }
@@ -2942,10 +2953,14 @@ Continuar?`
 async function popularSelectGrupos() {
   const sel = document.getElementById('db-filter-grupo');
   if (!sel) return;
-  const grupos = await getGrupos();
-  const atual = sel.value;
-  sel.innerHTML = '<option value="">🏢 Todos os grupos</option><option value="__sem__">— Sem grupo</option>' +
-    grupos.map(g => `<option value="${g.id}" ${g.id===atual?'selected':''}>${g.nome}</option>`).join('');
+  try {
+    const grupos = await getGrupos();
+    const atual = sel.value;
+    sel.innerHTML = '<option value="">🏢 Todos os grupos</option><option value="__sem__">— Sem grupo</option>' +
+      grupos.map(g => `<option value="${g.id}" ${g.id===atual?'selected':''}>${g.nome}</option>`).join('');
+  } catch(e) {
+    console.warn('popularSelectGrupos ignorado:', e.message);
+  }
 }
 
 
@@ -4202,12 +4217,12 @@ async function renderDBTable() {
     const q           = (document.getElementById('db-search-input')?.value || '').toLowerCase();
     const grupoFiltro = document.getElementById('db-filter-grupo')?.value || '';
 
-    // Carregar grupos (falha silenciosa — não bloqueia a lista)
-    try { await popularSelectGrupos(); } catch(e) { console.warn('grupos (ignorado):', e.message); }
-
-    // Carregar clientes do Supabase
-    wrap.innerHTML = `<div style="text-align:center;padding:30px;color:var(--muted);font-size:13px;">⏳ Buscando no banco...</div>`;
-    const todos = await getAllClients();
+    // Carregar clientes E grupos em paralelo — grupos nunca bloqueiam a lista
+    wrap.innerHTML = `<div style="text-align:center;padding:30px;color:var(--muted);font-size:13px;">⏳ Buscando clientes...</div>`;
+    const [todos] = await Promise.all([
+      getAllClients(),
+      popularSelectGrupos().catch(e => console.warn('grupos paralelo:', e.message)),
+    ]);
 
     if (!todos || todos.length === 0) {
       wrap.innerHTML = `<div class="db-empty"><div class="de-icon">📂</div><p>Nenhum cliente cadastrado ainda.</p><small>Clique em "Nova Ficha" para começar.</small></div>`;
