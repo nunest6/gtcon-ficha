@@ -726,21 +726,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
   align-items:center; gap:8px;
 }
 .readonly-banner.show { display:flex; }
-
-/* ── Tributos tabs ───────────────────── */
-.tributo-tabs { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:16px; }
-.tributo-tab-btn {
-  padding:6px 14px; border-radius:20px; border:1.5px solid var(--border);
-  background:var(--surface2); font-size:12px; font-weight:600; cursor:pointer;
-  color:var(--muted); transition:all .15s;
-}
-.tributo-tab-btn.active {
-  color:#fff; border-color:transparent;
-}
-.tributo-panel { display:none; }
-.tributo-panel.active { display:block; }
 </style>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </head>
 <body>
 
@@ -804,46 +790,6 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
     </div>
     <div id="admin-senha-err" style="display:none;color:var(--danger);font-size:12px;margin-bottom:14px;padding:8px 12px;background:#fff0f0;border-radius:6px;border:1px solid #ffc9c9;"></div>
     <button class="btn btn-ok" style="width:100%;justify-content:center;" onclick="confirmarSenhaAdmin()">Alterar senha</button>
-  </div>
-</div>
-
-<!-- ══════ MODAL GRUPOS ECONÔMICOS ══════ -->
-<div id="modal-grupos" style="display:none;position:fixed;inset:0;z-index:8600;background:rgba(15,20,40,.5);backdrop-filter:blur(4px);align-items:center;justify-content:center;">
-  <div style="background:#fff;border:1px solid var(--border);border-radius:16px;padding:32px 36px;width:560px;max-width:95vw;max-height:85vh;overflow-y:auto;box-shadow:0 12px 48px rgba(26,32,53,.15);">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
-      <div style="font-size:18px;font-weight:700;color:var(--text);">🏢 Grupos Econômicos</div>
-      <button onclick="fecharModalGrupos()" style="background:none;border:none;font-size:18px;color:var(--muted);cursor:pointer;">✕</button>
-    </div>
-    <div style="display:flex;gap:8px;margin-bottom:20px;">
-      <input type="text" id="novo-grupo-nome" placeholder="Nome do novo grupo econômico..." style="flex:1;">
-      <button class="btn btn-ok btn-sm" onclick="criarGrupo()">+ Criar</button>
-    </div>
-    <div id="lista-grupos-modal" style="display:flex;flex-direction:column;gap:8px;"></div>
-  </div>
-</div>
-
-<!-- ══════ MODAL IMPORTAÇÃO ══════ -->
-<div id="modal-importacao" style="display:none;position:fixed;inset:0;z-index:8500;background:rgba(15,20,40,.5);backdrop-filter:blur(4px);align-items:center;justify-content:center;">
-  <div style="background:#fff;border:1px solid var(--border);border-radius:16px;padding:36px 40px;width:520px;max-width:95vw;box-shadow:0 12px 48px rgba(26,32,53,.15);">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
-      <div style="font-size:18px;font-weight:700;color:var(--text);">📥 Importar Clientes</div>
-      <button onclick="fecharModalImportacao()" style="background:none;border:none;font-size:18px;color:var(--muted);cursor:pointer;">✕</button>
-    </div>
-    <div style="font-size:13px;color:var(--muted);margin-bottom:20px;">Importe clientes via arquivo <strong>JSON</strong> (exportado pelo sistema) ou <strong>CSV</strong> no formato GTCON.</div>
-    <div style="background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:16px;">
-      <div style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:8px;">📋 Colunas esperadas no CSV:</div>
-      <div style="font-size:11px;color:var(--muted);font-family:var(--mono);">Razão Social · Nome Fantasia · CNPJ · Código SCI · Regime Tributário · Telefone · E-mail · Consultor</div>
-      <button class="btn btn-s btn-sm" onclick="baixarTemplateCSV()" style="margin-top:10px;">⬇ Baixar Template CSV</button>
-    </div>
-    <div class="fg" style="margin-bottom:16px;">
-      <label>Selecione o arquivo (.json ou .csv)</label>
-      <input type="file" id="import-file" accept=".json,.csv" style="padding:8px;border:1.5px solid var(--border);border-radius:8px;width:100%;font-size:13px;cursor:pointer;">
-    </div>
-    <div id="import-resultado" style="display:none;padding:10px 14px;background:#f0fdf4;border:1px solid #a7f3d0;border-radius:8px;font-size:13px;margin-bottom:14px;color:#065f46;"></div>
-    <div style="display:flex;gap:10px;justify-content:flex-end;">
-      <button class="btn btn-s" onclick="fecharModalImportacao()">Cancelar</button>
-      <button class="btn btn-ok" onclick="processarImportacao()">📥 Importar</button>
-    </div>
   </div>
 </div>
 
@@ -921,8 +867,6 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
     </div>
     <button class="btn btn-s btn-sm" onclick="clearAll()">🗑 Limpar</button>
     <button class="btn btn-s btn-sm" onclick="exportJSON()">⬇ JSON</button>
-    <button class="btn btn-s btn-sm" onclick="exportarExcel()" title="Exportar todos os clientes em Excel">📊 Excel</button>
-    <button class="btn btn-s btn-sm" onclick="gerarPDF()">📄 PDF</button>
     <button class="btn btn-ok btn-sm" onclick="saveAll()">💾 Salvar</button>
     <div class="user-chip" id="user-chip" style="display:none;">
       <div class="user-avatar" id="user-avatar"></div>
@@ -1089,23 +1033,16 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
         <label>Faturamento Anual</label>
         <input type="text" id="fat_anual" placeholder="R$ 0,00" oninput="fmtCur(this)">
       </div>
-      <div class="fg s2">
-        <div style="display:flex;align-items:center;justify-content:space-between;">
-          <label>Grupo Econômico <span style="font-size:10px;color:var(--muted);font-weight:400;">— deixe vazio se não pertence a nenhum grupo</span></label>
-          <button onclick="abrirModalGrupos()" style="background:none;border:none;font-size:11px;color:var(--accent2);cursor:pointer;text-decoration:underline;padding:0;">⚙️ Gerenciar grupos</button>
+      <div class="fg">
+        <label>Grupo Econômico?</label>
+        <div class="radio-row">
+          <label class="ro" onclick="selR(this,'grupo_eco')"><input type="radio" name="grupo_eco" value="nao">Não</label>
+          <label class="ro" onclick="selR(this,'grupo_eco')"><input type="radio" name="grupo_eco" value="sim">Sim</label>
         </div>
-        <div style="position:relative;">
-          <input type="text" id="grupo_eco_nome" placeholder="Digite para buscar ou criar novo grupo..."
-            oninput="filtrarGrupos(this.value)" onfocus="filtrarGrupos(this.value)" autocomplete="off"
-            style="width:100%;">
-          <div id="grupo-dropdown" style="display:none;position:absolute;top:calc(100% + 4px);left:0;right:0;background:#fff;border:1.5px solid var(--accent);border-radius:10px;box-shadow:0 8px 24px rgba(26,32,53,.12);z-index:500;max-height:220px;overflow-y:auto;"></div>
-        </div>
-        <div id="grupo-selecionado" style="display:none;margin-top:8px;display:none;align-items:center;gap:8px;padding:8px 12px;background:rgba(37,99,235,.07);border:1.5px solid rgba(37,99,235,.25);border-radius:8px;">
-          <span style="font-size:13px;font-weight:700;color:var(--accent);" id="grupo-sel-nome"></span>
-          <span style="font-size:11px;color:var(--muted);" id="grupo-sel-qtd"></span>
-          <button onclick="limparGrupoSelecionado()" style="margin-left:auto;background:none;border:none;color:var(--muted);cursor:pointer;font-size:14px;" title="Remover do grupo">✕</button>
-        </div>
-        <input type="hidden" id="grupo_eco_id">
+      </div>
+      <div class="fg">
+        <label>Empresas do Grupo</label>
+        <input type="text" id="grupo_empresas" placeholder="Listar empresas se sim">
       </div>
     </div>
 
@@ -1581,22 +1518,6 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
           <label class="ro" onclick="selR(this,'contingencia')"><input type="radio" name="contingencia" value="sim">Sim</label>
         </div>
       </div>
-      <div class="fg">
-        <label>Compra com nota fiscal?</label>
-        <div class="radio-row">
-          <label class="ro" onclick="selR(this,'compra_com_nf')"><input type="radio" name="compra_com_nf" value="sim">Sim</label>
-          <label class="ro" onclick="selR(this,'compra_com_nf')"><input type="radio" name="compra_com_nf" value="nao">Não</label>
-          <label class="ro" onclick="selR(this,'compra_com_nf')"><input type="radio" name="compra_com_nf" value="parcial">Parcial</label>
-        </div>
-      </div>
-      <div class="fg">
-        <label>Vende com nota fiscal?</label>
-        <div class="radio-row">
-          <label class="ro" onclick="selR(this,'vende_com_nf')"><input type="radio" name="vende_com_nf" value="sim">Sim</label>
-          <label class="ro" onclick="selR(this,'vende_com_nf')"><input type="radio" name="vende_com_nf" value="nao">Não</label>
-          <label class="ro" onclick="selR(this,'vende_com_nf')"><input type="radio" name="vende_com_nf" value="parcial">Parcial</label>
-        </div>
-      </div>
     </div>
     <div class="sec-div">Volume Médio Mensal</div>
     <div class="g g3">
@@ -1651,104 +1572,21 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
     </div>
   </div>
 
-
-  <div class="card">
-    <div class="card-title"><span class="ct-icon">📋</span> Particularidades por Tributo</div>
-    <div style="font-size:12px;color:var(--muted);margin-bottom:12px;">Registre instruções, alertas e situações específicas de cada tributo para orientar o time operacional.</div>
-
-    <div class="tributo-tabs">
-      <button class="tributo-tab-btn" onclick="showTributo('pis_cofins',this)" id="tributo-btn-pis_cofins" style="">📘 PIS / COFINS</button>
-      <button class="tributo-tab-btn" onclick="showTributo('irpj_csll',this)" id="tributo-btn-irpj_csll" style="">📙 IRPJ / CSLL</button>
-      <button class="tributo-tab-btn" onclick="showTributo('iss',this)" id="tributo-btn-iss" style="">📗 ISS</button>
-      <button class="tributo-tab-btn" onclick="showTributo('icms',this)" id="tributo-btn-icms" style="">📕 ICMS</button>
-      <button class="tributo-tab-btn" onclick="showTributo('ipi',this)" id="tributo-btn-ipi" style="">📓 IPI</button>
-    </div>
-
-    <div class="tributo-panel" id="tributo-pis_cofins">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;padding:8px 12px;background:#e0f2fe;border-radius:8px;border-left:4px solid #0284c7;">
-        <span style="font-size:16px;">📘</span>
-        <span style="font-weight:700;font-size:13px;color:#0284c7;">PIS / COFINS</span>
-      </div>
-      <div class="g">
-        <div class="fg">
-          <label>Particularidades / Instruções ao time</label>
-          <textarea id="part_pis_cofins" placeholder="Regime de apuração PIS/COFINS, créditos aproveitados, operações monofásicas, alíquotas diferenciadas, exclusões e particularidades do cliente." rows="4"></textarea>
-        </div>
-        <div class="fg">
-          <label>Alertas e pontos de atenção</label>
-          <textarea id="alerta_pis_cofins" placeholder="Riscos identificados, datas críticas, atenções especiais para PIS / COFINS..." rows="3"></textarea>
-        </div>
-      </div>
-    </div>
-
-    <div class="tributo-panel" id="tributo-irpj_csll">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;padding:8px 12px;background:#fef3c7;border-radius:8px;border-left:4px solid #d97706;">
-        <span style="font-size:16px;">📙</span>
-        <span style="font-weight:700;font-size:13px;color:#d97706;">IRPJ / CSLL</span>
-      </div>
-      <div class="g">
-        <div class="fg">
-          <label>Particularidades / Instruções ao time</label>
-          <textarea id="part_irpj_csll" placeholder="Forma de tributação IRPJ/CSLL, adições e exclusões ao lucro real, estimativas mensais, JSCP, distribuição de lucros e ajustes específicos." rows="4"></textarea>
-        </div>
-        <div class="fg">
-          <label>Alertas e pontos de atenção</label>
-          <textarea id="alerta_irpj_csll" placeholder="Riscos identificados, datas críticas, atenções especiais para IRPJ / CSLL..." rows="3"></textarea>
-        </div>
-      </div>
-    </div>
-
-    <div class="tributo-panel" id="tributo-iss">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;padding:8px 12px;background:#d1fae5;border-radius:8px;border-left:4px solid #059669;">
-        <span style="font-size:16px;">📗</span>
-        <span style="font-weight:700;font-size:13px;color:#059669;">ISS</span>
-      </div>
-      <div class="g">
-        <div class="fg">
-          <label>Particularidades / Instruções ao time</label>
-          <textarea id="part_iss" placeholder="Município de recolhimento, retenção na fonte, ISS fixo, serviços tomados com retenção e particularidades da legislação municipal." rows="4"></textarea>
-        </div>
-        <div class="fg">
-          <label>Alertas e pontos de atenção</label>
-          <textarea id="alerta_iss" placeholder="Riscos identificados, datas críticas, atenções especiais para ISS..." rows="3"></textarea>
-        </div>
-      </div>
-    </div>
-
-    <div class="tributo-panel" id="tributo-icms">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;padding:8px 12px;background:#fee2e2;border-radius:8px;border-left:4px solid #dc2626;">
-        <span style="font-size:16px;">📕</span>
-        <span style="font-weight:700;font-size:13px;color:#dc2626;">ICMS</span>
-      </div>
-      <div class="g">
-        <div class="fg">
-          <label>Particularidades / Instruções ao time</label>
-          <textarea id="part_icms" placeholder="Regime ICMS, diferencial de alíquota (DIFAL), antecipação, crédito de ICMS, operações interestaduais e particularidades estaduais." rows="4"></textarea>
-        </div>
-        <div class="fg">
-          <label>Alertas e pontos de atenção</label>
-          <textarea id="alerta_icms" placeholder="Riscos identificados, datas críticas, atenções especiais para ICMS..." rows="3"></textarea>
-        </div>
-      </div>
-    </div>
-
-    <div class="tributo-panel" id="tributo-ipi">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;padding:8px 12px;background:#ede9fe;border-radius:8px;border-left:4px solid #7c3aed;">
-        <span style="font-size:16px;">📓</span>
-        <span style="font-weight:700;font-size:13px;color:#7c3aed;">IPI</span>
-      </div>
-      <div class="g">
-        <div class="fg">
-          <label>Particularidades / Instruções ao time</label>
-          <textarea id="part_ipi" placeholder="Enquadramento IPI, NCMs sujeitos, créditos, regime especial, TIPI e particularidades do setor industrial." rows="4"></textarea>
-        </div>
-        <div class="fg">
-          <label>Alertas e pontos de atenção</label>
-          <textarea id="alerta_ipi" placeholder="Riscos identificados, datas críticas, atenções especiais para IPI..." rows="3"></textarea>
-        </div>
-      </div>
+  <!-- SPED Cruzamento -->
+  <div class="card" style="border-color:var(--accent);background:linear-gradient(to right,rgba(37,99,235,.04),transparent)">
+    <div class="card-title"><span class="ct-icon">📊</span> SPED · Cruzamento de Declarações</div>
+    <p style="font-size:12.5px;color:var(--muted);margin-bottom:14px;line-height:1.6">
+      Importe os arquivos SPED (EFD-Contribuições, ECD, ECF e Fiscal) para cruzar declarações, identificar divergências e gerar relatórios fiscais completos. Os dados ficam salvos no banco vinculados a este cliente.
+    </p>
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+      <button class="btn btn-ok" onclick="abrirSPED()" id="btn-abrir-sped">
+        📂 Abrir Módulo SPED
+      </button>
+      <span id="sped-status-badge" style="display:none;font-size:11px;padding:3px 10px;border-radius:20px;background:rgba(5,150,105,.12);color:var(--success);font-weight:500"></span>
     </div>
   </div>
+
+
   <div class="act-bar">
     <button class="btn btn-s" onclick="showTab('dp',document.querySelector('[onclick*=\"dp\"]'))">← Dep. Pessoal</button>
     <button class="btn btn-ok ml" onclick="showTab('contabil',document.querySelector('[onclick*=\"contabil\"]'))">Próximo: Contábil →</button>
@@ -1761,6 +1599,34 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
   <div class="panel-head">
     <div class="panel-title">📊 <span>Contábil</span></div>
     <div class="panel-desc">ERP, contas bancárias, patrimônio, mapa de riscos e contabilidade anterior</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="ct-icon">💻</span> Software de Gestão (ERP)</div>
+    <div class="g g2">
+      <div class="fg">
+        <label>Sistema ERP / Financeiro</label>
+        <div class="radio-row">
+          <label class="ro" onclick="selR(this,'erp')"><input type="radio" name="erp" value="omie">Omie</label>
+          <label class="ro" onclick="selR(this,'erp')"><input type="radio" name="erp" value="contaazul">ContaAzul</label>
+          <label class="ro" onclick="selR(this,'erp')"><input type="radio" name="erp" value="tiny">Tiny</label>
+          <label class="ro" onclick="selR(this,'erp')"><input type="radio" name="erp" value="nao">Não usa</label>
+          <label class="ro" onclick="selR(this,'erp')"><input type="radio" name="erp" value="outro">Outro</label>
+        </div>
+      </div>
+      <div class="fg">
+        <label>Qual ERP? (se Outro)</label>
+        <input type="text" id="erp_outro" placeholder="Nome do sistema">
+      </div>
+      <div class="fg">
+        <label>Forma de Integração</label>
+        <div class="radio-row">
+          <label class="ro" onclick="selR(this,'erp_integ')"><input type="radio" name="erp_integ" value="api">API</label>
+          <label class="ro" onclick="selR(this,'erp_integ')"><input type="radio" name="erp_integ" value="ofx">Importação OFX</label>
+          <label class="ro" onclick="selR(this,'erp_integ')"><input type="radio" name="erp_integ" value="manual">Manual</label>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div class="card">
@@ -2028,49 +1894,6 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
   </div>
 
   <div class="card">
-    <div class="card-title"><span class="ct-icon">💻</span> Sistema ERP / Financeiro</div>
-    <div style="font-size:12px;color:var(--muted);margin-bottom:12px;">Informação transversal — selecione os departamentos impactados por este sistema.</div>
-    <div class="g g2">
-      <div class="fg">
-        <label>Sistema utilizado</label>
-        <div class="radio-row">
-          <label class="ro" onclick="selR(this,'erp')"><input type="radio" name="erp" value="omie">Omie</label>
-          <label class="ro" onclick="selR(this,'erp')"><input type="radio" name="erp" value="contaazul">ContaAzul</label>
-          <label class="ro" onclick="selR(this,'erp')"><input type="radio" name="erp" value="tiny">Tiny</label>
-          <label class="ro" onclick="selR(this,'erp')"><input type="radio" name="erp" value="nao">Não usa</label>
-          <label class="ro" onclick="selR(this,'erp')"><input type="radio" name="erp" value="outro">Outro</label>
-        </div>
-      </div>
-      <div class="fg">
-        <label>Qual ERP? (se Outro)</label>
-        <input type="text" id="erp_outro" placeholder="Nome do sistema">
-      </div>
-      <div class="fg">
-        <label>Forma de Integração</label>
-        <div class="radio-row">
-          <label class="ro" onclick="selR(this,'erp_integ')"><input type="radio" name="erp_integ" value="api">API</label>
-          <label class="ro" onclick="selR(this,'erp_integ')"><input type="radio" name="erp_integ" value="ofx">Importação OFX</label>
-          <label class="ro" onclick="selR(this,'erp_integ')"><input type="radio" name="erp_integ" value="manual">Manual</label>
-        </div>
-      </div>
-      <div class="fg">
-        <label>Departamentos impactados</label>
-        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;">
-          <label style="display:flex;align-items:center;gap:5px;padding:6px 14px;border-radius:20px;border:1.5px solid var(--border);cursor:pointer;font-size:13px;font-weight:600;transition:all .15s;" id="flag-dp-label">
-            <input type="checkbox" id="erp_flag_dp" onchange="toggleErpFlag(this,'flag-dp-label','#059669')" style="display:none;"> 👷 DP
-          </label>
-          <label style="display:flex;align-items:center;gap:5px;padding:6px 14px;border-radius:20px;border:1.5px solid var(--border);cursor:pointer;font-size:13px;font-weight:600;transition:all .15s;" id="flag-fiscal-label">
-            <input type="checkbox" id="erp_flag_fiscal" onchange="toggleErpFlag(this,'flag-fiscal-label','#d97706')" style="display:none;"> 🧾 Fiscal
-          </label>
-          <label style="display:flex;align-items:center;gap:5px;padding:6px 14px;border-radius:20px;border:1.5px solid var(--border);cursor:pointer;font-size:13px;font-weight:600;transition:all .15s;" id="flag-contabil-label">
-            <input type="checkbox" id="erp_flag_contabil" onchange="toggleErpFlag(this,'flag-contabil-label','#7c3aed')" style="display:none;"> 📊 Contábil
-          </label>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="card">
     <div class="card-title"><span class="ct-icon">⚠️</span> Erros Encontrados</div>
     <div id="erros-container"></div>
     <button class="btn btn-s btn-sm" onclick="addErro()">+ Registrar erro</button>
@@ -2149,12 +1972,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
           oninput="renderDBTable()"
           style="width:100%;padding:9px 12px 9px 34px;border:1px solid var(--border);border-radius:var(--rsm);background:var(--surface2);font-family:var(--sans);font-size:13px;outline:none;">
       </div>
-      <select id="db-filter-grupo" onchange="renderDBTable()" style="padding:8px 12px;border:1px solid var(--border);border-radius:var(--rsm);background:var(--surface2);font-family:var(--sans);font-size:13px;outline:none;min-width:160px;">
-        <option value="">🏢 Todos os grupos</option>
-      </select>
-      <button class="btn btn-s btn-sm" onclick="exportarExcel()">📊 Exportar Excel</button>
-      <button class="btn btn-s btn-sm" onclick="exportAllJSON()">⬇ Exportar JSON</button>
-      <button class="btn btn-s btn-sm" onclick="abrirModalImportacao()">📥 Importar</button>
+      <button class="btn btn-s btn-sm" onclick="exportAllJSON()">⬇ Exportar</button>
       <button class="btn btn-ok btn-sm" onclick="novaFicha()">➕ Nova Ficha</button>
     </div>
     <div class="db-table-wrap" id="db-table-wrap">
@@ -2258,7 +2076,6 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
 // TAB NAVIGATION
 // ══════════════════════════════════════
 function showTab(id, btn) {
-  if (id === 'fiscal') setTimeout(initTributoTabs, 50);
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('panel-' + id).classList.add('active');
@@ -2289,7 +2106,7 @@ function updateSidebar(tab) {
   sb.innerHTML = '<div class="sidebar-group"><div class="sidebar-label">Nesta aba</div>' +
     items.map(i => `<button class="side-btn"><span class="side-icon">›</span>${i}</button>`).join('') +
     '</div>';
-  if (tab === 'db') { renderDBTable().catch(e => console.error(e)); updateDBStats(); }
+  if (tab === 'db') { renderDBTable(); updateDBStats(); }
   if (tab === 'admin') renderAdminUserList();
   if (tab === 'log') renderLog();
 }
@@ -2572,26 +2389,6 @@ function selStatus(el, groupId, cls) {
   });
   el.classList.add(cls);
 }
-function toggleErpFlag(cb, labelId, color) {
-  const lbl = document.getElementById(labelId);
-  if (!lbl) return;
-  if (cb.checked) {
-    lbl.style.background = color + '18';
-    lbl.style.borderColor = color;
-    lbl.style.color = color;
-  } else {
-    lbl.style.background = '';
-    lbl.style.borderColor = '';
-    lbl.style.color = '';
-  }
-}
-
-function restoreErpFlags(flags = {}) {
-  if (flags.dp)      { document.getElementById('erp_flag_dp').checked = true;      toggleErpFlag(document.getElementById('erp_flag_dp'),'flag-dp-label','#059669'); }
-  if (flags.fiscal)  { document.getElementById('erp_flag_fiscal').checked = true;  toggleErpFlag(document.getElementById('erp_flag_fiscal'),'flag-fiscal-label','#d97706'); }
-  if (flags.contabil){ document.getElementById('erp_flag_contabil').checked = true; toggleErpFlag(document.getElementById('erp_flag_contabil'),'flag-contabil-label','#7c3aed'); }
-}
-
 function toggleCheckLine(el) {
   el.classList.toggle('checked');
   if (el.classList.contains('checked')) el.querySelector('.check-box').textContent = '✓';
@@ -2741,265 +2538,6 @@ function sv(id, val) { const el = document.getElementById(id); if(el) el.value =
 let partCnt=0, socioCnt=2, bancoCnt=2, filialRows=0, erroCnt=0, riscoCnt=5;
 
 let contatoCnt = 0;
-// ══════════════════════════════════════
-// GRUPOS ECONÔMICOS — Supabase
-// ══════════════════════════════════════
-let _gruposCache = null;
-let _gruposCarregando = false;
-
-async function sbGetGrupos() {
-  try {
-    const rows = await sbFetch('GET', 'grupos_economicos?select=*&order=nome.asc');
-    return rows || [];
-  } catch(e) {
-    // Fallback: extrai dos próprios clientes se tabela não existir
-    const map = {};
-    (_clientesCache || []).forEach(c => {
-      const id = c.cadastro?.grupo_eco_id, nome = c.cadastro?.grupo_eco_nome;
-      if (id && nome && !map[id]) map[id] = { id, nome, criado_em: null };
-    });
-    return Object.values(map);
-  }
-}
-async function sbSaveGrupo(nome) {
-  const id = 'grp_' + Date.now();
-  try { await sbFetch('POST', 'grupos_economicos', { id, nome, criado_em: new Date().toISOString() }); }
-  catch(e) { console.warn('sbSaveGrupo:', e.message); }
-  return { id, nome, criado_em: new Date().toISOString() };
-}
-async function sbUpdateGrupo(id, nome) {
-  try { await sbFetch('PATCH', `grupos_economicos?id=eq.${id}`, { nome }); }
-  catch(e) { console.warn('sbUpdateGrupo:', e.message); }
-}
-async function sbDeleteGrupo(id) {
-  try { await sbFetch('DELETE', `grupos_economicos?id=eq.${id}`); }
-  catch(e) { console.warn('sbDeleteGrupo:', e.message); }
-}
-
-async function getGrupos() {
-  if (_gruposCache !== null) return _gruposCache;
-  if (_gruposCarregando) {
-    // Esperar no máximo 3s para evitar deadlock
-    let waited = 0;
-    while (_gruposCarregando && waited < 3000) {
-      await new Promise(r => setTimeout(r, 100));
-      waited += 100;
-    }
-    return _gruposCache || [];
-  }
-  _gruposCarregando = true;
-  try {
-    _gruposCache = await sbGetGrupos();
-  } catch(e) {
-    console.warn('getGrupos falhou, usando array vazio:', e.message);
-    _gruposCache = [];
-  } finally {
-    _gruposCarregando = false; // sempre libera, mesmo com erro
-  }
-  return _gruposCache;
-}
-function invalidarCacheGrupos() { _gruposCache = null; }
-
-async function filtrarGrupos(q) {
-  const dd = document.getElementById('grupo-dropdown');
-  if (!dd) return;
-  dd.style.display = 'block';
-  dd.innerHTML = '<div style="padding:10px 14px;color:var(--muted);font-size:12px;">⏳ Buscando grupos...</div>';
-  const grupos = await getGrupos();
-  const termo = (q || '').trim().toLowerCase();
-  const filtrados = termo ? grupos.filter(g => g.nome.toLowerCase().includes(termo)) : grupos;
-  const contar = id => (_clientesCache||[]).filter(c => c.cadastro?.grupo_eco_id === id).length;
-
-  let html = '';
-  filtrados.forEach(g => {
-    const qtd = contar(g.id);
-    const ne = g.nome.replace(/'/g,"&#39;");
-    html += `<div onclick="selecionarGrupo('${g.id}','${ne}',${qtd})"
-      style="padding:10px 14px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);"
-      onmouseover="this.style.background='var(--surface2)'" onmouseout="this.style.background=''">
-      <div style="display:flex;align-items:center;gap:8px;">
-        <span>🏢</span>
-        <span style="font-weight:600;font-size:13px;color:var(--text);">${g.nome}</span>
-      </div>
-      <span style="font-size:11px;color:var(--muted);background:var(--surface3);padding:2px 8px;border-radius:10px;">${qtd} cliente${qtd!==1?'s':''}</span>
-    </div>`;
-  });
-
-  const jaExiste = grupos.find(g => g.nome.toLowerCase() === termo);
-  if (termo && !jaExiste) {
-    const qe = q.replace(/'/g,"&#39;");
-    html += `<div onclick="criarEselecionarGrupo('${qe}')"
-      style="padding:10px 14px;cursor:pointer;display:flex;align-items:center;gap:8px;border-top:1px solid var(--border);"
-      onmouseover="this.style.background='var(--surface2)'" onmouseout="this.style.background=''">
-      <span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;background:var(--accent2);color:#fff;border-radius:50%;font-size:13px;font-weight:700;">+</span>
-      <span style="font-size:13px;color:var(--accent2);font-weight:600;">Criar grupo <strong>"${q}"</strong></span>
-    </div>`;
-  }
-  if (!html) html = '<div style="padding:12px 14px;color:var(--muted);font-size:13px;text-align:center;">Nenhum grupo ainda. Digite para criar.</div>';
-  dd.innerHTML = html;
-  setTimeout(() => {
-    const fechar = e => {
-      if (!dd.contains(e.target) && e.target.id !== 'grupo_eco_nome') { dd.style.display='none'; document.removeEventListener('click',fechar); }
-    };
-    document.addEventListener('click', fechar);
-  }, 10);
-}
-
-function selecionarGrupo(id, nome, qtd) {
-  document.getElementById('grupo_eco_id').value = id;
-  document.getElementById('grupo_eco_nome').value = nome;
-  document.getElementById('grupo-dropdown').style.display = 'none';
-  document.getElementById('grupo-sel-nome').textContent = nome;
-  document.getElementById('grupo-sel-qtd').textContent = `${qtd} cliente${qtd!==1?'s':''} neste grupo`;
-  document.getElementById('grupo-selecionado').style.display = 'flex';
-}
-
-async function criarEselecionarGrupo(nome) {
-  nome = nome.trim(); if (!nome) return;
-  const grupos = await getGrupos();
-  if (grupos.find(g => g.nome.toLowerCase() === nome.toLowerCase())) { toast('Grupo já existe.','err'); return; }
-  toast('⏳ Criando grupo...','inf');
-  const novo = await sbSaveGrupo(nome);
-  invalidarCacheGrupos(); await getGrupos();
-  selecionarGrupo(novo.id, nome, 0);
-  document.getElementById('grupo-dropdown').style.display = 'none';
-  popularSelectGrupos();
-  toast('✅ Grupo "'+nome+'" criado e selecionado!','ok');
-}
-
-function limparGrupoSelecionado() {
-  document.getElementById('grupo_eco_id').value = '';
-  document.getElementById('grupo_eco_nome').value = '';
-  document.getElementById('grupo-selecionado').style.display = 'none';
-}
-
-async function abrirModalGrupos() {
-  document.getElementById('modal-grupos').style.display = 'flex';
-  await renderListaGrupos();
-}
-function fecharModalGrupos() {
-  document.getElementById('modal-grupos').style.display = 'none';
-  popularSelectGrupos();
-}
-
-async function criarGrupo() {
-  const inp = document.getElementById('novo-grupo-nome');
-  const nome = inp.value.trim();
-  if (!nome) { toast('Digite o nome do grupo.','err'); return; }
-  const grupos = await getGrupos();
-  if (grupos.find(g => g.nome.toLowerCase() === nome.toLowerCase())) { toast('Grupo já existe.','err'); return; }
-  await sbSaveGrupo(nome);
-  invalidarCacheGrupos(); inp.value = '';
-  await renderListaGrupos();
-  toast('✅ Grupo "'+nome+'" criado!','ok');
-}
-
-async function renderListaGrupos() {
-  const lista = document.getElementById('lista-grupos-modal');
-  if (!lista) return;
-  lista.innerHTML = '<div style="padding:16px;text-align:center;color:var(--muted);">⏳ Carregando...</div>';
-  invalidarCacheGrupos();
-  const grupos = await getGrupos();
-  const contar = id => (_clientesCache||[]).filter(c => c.cadastro?.grupo_eco_id === id).length;
-  if (!grupos.length) {
-    lista.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:20px;text-align:center;border:1.5px dashed var(--border);border-radius:10px;">Nenhum grupo ainda.<br><small>Use o campo acima para criar.</small></div>';
-    return;
-  }
-  lista.innerHTML = grupos.map(g => {
-    const qtd = contar(g.id);
-    const dtStr = g.criado_em ? new Date(g.criado_em).toLocaleDateString('pt-BR') : '—';
-    const ne = g.nome.replace(/'/g,"&#39;");
-    return `<div style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;">
-      <span style="font-size:20px;">🏢</span>
-      <div style="flex:1;min-width:0;">
-        <div style="font-weight:700;font-size:13px;color:var(--text);">${g.nome}</div>
-        <div style="font-size:11px;color:var(--muted);">${qtd} cliente${qtd!==1?'s':''} · ${dtStr}</div>
-      </div>
-      <button onclick="renomearGrupo('${g.id}')" class="btn btn-s btn-sm">✏️</button>
-      <button onclick="excluirGrupo('${g.id}','${ne}',${qtd})" class="btn btn-d btn-sm">✕</button>
-    </div>`;
-  }).join('');
-}
-
-async function renomearGrupo(id) {
-  const grupos = await getGrupos();
-  const g = grupos.find(x => x.id === id); if (!g) return;
-  const novo = prompt('Novo nome para "'+g.nome+'":', g.nome);
-  if (!novo || !novo.trim() || novo.trim() === g.nome) return;
-  await sbUpdateGrupo(id, novo.trim());
-  invalidarCacheGrupos();
-  if (document.getElementById('grupo_eco_id').value === id) {
-    document.getElementById('grupo_eco_nome').value = novo.trim();
-    document.getElementById('grupo-sel-nome').textContent = novo.trim();
-  }
-  await renderListaGrupos();
-  toast('✅ Grupo renomeado!','ok');
-}
-
-async function excluirGrupo(id, nome, qtd) {
-  const msg = qtd > 0
-    ? `"${nome}" tem ${qtd} cliente(s). Ao excluir, perderão o vínculo.
-
-Continuar?`
-    : `Excluir o grupo "${nome}"?`;
-  if (!confirm(msg)) return;
-  await sbDeleteGrupo(id);
-  invalidarCacheGrupos();
-  if (document.getElementById('grupo_eco_id').value === id) limparGrupoSelecionado();
-  await renderListaGrupos();
-  toast('"'+nome+'" removido.','inf');
-}
-
-async function popularSelectGrupos() {
-  const sel = document.getElementById('db-filter-grupo');
-  if (!sel) return;
-  try {
-    const grupos = await getGrupos();
-    const atual = sel.value;
-    sel.innerHTML = '<option value="">🏢 Todos os grupos</option><option value="__sem__">— Sem grupo</option>' +
-      grupos.map(g => `<option value="${g.id}" ${g.id===atual?'selected':''}>${g.nome}</option>`).join('');
-  } catch(e) {
-    console.warn('popularSelectGrupos ignorado:', e.message);
-  }
-}
-
-
-function showTributo(id, btnEl) {
-  document.querySelectorAll('.tributo-panel').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.tributo-tab-btn').forEach(b => {
-    b.classList.remove('active');
-    b.style.background = '';
-    b.style.color = '';
-    b.style.borderColor = '';
-  });
-  const panel = document.getElementById('tributo-' + id);
-  if (panel) panel.classList.add('active');
-  if (btnEl) {
-    btnEl.classList.add('active');
-    // Cores por tributo
-    const cores = {
-      pis_cofins: ['#0284c7','#e0f2fe','#0284c7'],
-      irpj_csll:  ['#d97706','#fef3c7','#d97706'],
-      iss:        ['#059669','#d1fae5','#059669'],
-      icms:       ['#dc2626','#fee2e2','#dc2626'],
-      ipi:        ['#7c3aed','#ede9fe','#7c3aed'],
-    };
-    const c = cores[id] || ['var(--accent2)','var(--surface2)','var(--accent2)'];
-    btnEl.style.background = c[0];
-    btnEl.style.color = '#fff';
-    btnEl.style.borderColor = c[0];
-  }
-}
-
-// Ativar primeiro tributo por padrão quando o painel fiscal abrir
-function initTributoTabs() {
-  const first = document.querySelector('.tributo-tab-btn');
-  if (first && !document.querySelector('.tributo-tab-btn.active')) {
-    const id = first.id.replace('tributo-btn-','');
-    showTributo(id, first);
-  }
-}
-
 function aplicarBloqueioConsultor() {
   const isAdmin = currentUser?.perfil === 'admin';
   const isComercialUser = currentUser?.dept === 'Comercial' && !isAdmin;
@@ -3296,9 +2834,8 @@ function collectData() {
       endereco: gv('endereco_completo'),
       ramos, cnaes,
       regime: gr('regime'), fat_mensal: gv('fat_mensal'),
-      fat_anual: gv('fat_anual'),
-      grupo_eco_id: gv('grupo_eco_id'),
-      grupo_eco_nome: gv('grupo_eco_nome'),
+      fat_anual: gv('fat_anual'), grupo_eco: gr('grupo_eco'),
+      grupo_empresas: gv('grupo_empresas'),
       prefeituras: Array.from(document.querySelectorAll('.prefeitura-item')).map(el => ({
         nome:  el.querySelector('.pref-nome')?.value  || '',
         login: el.querySelector('.pref-login')?.value || '',
@@ -3329,25 +2866,12 @@ function collectData() {
     },
     fiscal: {
       apuracao: gr('apuracao'), icms_st: gr('icms_st'),
-      emissor: gv('emissor_sistema'), emissor_login: gv('emissor_login'),
-      compra_com_nf: gr('compra_com_nf'), vende_com_nf: gr('vende_com_nf'),
-      vol_saida: gv('vol_saida'), vol_entrada: gv('vol_entrada'), vol_cupons: gv('vol_cupons'),
-      estoque: gr('estoque'), sped: gr('sped'),
-      bloco_k: gr('bloco_k'), estoque_sistema: gv('estoque_sistema'),
-      benef_fiscal: gr('benef_fiscal'), benef_fiscal_det: gv('benef_fiscal_det'),
-      comex: gr('comex'), siscomex: gr('siscomex'),
-      monofasico: gr('monofasico'), contingencia: gr('contingencia'),
-      obs: gv('obs_fiscal'),
-      tributos: {
-        pis_cofins:  { part: gv('part_pis_cofins'),  alerta: gv('alerta_pis_cofins')  },
-        irpj_csll:   { part: gv('part_irpj_csll'),   alerta: gv('alerta_irpj_csll')   },
-        iss:         { part: gv('part_iss'),          alerta: gv('alerta_iss')          },
-        icms:        { part: gv('part_icms'),         alerta: gv('alerta_icms')         },
-        ipi:         { part: gv('part_ipi'),          alerta: gv('alerta_ipi')          },
-      },
+      emissor: gv('emissor_sistema'), vol_saida: gv('vol_saida'),
+      vol_entrada: gv('vol_entrada'), estoque: gr('estoque'),
+      sped: gr('sped'), obs: gv('obs_fiscal'),
     },
     contabil: {
-      // ERP movido para particularidades
+      erp: gr('erp'), erp_outro: gv('erp_outro'),
       balancete: gr('balancete'), imobilizado: gr('imobilizado'),
       contab_anterior: gv('contab_anterior'),
       r_cadastral: gv('risco_cadastral'), r_tributario: gv('risco_tributario'),
@@ -3371,12 +2895,6 @@ function collectData() {
       outros_relatorios: gv('outros_relatorios'),
     },
     particularidades: {
-      erp: gr('erp'), erp_outro: gv('erp_outro'), erp_integ: gr('erp_integ'),
-      erp_flags: {
-        dp:      document.getElementById('erp_flag_dp')?.checked || false,
-        fiscal:  document.getElementById('erp_flag_fiscal')?.checked || false,
-        contabil:document.getElementById('erp_flag_contabil')?.checked || false,
-      },
       instrucoes: gv('part_instrucoes'), avisos: gv('part_avisos'),
       obs_gerais: gv('obs_gerais'), diagnostico: gv('diagnostico_final'),
       resumo: gv('resumo_reuniao'),
@@ -3390,19 +2908,17 @@ async function saveAll() {
     toast('Preencha ao menos o CNPJ ou Razão Social antes de salvar', 'err'); return;
   }
 
-  // Cliente ativo sempre atualiza — sem checar duplicidade
-  const nomeCliente = d.cadastro?.razao_social || d.cadastro?.cnpj || 'este cliente';
+  // Confirmar alterações em ficha existente
   if (_fichaExistente) {
-    if (!confirm(`Confirmar alterações em "${nomeCliente}"?`)) return;
-  } else if (d.cadastro.cnpj) {
-    // Só checa duplicidade em ficha NOVA
+    const nome = d.cadastro?.razao_social || d.cadastro?.cnpj || 'este cliente';
+    if (!confirm(`Confirmar alterações em "${nome}"?`)) return;
+  }
+  if (!_fichaExistente && d.cadastro.cnpj) {
     const cnpjNovo = d.cadastro.cnpj.replace(/\D/g,'');
     const jaExiste = (await getClientesDB()).find(c => c.cadastro?.cnpj?.replace(/\D/g,'') === cnpjNovo);
     if (jaExiste) {
       const nome = jaExiste.cadastro?.razao_social || cnpjNovo;
-      if (confirm(`"${nome}" já está cadastrado.\n\nDeseja abrir a ficha existente para edição?`)) {
-        abrirCliente(jaExiste);
-      }
+      toast(`❌ Duplicidade! "${nome}" já está cadastrado com este CNPJ. Localize-o na aba Clientes.`, 'err');
       return;
     }
   }
@@ -3432,9 +2948,7 @@ async function saveAll() {
   const res = await api('POST', '/api/cliente', d);
   if (btn) { btn.disabled = false; btn.innerHTML = '💾 Salvar'; }
   if (res?.ok) {
-    _fichaExistente = true; // após salvar, sempre em modo edição
-    const msg = res.mensagem || 'Salvo';
-    toast(`✅ ${msg} com sucesso!`, 'ok');
+    toast(`✅ ${res.mensagem} — ${res.total} cliente(s) no banco.`, 'ok');
     updateClientCountBadge();
   }
 }
@@ -3458,471 +2972,6 @@ async function exportAllJSON() {
   a.download = `gtcon_clientes_${new Date().toISOString().split('T')[0]}.json`;
   a.click();
   toast(`${res.clientes.length} fichas exportadas!`, 'inf');
-}
-
-
-// ══════════════════════════════════════
-// EXPORTAR EXCEL (CSV formatado)
-// ══════════════════════════════════════
-function exportarExcel() {
-  const clientes = _clientesCache && _clientesCache.length ? _clientesCache : null;
-  if (!clientes || !clientes.length) {
-    const d = collectData();
-    if (!d.cadastro?.razao_social && !d.cadastro?.cnpj) {
-      toast('Aguarde a lista carregar ou abra um cliente para exportar.', 'err'); return;
-    }
-    _exportarParaExcel([d]); return;
-  }
-  _exportarParaExcel(clientes);
-}
-
-function exportarExcelCliente() {
-  const d = collectData();
-  if (!d.cadastro?.razao_social && !d.cadastro?.cnpj) {
-    toast('Nenhum cliente ativo.', 'err'); return;
-  }
-  _exportarParaExcel([d]);
-}
-
-function _exportarParaExcel(clientes) {
-  if (typeof XLSX === 'undefined') {
-    toast('Biblioteca XLSX não carregada. Verifique a conexão com a internet.', 'err'); return;
-  }
-
-  const grupos = _gruposCache || [];
-  const nomeGrupo = id => grupos.find(g => g.id === id)?.nome || '';
-
-  // Definição de colunas: [cabeçalho, largura (chars), extrator]
-  const COLS = [
-    // IDENTIFICAÇÃO
-    ['Razão Social',             32, d => d.cadastro?.razao_social || ''],
-    ['Nome Fantasia',            24, d => d.cadastro?.nome_fantasia || ''],
-    ['CNPJ',                     18, d => d.cadastro?.cnpj || ''],
-    ['Código SCI',               12, d => d.cadastro?.codigo_sci || ''],
-    ['Status Onboarding',        18, d => d.cadastro?.status_onboarding || ''],
-    ['Complexidade',             14, d => d.cadastro?.status_complexidade || ''],
-    // DADOS CADASTRAIS
-    ['Data Abertura',            14, d => d.cadastro?.data_abertura || ''],
-    ['Porte',                    14, d => d.cadastro?.porte || ''],
-    ['Situação Cadastral',       18, d => d.cadastro?.situacao || ''],
-    ['Regime Tributário',        18, d => d.cadastro?.regime || ''],
-    ['Fat. Mensal Est.',         16, d => d.cadastro?.fat_mensal || ''],
-    ['Fat. Anual Est.',          16, d => d.cadastro?.fat_anual || ''],
-    ['Grupo Econômico',          22, d => d.cadastro?.grupo_eco_nome || nomeGrupo(d.cadastro?.grupo_eco_id) || ''],
-    ['Endereço',                 36, d => d.cadastro?.endereco || ''],
-    // CONTATO
-    ['Responsável Legal',        24, d => d.cadastro?.resp_legal || ''],
-    ['CPF Responsável',          16, d => d.cadastro?.resp_cpf || ''],
-    ['E-mail Assinatura',        28, d => d.cadastro?.email_assinatura || ''],
-    ['Telefone',                 16, d => d.cadastro?.telefone || ''],
-    // ESCRITÓRIO ANTERIOR
-    ['Escritório Anterior',      24, d => d.cadastro?.escrit_anterior_nome || ''],
-    ['Tel. Escritório Anterior', 18, d => d.cadastro?.escrit_anterior_tel || ''],
-    ['E-mail Escrit. Anterior',  28, d => d.cadastro?.escrit_anterior_email || ''],
-    // COMERCIAL
-    ['Consultor',                20, d => d.comercial?.consultor || ''],
-    ['Usuário Responsável',      18, d => d.comercial?.consultor_usuario || ''],
-    ['Origem Lead',              18, d => d.comercial?.lead_origem || ''],
-    ['Data Diagnóstico',         16, d => d.comercial?.data || ''],
-    // DEP. PESSOAL
-    ['CLT',                       8, d => d.dp?.clt || ''],
-    ['Estagiários',              12, d => d.dp?.estagiarios || ''],
-    ['Pró-labore',               12, d => d.dp?.prolabore || ''],
-    ['Autônomos',                10, d => d.dp?.autonomos || ''],
-    ['Sind. Patronal',           20, d => d.dp?.sind_patronal || ''],
-    ['Sind. Laboral',            20, d => d.dp?.sind_laboral || ''],
-    // FISCAL
-    ['Apuração Fiscal',          16, d => d.fiscal?.apuracao || ''],
-    ['ICMS-ST',                  10, d => d.fiscal?.icms_st || ''],
-    ['Emissor NF',               18, d => d.fiscal?.emissor || ''],
-    ['Vol. Saída Mensal',        16, d => d.fiscal?.vol_saida || ''],
-    ['Vol. Entrada Mensal',      16, d => d.fiscal?.vol_entrada || ''],
-    ['Estoque',                  10, d => d.fiscal?.estoque || ''],
-    ['Obs. Fiscal',              28, d => d.fiscal?.obs || ''],
-    // CONTÁBIL
-    ['Balancete Fechado',        16, d => d.contabil?.balancete || ''],
-    ['Imobilizado',              14, d => d.contabil?.imobilizado || ''],
-    ['Contab. Anterior',         16, d => d.contabil?.contab_anterior || ''],
-    ['Risco Cadastral',          22, d => d.contabil?.r_cadastral || ''],
-    ['Risco Tributário',         22, d => d.contabil?.r_tributario || ''],
-    ['Risco Trabalhista',        22, d => d.contabil?.r_trabalhista || ''],
-    ['Risco Tecnológico',        22, d => d.contabil?.r_tecnologico || ''],
-    // ERP / SISTEMA
-    ['Sistema ERP',              14, d => d.particularidades?.erp || ''],
-    ['ERP Outro',                16, d => d.particularidades?.erp_outro || ''],
-    ['Integração ERP',           14, d => d.particularidades?.erp_integ || ''],
-    ['ERP → DP',                  8, d => d.particularidades?.erp_flags?.dp ? 'Sim' : ''],
-    ['ERP → Fiscal',             10, d => d.particularidades?.erp_flags?.fiscal ? 'Sim' : ''],
-    ['ERP → Contábil',           10, d => d.particularidades?.erp_flags?.contabil ? 'Sim' : ''],
-    // PARÂMETROS
-    ['Dia Ponto',                10, d => d.parametros?.dia_ponto || ''],
-    ['Dia Guias',                10, d => d.parametros?.dia_guias || ''],
-    ['Implant. Contábil',        20, d => d.parametros?.imp_contabil || ''],
-    ['Implant. Fiscal',          20, d => d.parametros?.imp_fiscal || ''],
-    ['Implant. DP',              20, d => d.parametros?.imp_dp || ''],
-    ['Op. Contábil',             20, d => d.parametros?.op_contabil || ''],
-    ['Op. Fiscal',               20, d => d.parametros?.op_fiscal || ''],
-    ['Op. DP',                   20, d => d.parametros?.op_dp || ''],
-    // PARTICULARIDADES
-    ['Instruções ao Time',       40, d => (d.particularidades?.instrucoes || '').replace(/\n/g, ' | ')],
-    ['Avisos / Alertas',         30, d => (d.particularidades?.avisos || '').replace(/\n/g, ' | ')],
-    ['Obs. Gerais',              30, d => (d.particularidades?.obs_gerais || '').replace(/\n/g, ' | ')],
-    ['Diagnóstico Final',        40, d => (d.particularidades?.diagnostico || '').replace(/\n/g, ' | ')],
-    // META
-    ['Última Atualização',       18, d => d.meta?.savedAt ? new Date(d.meta.savedAt).toLocaleString('pt-BR') : ''],
-  ];
-
-  const headers   = COLS.map(c => c[0]);
-  const colWidths = COLS.map(c => ({ wch: c[1] }));
-  const dataRows  = clientes.map(d => COLS.map(c => c[2](d)));
-
-  // Seções para colorir grupos de colunas
-  const SECOES = [
-    { cols: [0,  5],  bg: 'DBE8FD' },  // Identificação — azul claro
-    { cols: [6,  13], bg: 'D1FAE5' },  // Dados cadastrais — verde
-    { cols: [14, 17], bg: 'FEF3C7' },  // Contato — amarelo
-    { cols: [18, 20], bg: 'F3E8FF' },  // Escrit. anterior — lilás
-    { cols: [21, 24], bg: 'FFE4E6' },  // Comercial — rosa
-    { cols: [25, 30], bg: 'D1FAE5' },  // DP — verde
-    { cols: [31, 37], bg: 'FEF3C7' },  // Fiscal — amarelo
-    { cols: [38, 44], bg: 'DBE8FD' },  // Contábil — azul
-    { cols: [45, 50], bg: 'F3E8FF' },  // ERP — lilás
-    { cols: [51, 57], bg: 'D1FAE5' },  // Parâmetros — verde
-    { cols: [58, 61], bg: 'FFE4E6' },  // Particularidades — rosa
-    { cols: [62, 62], bg: 'F1F5F9' },  // Meta — cinza
-  ];
-  const getBg = ci => (SECOES.find(s => ci >= s.cols[0] && ci <= s.cols[1]) || { bg: 'FFFFFF' }).bg;
-
-  // Montar array para worksheet: linha de título + cabeçalho + dados
-  const titulo = ['GTCON — Fichas Técnicas de Clientes  |  ' +
-    new Date().toLocaleString('pt-BR') + '  |  ' + clientes.length + ' cliente(s)'];
-  const wsData = [titulo, headers, ...dataRows];
-  const ws = XLSX.utils.aoa_to_sheet(wsData);
-
-  // Mesclar célula de título na linha 1
-  ws['!merges'] = [{ s: { r: 0, c: 0 }, e: { r: 0, c: headers.length - 1 } }];
-
-  // Larguras e congelamento do cabeçalho (linha 2 = row index 1)
-  ws['!cols'] = colWidths;
-  ws['!freeze'] = { xSplit: 0, ySplit: 2 }; // congela título + cabeçalho
-
-  // Estilo título
-  if (ws['A1']) {
-    ws['A1'].s = {
-      fill:      { fgColor: { rgb: '1E3A5F' } },
-      font:      { bold: true, color: { rgb: 'FFFFFF' }, sz: 12 },
-      alignment: { horizontal: 'left', vertical: 'center' },
-    };
-  }
-
-  // Estilo cabeçalho (linha 2 = row index 1)
-  for (let ci = 0; ci < headers.length; ci++) {
-    const addr = XLSX.utils.encode_cell({ r: 1, c: ci });
-    if (!ws[addr]) ws[addr] = { v: headers[ci], t: 's' };
-    const secBg = getBg(ci);
-    ws[addr].s = {
-      fill:      { fgColor: { rgb: secBg } },
-      font:      { bold: true, color: { rgb: '1E293B' }, sz: 10 },
-      alignment: { horizontal: 'center', vertical: 'center', wrapText: false },
-      border: {
-        top:    { style: 'thin',   color: { rgb: 'CBD5E1' } },
-        bottom: { style: 'medium', color: { rgb: '1E3A5F' } },
-        left:   { style: 'thin',   color: { rgb: 'CBD5E1' } },
-        right:  { style: 'thin',   color: { rgb: 'CBD5E1' } },
-      },
-    };
-  }
-
-  // Estilo dados (linhas a partir de row index 2)
-  for (let ri = 0; ri < dataRows.length; ri++) {
-    const zebra = ri % 2 === 0;
-    for (let ci = 0; ci < headers.length; ci++) {
-      const addr = XLSX.utils.encode_cell({ r: ri + 2, c: ci });
-      if (!ws[addr]) ws[addr] = { v: dataRows[ri][ci], t: 's' };
-      const secBg = getBg(ci);
-      // Par: usa cor da seção; ímpar: levemente mais escuro (mistura com branco)
-      const bg = zebra ? secBg : 'FFFFFF';
-      ws[addr].s = {
-        fill:      { fgColor: { rgb: bg } },
-        font:      { sz: 10, color: { rgb: '1E293B' } },
-        alignment: { vertical: 'top', wrapText: false },
-        border: {
-          right:  { style: 'thin', color: { rgb: 'E2E8F0' } },
-          bottom: { style: 'thin', color: { rgb: 'E2E8F0' } },
-        },
-      };
-    }
-  }
-
-  // Workbook com aba Fichas + aba resumo por Grupo
-  const wb = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb, ws, 'Fichas');
-
-  // Aba resumo por grupo econômico
-  const gruposMap = {};
-  clientes.forEach(d => {
-    const gNome = d.cadastro?.grupo_eco_nome || nomeGrupo(d.cadastro?.grupo_eco_id) || '(Sem grupo)';
-    if (!gruposMap[gNome]) gruposMap[gNome] = [];
-    gruposMap[gNome].push(d.cadastro?.razao_social || d.cadastro?.cnpj || '—');
-  });
-
-  const resumoData = [['Grupo Econômico', 'Qtd. Clientes', 'Clientes']];
-  Object.entries(gruposMap)
-    .sort((a,b) => a[0].localeCompare(b[0], 'pt-BR'))
-    .forEach(([g, nomes]) => resumoData.push([g, nomes.length, nomes.join(', ')]));
-
-  const wsResumo = XLSX.utils.aoa_to_sheet(resumoData);
-  wsResumo['!cols'] = [{ wch: 30 }, { wch: 14 }, { wch: 90 }];
-  // Estilo cabeçalho resumo
-  ['A1','B1','C1'].forEach(addr => {
-    if (wsResumo[addr]) wsResumo[addr].s = {
-      fill: { fgColor: { rgb: '1E3A5F' } },
-      font: { bold: true, color: { rgb: 'FFFFFF' }, sz: 11 },
-      alignment: { horizontal: 'center' },
-    };
-  });
-  XLSX.utils.book_append_sheet(wb, wsResumo, 'Por Grupo');
-
-  const sufixo = clientes.length === 1
-    ? (clientes[0].cadastro?.razao_social || 'cliente').replace(/[^a-zA-Z0-9 ]/g, '').trim().slice(0, 40)
-    : 'Base_' + clientes.length + '_clientes';
-  XLSX.writeFile(wb, 'GTCON_' + sufixo + '_' + new Date().toISOString().slice(0,10) + '.xlsx');
-  toast('📊 ' + clientes.length + ' cliente(s) exportado(s) como .xlsx!', 'ok');
-}
-
-
-function gerarPDF() {
-  const d = collectData();
-  const nome = d.cadastro?.razao_social || d.cadastro?.cnpj || 'Cliente';
-  const data = new Date().toLocaleDateString('pt-BR');
-
-  const flagsErp = [];
-  if (d.particularidades?.erp_flags?.dp)      flagsErp.push('DP');
-  if (d.particularidades?.erp_flags?.fiscal)  flagsErp.push('Fiscal');
-  if (d.particularidades?.erp_flags?.contabil)flagsErp.push('Contábil');
-
-  const row = (label, value) => value
-    ? `<tr><td style="padding:6px 10px;font-weight:600;color:#1e3a5f;width:38%;border-bottom:1px solid #f0f4ff;">${label}</td><td style="padding:6px 10px;color:#1e293b;border-bottom:1px solid #f0f4ff;">${value}</td></tr>`
-    : '';
-  const section = (title, icon, content) => `
-    <div style="margin-bottom:20px;break-inside:avoid;">
-      <div style="background:#1e3a5f;color:#fff;padding:8px 14px;border-radius:6px 6px 0 0;font-weight:700;font-size:13px;letter-spacing:.5px;">${icon} ${title}</div>
-      <table style="width:100%;border-collapse:collapse;background:#fff;border-radius:0 0 6px 6px;border:1px solid #dbeafe;border-top:none;">${content}</table>
-    </div>`;
-
-  const html = `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">
-  <title>Ficha — ${nome}</title>
-  <style>
-    * { box-sizing:border-box; margin:0; padding:0; }
-    body { font-family:Arial,sans-serif; font-size:12px; color:#1e293b; background:#f8fafc; }
-    @media print {
-      body { background:#fff; }
-      .no-print { display:none; }
-      @page { margin:15mm; size:A4; }
-    }
-    .page { max-width:800px; margin:0 auto; padding:20px; background:#fff; }
-    .header { display:flex; align-items:center; justify-content:space-between; border-bottom:3px solid #1e3a5f; padding-bottom:14px; margin-bottom:20px; }
-    .logo-text { font-size:28px; font-weight:900; color:#1e3a5f; letter-spacing:-1px; }
-    .logo-sub { font-size:11px; color:#64748b; margin-top:2px; }
-    .title-block { text-align:right; }
-    .client-name { font-size:18px; font-weight:700; color:#1e3a5f; }
-    .client-cnpj { font-size:11px; color:#64748b; margin-top:2px; }
-    .meta { font-size:10px; color:#94a3b8; margin-top:4px; }
-    .badge { display:inline-block; padding:3px 10px; border-radius:20px; font-size:10px; font-weight:700; margin-right:4px; }
-    .badge-blue { background:#dbeafe; color:#1d4ed8; }
-    .badge-green { background:#d1fae5; color:#065f46; }
-    .badge-orange { background:#fef3c7; color:#92400e; }
-    .footer { margin-top:30px; border-top:2px solid #1e3a5f; padding-top:10px; display:flex; justify-content:space-between; font-size:10px; color:#94a3b8; }
-    .print-btn { position:fixed; top:20px; right:20px; background:#2563eb; color:#fff; border:none; padding:10px 20px; border-radius:8px; font-size:14px; font-weight:700; cursor:pointer; box-shadow:0 4px 12px rgba(37,99,235,.3); }
-    .print-btn:hover { background:#1d4ed8; }
-    .columns { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
-    @media print { .columns { grid-template-columns:1fr 1fr; } }
-  </style></head><body>
-  <button class="print-btn no-print" onclick="window.print()">🖨️ Imprimir / Salvar PDF</button>
-  <div class="page">
-    <div class="header">
-      <div>
-        <div class="logo-text">GTCON</div>
-        <div class="logo-sub">Assessoria Contábil</div>
-      </div>
-      <div class="title-block">
-        <div class="client-name">${d.cadastro?.razao_social || '—'}</div>
-        ${d.cadastro?.nome_fantasia ? `<div class="client-cnpj">${d.cadastro.nome_fantasia}</div>` : ''}
-        <div class="client-cnpj">CNPJ: ${d.cadastro?.cnpj || '—'}</div>
-        <div class="meta">Ficha gerada em ${data} · Consultor: ${d.comercial?.consultor || '—'}</div>
-        <div style="margin-top:6px;">
-          ${d.cadastro?.situacao ? `<span class="badge badge-green">${d.cadastro.situacao}</span>` : ''}
-          ${d.cadastro?.regime ? `<span class="badge badge-blue">${d.cadastro.regime}</span>` : ''}
-          ${d.cadastro?.porte ? `<span class="badge badge-orange">${d.cadastro.porte}</span>` : ''}
-        </div>
-      </div>
-    </div>
-
-    <div class="columns">
-      <div>
-        ${section('Cadastro Geral', '🏢', `
-          ${row('Endereço', d.cadastro?.endereco)}
-          ${row('Abertura', d.cadastro?.data_abertura)}
-          ${row('Fat. Mensal', d.cadastro?.fat_mensal)}
-          ${row('Fat. Anual', d.cadastro?.fat_anual)}
-          ${row('Responsável Legal', d.cadastro?.resp_legal)}
-          ${row('CPF', d.cadastro?.resp_cpf)}
-          ${row('E-mail Assinatura', d.cadastro?.email_assinatura)}
-          ${row('Telefone', d.cadastro?.telefone)}
-        `)}
-        ${section('Comercial', '🤝', `
-          ${row('Consultor', d.comercial?.consultor)}
-          ${row('Usuário', d.comercial?.consultor_usuario)}
-          ${row('Origem Lead', d.comercial?.lead_origem)}
-          ${row('Data Diagnóstico', d.comercial?.data)}
-        `)}
-        ${section('Dep. Pessoal', '👷', `
-          ${row('CLT', d.dp?.clt)}
-          ${row('Estagiários', d.dp?.estagiarios)}
-          ${row('Pró-labore', d.dp?.prolabore)}
-          ${row('Autônomos', d.dp?.autonomos)}
-          ${row('Sind. Patronal', d.dp?.sind_patronal)}
-          ${row('Sind. Laboral', d.dp?.sind_laboral)}
-        `)}
-      </div>
-      <div>
-        ${section('Fiscal', '🧾', `
-          ${row('Apuração', d.fiscal?.apuracao)}
-          ${row('Emissor NF', d.fiscal?.emissor)}
-          ${row('ICMS-ST', d.fiscal?.icms_st)}
-          ${row('Vol. Saída', d.fiscal?.vol_saida)}
-          ${row('Vol. Entrada', d.fiscal?.vol_entrada)}
-          ${row('Observações', d.fiscal?.obs)}
-        `)}
-        ${section('Contábil', '📊', `
-          ${row('Balancete', d.contabil?.balancete)}
-          ${row('Imobilizado', d.contabil?.imobilizado)}
-          ${row('Contab. Anterior', d.contabil?.contab_anterior)}
-          ${row('Risco Cadastral', d.contabil?.r_cadastral)}
-          ${row('Risco Tributário', d.contabil?.r_tributario)}
-        `)}
-        ${section('ERP / Sistema', '💻', `
-          ${row('Sistema', d.particularidades?.erp)}
-          ${row('Outro ERP', d.particularidades?.erp_outro)}
-          ${row('Integração', d.particularidades?.erp_integ)}
-          ${row('Depto. Impactados', flagsErp.length ? flagsErp.join(', ') : '—')}
-        `)}
-        ${section('Parâmetros', '⚙️', `
-          ${row('Dia Ponto', d.parametros?.dia_ponto)}
-          ${row('Dia Guias', d.parametros?.dia_guias)}
-          ${row('Implant. Contábil', d.parametros?.imp_contabil)}
-          ${row('Implant. Fiscal', d.parametros?.imp_fiscal)}
-          ${row('Implant. DP', d.parametros?.imp_dp)}
-          ${row('Op. Contábil', d.parametros?.op_contabil)}
-          ${row('Op. Fiscal', d.parametros?.op_fiscal)}
-          ${row('Op. DP', d.parametros?.op_dp)}
-        `)}
-      </div>
-    </div>
-
-    ${(d.particularidades?.instrucoes || d.particularidades?.avisos || d.particularidades?.obs_gerais || d.particularidades?.diagnostico) ? `
-    <div style="margin-top:16px;">
-      ${section('Particularidades e Instruções ao Time', '📝', `
-        ${row('Instruções Mensais', d.particularidades?.instrucoes?.replace(/\n/g,' '))}
-        ${row('Avisos/Alertas', d.particularidades?.avisos?.replace(/\n/g,' '))}
-        ${row('Observações Gerais', d.particularidades?.obs_gerais?.replace(/\n/g,' '))}
-        ${row('Diagnóstico Final', d.particularidades?.diagnostico?.replace(/\n/g,' '))}
-      `)}
-    </div>` : ''}
-
-    <div class="footer">
-      <span>GTCON Assessoria Contábil — Documento interno gerado automaticamente</span>
-      <span>Versão 1.3.0 · ${data}</span>
-    </div>
-  </div>
-</body></html>`;
-
-  const win = window.open('', '_blank');
-  if (!win) { toast('❌ Permita pop-ups para gerar o PDF', 'err'); return; }
-  win.document.write(html);
-  win.document.close();
-  toast('📄 PDF aberto — use Ctrl+P ou o botão para salvar/imprimir.', 'ok');
-}
-
-// ══════════════════════════════════════
-// IMPORTAÇÃO DE CLIENTES (CSV/JSON)
-// ══════════════════════════════════════
-function abrirModalImportacao() {
-  document.getElementById('modal-importacao').style.display = 'flex';
-}
-function fecharModalImportacao() {
-  document.getElementById('modal-importacao').style.display = 'none';
-  document.getElementById('import-resultado').style.display = 'none';
-  document.getElementById('import-file').value = '';
-}
-
-async function processarImportacao() {
-  const file = document.getElementById('import-file').files[0];
-  if (!file) { toast('Selecione um arquivo para importar.', 'err'); return; }
-
-  const txt = await file.text();
-  let clientes = [];
-
-  try {
-    if (file.name.endsWith('.json')) {
-      const parsed = JSON.parse(txt);
-      clientes = Array.isArray(parsed) ? parsed : [parsed];
-    } else if (file.name.endsWith('.csv')) {
-      // CSV simples: primeira linha = cabeçalhos
-      const lines = txt.split('\n').filter(l => l.trim());
-      const headers = lines[0].split(',').map(h => h.replace(/"/g,'').trim());
-      for (let i = 1; i < lines.length; i++) {
-        const vals = lines[i].match(/(".*?"|[^,]+)/g) || [];
-        const obj = {};
-        headers.forEach((h, idx) => { obj[h] = (vals[idx]||'').replace(/^"|"$/g,'').trim(); });
-        if (obj['Razão Social'] || obj['CNPJ']) {
-          clientes.push({
-            meta: { savedAt: new Date().toISOString(), importado: true },
-            cadastro: {
-              razao_social: obj['Razão Social'] || '',
-              nome_fantasia: obj['Nome Fantasia'] || '',
-              cnpj: obj['CNPJ'] || '',
-              codigo_sci: obj['Código SCI'] || '',
-              regime: obj['Regime Tributário'] || '',
-              telefone: obj['Telefone'] || '',
-              email_assinatura: obj['E-mail'] || '',
-            },
-            comercial: { consultor: obj['Consultor'] || currentUser?.nome || '' },
-            dp: {}, fiscal: {}, contabil: {}, parametros: {}, particularidades: {},
-          });
-        }
-      }
-    }
-  } catch(e) {
-    toast('❌ Erro ao ler arquivo: ' + e.message, 'err'); return;
-  }
-
-  if (!clientes.length) { toast('Nenhum cliente encontrado no arquivo.', 'err'); return; }
-
-  let salvos = 0, erros = 0;
-  for (const c of clientes) {
-    if (!c.meta) c.meta = { savedAt: new Date().toISOString() };
-    const res = await api('POST', '/api/cliente', c);
-    if (res?.ok) salvos++; else erros++;
-  }
-
-  const res = document.getElementById('import-resultado');
-  res.style.display = 'block';
-  res.innerHTML = `✅ <strong>${salvos}</strong> cliente(s) importado(s) com sucesso.${erros ? ` ⚠️ ${erros} erro(s).` : ''}`;
-  updateClientCountBadge();
-  registrarLog('ficha', `Importação: ${salvos} clientes importados via ${file.name}`);
-}
-
-function baixarTemplateCSV() {
-  const header = ['Razão Social','Nome Fantasia','CNPJ','Código SCI','Regime Tributário','Telefone','E-mail','Consultor'];
-  const exemplo = ['Empresa Exemplo Ltda','Exemplo','00.000.000/0001-00','SCI001','Simples Nacional','(11) 99999-0000','contato@exemplo.com.br','João Silva'];
-  const csv = [header, exemplo].map(r => r.map(c => `"${c}"`).join(',')).join('\n');
-  const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'GTCON_Template_Importacao.csv';
-  a.click();
-  toast('📥 Template baixado!', 'ok');
 }
 
 function resetForm() {
@@ -3956,15 +3005,9 @@ let _clientesCache = [];
 let _fichaExistente = false; // true quando ficha foi aberta da lista (edição), false quando é nova
 
 async function getAllClients() {
-  try {
-    const res = await api('GET', '/api/clientes');
-    if (res?.ok) { _clientesCache = res.clientes; return res.clientes; }
-    console.warn('getAllClients: resposta não ok', res);
-  } catch(e) {
-    console.error('getAllClients erro:', e);
-    toast('❌ Erro ao carregar clientes: ' + e.message, 'err');
-  }
-  return _clientesCache;
+  const res = await api('GET', '/api/clientes');
+  if (res?.ok) { _clientesCache = res.clientes; return res.clientes; }
+  return _clientesCache; // fallback para cache se servidor cair
 }
 
 async function updateClientCountBadge() {
@@ -4091,26 +3134,12 @@ function loadClient(data) {
   sv('sind_laboral', data.dp?.sind_laboral);
   sv('dp_passivos_obs', data.dp?.passivos_obs);
 
-  sv('emissor_sistema',  data.fiscal?.emissor);
-  sv('emissor_login',    data.fiscal?.emissor_login);
-  sv('vol_saida',        data.fiscal?.vol_saida);
-  sv('vol_entrada',      data.fiscal?.vol_entrada);
-  sv('vol_cupons',       data.fiscal?.vol_cupons);
-  sv('benef_fiscal_det', data.fiscal?.benef_fiscal_det);
-  sv('estoque_sistema',  data.fiscal?.estoque_sistema);
-  sv('obs_fiscal',       data.fiscal?.obs);
-  // Particularidades por tributo
-  const tb = data.fiscal?.tributos || {};
-  sv('part_pis_cofins',  tb.pis_cofins?.part);  sv('alerta_pis_cofins',  tb.pis_cofins?.alerta);
-  sv('part_irpj_csll',   tb.irpj_csll?.part);   sv('alerta_irpj_csll',   tb.irpj_csll?.alerta);
-  sv('part_iss',         tb.iss?.part);          sv('alerta_iss',          tb.iss?.alerta);
-  sv('part_icms',        tb.icms?.part);         sv('alerta_icms',         tb.icms?.alerta);
-  sv('part_ipi',         tb.ipi?.part);          sv('alerta_ipi',          tb.ipi?.alerta);
+  sv('emissor_sistema', data.fiscal?.emissor);
+  sv('vol_saida', data.fiscal?.vol_saida);
+  sv('vol_entrada', data.fiscal?.vol_entrada);
+  sv('obs_fiscal', data.fiscal?.obs);
 
-  sv('erp_outro', data.particularidades?.erp_outro || data.contabil?.erp_outro);
-  setRadio('erp',      data.particularidades?.erp || data.contabil?.erp);
-  setRadio('erp_integ',data.particularidades?.erp_integ);
-  restoreErpFlags(data.particularidades?.erp_flags || {});
+  sv('erp_outro', data.contabil?.erp_outro);
   sv('contab_anterior', data.contabil?.contab_anterior);
   sv('risco_cadastral', data.contabil?.r_cadastral);
   sv('risco_tributario', data.contabil?.r_tributario);
@@ -4151,17 +3180,7 @@ function loadClient(data) {
   sv('resumo_reuniao', data.particularidades?.resumo);
 
   // Restaurar campos extras
-  // Grupo econômico
-  const geId = data.cadastro?.grupo_eco_id || '';
-  const geNome = data.cadastro?.grupo_eco_nome || '';
-  document.getElementById('grupo_eco_id').value = geId;
-  document.getElementById('grupo_eco_nome').value = geNome;
-  if (geId && geNome) {
-    const qtd = (_clientesCache||[]).filter(c => c.cadastro?.grupo_eco_id === geId).length;
-    selecionarGrupo(geId, geNome, qtd);
-  } else {
-    limparGrupoSelecionado();
-  }
+  sv('grupo_empresas', data.cadastro?.grupo_empresas);
   sv('outros_relatorios', data.parametros?.outros_relatorios);
 
   // Restaurar radio buttons — seleciona o input e marca a label visualmente
@@ -4174,6 +3193,7 @@ function loadClient(data) {
     }
   }
   setRadio('regime',        data.cadastro?.regime);
+  setRadio('grupo_eco',     data.cadastro?.grupo_eco);
   setRadio('licitacoes',    data.cadastro?.licitacoes);
   setRadio('ecommerce',     data.cadastro?.ecommerce);
   setRadio('cert_digital',  data.cadastro?.cert);
@@ -4187,14 +3207,7 @@ function loadClient(data) {
   setRadio('icms_st',       data.fiscal?.icms_st);
   setRadio('estoque',       data.fiscal?.estoque);
   setRadio('sped',          data.fiscal?.sped);
-  setRadio('bloco_k',       data.fiscal?.bloco_k);
-  setRadio('benef_fiscal',  data.fiscal?.benef_fiscal);
-  setRadio('comex',         data.fiscal?.comex);
-  setRadio('siscomex',      data.fiscal?.siscomex);
-  setRadio('monofasico',    data.fiscal?.monofasico);
-  setRadio('contingencia',  data.fiscal?.contingencia);
-  setRadio('compra_com_nf', data.fiscal?.compra_com_nf);
-  setRadio('vende_com_nf',  data.fiscal?.vende_com_nf);
+  setRadio('erp',           data.contabil?.erp);
   setRadio('balancete',     data.contabil?.balancete);
   setRadio('imobilizado',   data.contabil?.imobilizado);
   setRadio('lead_origem',   data.comercial?.lead_origem);
@@ -4205,63 +3218,33 @@ function loadClient(data) {
   toast(`"${nm || 'Ficha'}" carregada com sucesso!`, 'ok');
 }
 
-// Cache do último array renderizado — usado pelo onclick da tabela
-let _lastRenderedClientes = [];
-
 async function renderDBTable() {
   const wrap = document.getElementById('db-table-wrap');
   if (!wrap) return;
-  wrap.innerHTML = `<div style="text-align:center;padding:30px;color:var(--muted);font-size:13px;">⏳ Carregando clientes...</div>`;
+  wrap.innerHTML = `<div style="text-align:center;padding:30px;color:var(--muted);font-size:13px;">⏳ Carregando...</div>`;
+  const q = (document.getElementById('db-search-input')?.value || '').toLowerCase();
+  const all = (await getAllClients())
+    .filter(c => clientePertenceAoUsuario(c))
+    .filter(c => {
+      if (!q) return true;
+      return (c.cadastro?.razao_social||'').toLowerCase().includes(q)
+        || (c.cadastro?.cnpj||'').replace(/\D/g,'').includes(q.replace(/\D/g,''))
+        || (c.cadastro?.nome_fantasia||'').toLowerCase().includes(q)
+        || (c.cadastro?.codigo_sci||'').toLowerCase().includes(q);
+    });
 
-  try {
-    const q           = (document.getElementById('db-search-input')?.value || '').toLowerCase();
-    const grupoFiltro = document.getElementById('db-filter-grupo')?.value || '';
+  if (!all.length) {
+    const msg = q ? `Nenhum resultado para "<strong>${q}</strong>".` : 'Nenhum cliente cadastrado ainda.';
+    const sub = q ? 'Tente buscar por nome, CNPJ ou código SCI.' : 'Clique em "Nova Ficha" para começar.';
+    wrap.innerHTML = `<div class="db-empty"><div class="de-icon">${q ? '🔍' : '📂'}</div><p>${msg}</p><small>${sub}</small></div>`;
+    return;
+  }
 
-    // Carregar clientes E grupos em paralelo — grupos nunca bloqueiam a lista
-    wrap.innerHTML = `<div style="text-align:center;padding:30px;color:var(--muted);font-size:13px;">⏳ Buscando clientes...</div>`;
-    const [todos] = await Promise.all([
-      getAllClients(),
-      popularSelectGrupos().catch(e => console.warn('grupos paralelo:', e.message)),
-    ]);
-
-    if (!todos || todos.length === 0) {
-      wrap.innerHTML = `<div class="db-empty"><div class="de-icon">📂</div><p>Nenhum cliente cadastrado ainda.</p><small>Clique em "Nova Ficha" para começar.</small></div>`;
-      return;
-    }
-
-    const all = todos
-      .filter(c => clientePertenceAoUsuario(c))
-      .filter(c => {
-        if (!q) return true;
-        return (c.cadastro?.razao_social||'').toLowerCase().includes(q)
-          || (c.cadastro?.cnpj||'').replace(/\D/g,'').includes(q.replace(/\D/g,''))
-          || (c.cadastro?.nome_fantasia||'').toLowerCase().includes(q)
-          || (c.cadastro?.codigo_sci||'').toLowerCase().includes(q)
-          || (c.cadastro?.grupo_eco_nome||'').toLowerCase().includes(q);
-      })
-      .filter(c => {
-        if (!grupoFiltro) return true;
-        if (grupoFiltro === '__sem__') return !c.cadastro?.grupo_eco_id;
-        return c.cadastro?.grupo_eco_id === grupoFiltro;
-      });
-
-    if (!all.length) {
-      const msg = (q || grupoFiltro) ? 'Nenhum resultado com os filtros aplicados.' : 'Nenhum cliente cadastrado ainda.';
-      const sub = (q || grupoFiltro) ? 'Tente outros termos ou limpe o filtro de grupo.' : 'Clique em "Nova Ficha" para começar.';
-      wrap.innerHTML = `<div class="db-empty"><div class="de-icon">📂</div><p>${msg}</p><small>${sub}</small></div>`;
-      return;
-    }
-
-  // Resolver nome do grupo a partir do cache (já carregado pelo popularSelectGrupos acima)
-  const grupos = _gruposCache || [];
-  const nomeGrupo = id => grupos.find(g => g.id === id)?.nome || '';
-
-    _lastRenderedClientes = all;
-    wrap.innerHTML = `<table class="db-table">
+  wrap.innerHTML = `<table class="db-table">
     <thead><tr>
-      <th>Cód. SCI</th><th>Razão Social</th><th>CNPJ</th><th>Grupo Econômico</th><th>Regime</th><th>Situação</th><th>Atualizado</th>${currentUser?.perfil === 'admin' ? '<th></th>' : ''}
+      <th>Cód. SCI</th><th>Razão Social</th><th>CNPJ</th><th>Regime</th><th>Situação</th><th>Atualizado</th>${currentUser?.perfil === 'admin' ? '<th></th>' : ''}
     </tr></thead>
-    <tbody>${all.map((c, idx) => {
+    <tbody>${all.map(c => {
       const cnpjRaw = c.cadastro?.cnpj?.replace(/\D/g,'') || '';
       const dt = c.meta?.savedAt ? new Date(c.meta.savedAt).toLocaleDateString('pt-BR') : '—';
       const sit = c.cadastro?.situacao || '—';
@@ -4269,11 +3252,7 @@ async function renderDBTable() {
       const reg = c.cadastro?.regime || '—';
       const sci = c.cadastro?.codigo_sci || '—';
       const consultor = c.comercial?.consultor ? `<div style="font-size:10px;color:var(--muted);margin-top:2px;">👤 ${c.comercial.consultor}</div>` : '';
-      const grupo = c.cadastro?.grupo_eco_nome || nomeGrupo(c.cadastro?.grupo_eco_id) || '';
-      const grupoBadge = grupo
-        ? `<span style="display:inline-block;padding:2px 8px;background:rgba(37,99,235,.08);color:var(--accent2);border-radius:10px;font-size:10.5px;font-weight:600;cursor:pointer;" onclick="event.stopPropagation();document.getElementById('db-filter-grupo').value='${c.cadastro?.grupo_eco_id||''}';renderDBTable();">🏢 ${grupo}</span>`
-        : '<span style="color:var(--muted);font-size:11px;">—</span>';
-      return `<tr style="cursor:pointer;" onclick='abrirClientePorIdx(${idx})' title="Clique para abrir a ficha">
+      return `<tr style="cursor:pointer;" onclick='abrirCliente(${JSON.stringify(c)})' title="Clique para abrir a ficha">
         <td><span style="font-family:var(--mono);font-size:12px;color:var(--accent2);font-weight:600;">${sci}</span></td>
         <td>
           <div class="db-razao">${c.cadastro?.razao_social||'(sem nome)'}</div>
@@ -4281,7 +3260,6 @@ async function renderDBTable() {
           ${consultor}
         </td>
         <td class="db-cnpj">${c.cadastro?.cnpj||'—'}</td>
-        <td>${grupoBadge}</td>
         <td><span style="font-size:11.5px">${reg}</span></td>
         <td><span style="font-size:11.5px;color:${sitColor}">${sit}</span></td>
         <td class="db-cnpj">${dt}</td>
@@ -4289,21 +3267,6 @@ async function renderDBTable() {
       </tr>`;
     }).join('')}</tbody>
   </table>`;
-  } catch(err) {
-    console.error('renderDBTable erro:', err);
-    wrap.innerHTML = `<div class="db-empty" style="color:var(--danger);">
-      <div class="de-icon">⚠️</div>
-      <p><strong>Erro ao carregar clientes</strong></p>
-      <small>${err.message}</small><br>
-      <button class="btn btn-s btn-sm" onclick="renderDBTable()" style="margin-top:12px;">🔄 Tentar novamente</button>
-    </div>`;
-  }
-}
-
-function abrirClientePorIdx(idx) {
-  const data = _lastRenderedClientes[idx];
-  if (!data) { toast('Erro ao abrir ficha. Recarregue a lista.', 'err'); return; }
-  abrirCliente(data);
 }
 
 function abrirCliente(data) {
@@ -4312,6 +3275,7 @@ function abrirCliente(data) {
   aplicarBloqueioConsultor();
   showTab('cadastro', document.querySelector('.tab-btn'));
   atualizarChipCliente(data.cadastro?.razao_social || data.cadastro?.cnpj || 'Cliente');
+  setTimeout(() => verificarDadosSPED(), 300);
 }
 
 // ══════════════════════════════════════
@@ -4428,47 +3392,63 @@ let usuariosDB = [];
 // Admin hardcoded — você
 const ADMIN_MASTER = { nome: 'Admin Master', usuario: 'admin', dept: 'Diretoria', perfil: 'admin', senha: 'gtcon@2025', master: true };
 
-function getUsuariosKey() { return 'gtcon_usuarios'; }
-
-function loadUsuarios() {
+// Usuários agora ficam no Supabase — loadUsuarios e saveUsuarios são async
+async function loadUsuarios() {
   try {
-    const raw = localStorage.getItem(getUsuariosKey());
-    usuariosDB = raw ? JSON.parse(raw) : [];
-  } catch(e) { usuariosDB = []; }
-
-  // Migrar registros antigos que não têm campo 'usuario'
-  let precisaSalvar = false;
-  usuariosDB = usuariosDB.map(u => {
-    if (!u.usuario) {
-      precisaSalvar = true;
-      return { ...u, usuario: u.nome.toLowerCase().replace(/\s+/g, '.') };
+    const rows = await sbFetch('GET', 'usuarios?order=created_at.asc');
+    usuariosDB = (rows || []).map(r => ({
+      id:            r.id,
+      nome:          r.nome,
+      usuario:       r.usuario,
+      senha:         r.senha,
+      dept:          r.dept,
+      perfil:        r.perfil,
+      master:        r.master,
+      primeiroAcesso: r.primeiro_acesso,
+    }));
+    // Garantir admin master em memória
+    if (!usuariosDB.find(u => u.master)) {
+      usuariosDB.unshift({ ...ADMIN_MASTER, id: 'master' });
     }
-    return u;
-  });
-
-  // Garantir que o admin master sempre existe — preservando senha customizada
-  const masterIdx = usuariosDB.findIndex(u => u.master);
-  if (masterIdx === -1) {
-    usuariosDB.unshift({ ...ADMIN_MASTER, id: 'master' });
-    precisaSalvar = true;
-  } else {
-    // Preservar senha atual do master, atualizar outros campos
-    const senhaSalva = usuariosDB[masterIdx].senha || ADMIN_MASTER.senha;
-    usuariosDB[masterIdx] = { ...ADMIN_MASTER, id: 'master', senha: senhaSalva };
-    precisaSalvar = true;
+  } catch(e) {
+    console.error('loadUsuarios:', e);
+    usuariosDB = [{ ...ADMIN_MASTER, id: 'master' }];
   }
-
-  if (precisaSalvar) saveUsuarios();
 }
 
-function saveUsuarios() {
-  localStorage.setItem(getUsuariosKey(), JSON.stringify(usuariosDB));
+async function saveUsuario(u) {
+  // Upsert de um único usuário no Supabase
+  await sbFetch('DELETE', `usuarios?id=eq.${u.id}`);
+  await sbFetch('POST', 'usuarios', {
+    id:              u.id,
+    nome:            u.nome,
+    usuario:         u.usuario,
+    senha:           u.senha,
+    dept:            u.dept,
+    perfil:          u.perfil || 'usuario',
+    master:          u.master || false,
+    primeiro_acesso: u.primeiroAcesso !== false,
+  });
 }
 
-function resetarUsuarios() {
-  if (!confirm('Isso vai redefinir o acesso e restaurar apenas o admin master.\nUsuários cadastrados serão mantidos se possível.\n\nContinuar?')) return;
-  localStorage.removeItem(getUsuariosKey());
-  loadUsuarios();
+async function deleteUsuario(id) {
+  await sbFetch('DELETE', `usuarios?id=eq.${id}`);
+}
+
+// Compatibilidade — salva todos (usado na migração localStorage→Supabase)
+async function saveUsuarios() {
+  for (const u of usuariosDB) {
+    if (!u.master) await saveUsuario(u);
+  }
+}
+
+async function resetarUsuarios() {
+  if (!confirm('Isso vai redefinir o acesso e restaurar apenas o admin master.\nUsuários não-master cadastrados serão removidos.\n\nContinuar?')) return;
+  try {
+    // Remove todos exceto master
+    await sbFetch('DELETE', 'usuarios?master=eq.false');
+    await loadUsuarios();
+  } catch(e) { console.error(e); }
   document.getElementById('login-usuario').value = 'admin';
   document.getElementById('login-senha').value = '';
   document.getElementById('login-err').textContent = '✅ Acesso redefinido. Use: usuário "admin" e senha "gtcon@2025"';
@@ -4476,18 +3456,24 @@ function resetarUsuarios() {
   document.getElementById('login-senha').focus();
 }
 
-function fazerLogin() {
+async function fazerLogin() {
   const usuario = document.getElementById('login-usuario').value.trim().toLowerCase();
   const senha   = document.getElementById('login-senha').value;
   const err     = document.getElementById('login-err');
+  const btn     = document.getElementById('btn-login');
 
   if (!usuario || !senha) {
     err.textContent = 'Preencha usuário e senha.';
     err.classList.add('show'); return;
   }
 
-  loadUsuarios();
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ Entrando...'; }
+  err.classList.remove('show');
+
+  await loadUsuarios();
   const match = usuariosDB.find(u => u.usuario.toLowerCase() === usuario);
+
+  if (btn) { btn.disabled = false; btn.textContent = 'Entrar'; }
 
   if (!match) {
     err.textContent = 'Usuário não encontrado. Solicite acesso ao administrador.';
@@ -4518,7 +3504,7 @@ function fazerLogin() {
   aplicarSessao();
 }
 
-function confirmarRedefinicaoSenha() {
+async function confirmarRedefinicaoSenha() {
   const nova     = document.getElementById('redef-nova').value;
   const confirma = document.getElementById('redef-confirma').value;
   const errEl    = document.getElementById('redef-err');
@@ -4560,7 +3546,7 @@ function fecharModalSenhaAdmin() {
   document.getElementById('modal-senha-admin').style.display = 'none';
 }
 
-function confirmarSenhaAdmin() {
+async function confirmarSenhaAdmin() {
   const codigo   = document.getElementById('admin-codigo-passe').value;
   const nova     = document.getElementById('admin-nova-senha').value;
   const confirma = document.getElementById('admin-confirma-senha').value;
@@ -4582,14 +3568,12 @@ function confirmarSenhaAdmin() {
     errEl.style.display = 'block'; return;
   }
 
-  // Atualizar senha do admin master
-  loadUsuarios();
+  await loadUsuarios();
   const idx = usuariosDB.findIndex(u => u.master);
   if (idx >= 0) {
     usuariosDB[idx].senha = nova;
-    // Atualizar ADMIN_MASTER em memória também
     ADMIN_MASTER.senha = nova;
-    saveUsuarios();
+    try { await saveUsuario(usuariosDB[idx]); } catch(e) { console.error(e); }
   }
 
   fecharModalSenhaAdmin();
@@ -4816,7 +3800,7 @@ function aplicarSessao() {
 }
 
 // ── GERENCIAMENTO DE USUÁRIOS (admin) ──
-function adicionarUsuario() {
+async function adicionarUsuario() {
   const nome    = document.getElementById('new-user-nome').value.trim();
   const usuario = document.getElementById('new-user-usuario').value.trim().toLowerCase();
   const dept    = document.getElementById('new-user-dept').value;
@@ -4826,14 +3810,19 @@ function adicionarUsuario() {
     toast('Preencha todos os campos do usuário.', 'err'); return;
   }
 
-  loadUsuarios();
+  await loadUsuarios();
   if (usuariosDB.find(u => u.usuario.toLowerCase() === usuario)) {
     toast(`Usuário "@${usuario}" já existe.`, 'err'); return;
   }
 
-  // Senha padrão 123456 — usuário será obrigado a redefinir no primeiro login
-  usuariosDB.push({ id: Date.now().toString(), nome, usuario, dept, perfil, senha: '123456', primeiroAcesso: true });
-  saveUsuarios();
+  const novoUsuario = { id: Date.now().toString(), nome, usuario, dept, perfil, senha: '123456', primeiroAcesso: true };
+  try {
+    await saveUsuario(novoUsuario);
+    usuariosDB.push(novoUsuario);
+  } catch(e) {
+    toast(`Erro ao salvar: ${e.message}`, 'err'); return;
+  }
+
   document.getElementById('new-user-nome').value = '';
   document.getElementById('new-user-usuario').value = '';
   document.getElementById('new-user-dept').value = '';
@@ -4843,32 +3832,40 @@ function adicionarUsuario() {
   toast(`✅ "${nome}" (@${usuario}) adicionado! Senha padrão: 123456`, 'ok');
 }
 
-function alterarSenha(id) {
+async function alterarSenha(id) {
   const u = usuariosDB.find(u => u.id === id);
   if (!u) return;
   if (u.master) { toast('Use o botão "Alterar senha do Admin" para o admin master.', 'err'); return; }
   if (!confirm(`Resetar senha de "${u.nome}" (@${u.usuario}) para o padrão 123456?\n\nO usuário será solicitado a criar uma nova senha no próximo login.`)) return;
   u.senha = '123456';
   u.primeiroAcesso = true;
-  saveUsuarios();
+  try {
+    await saveUsuario(u);
+  } catch(e) {
+    toast(`Erro ao alterar senha: ${e.message}`, 'err'); return;
+  }
   renderAdminUserList();
   toast(`🔑 Senha de "@${u.usuario}" resetada para 123456.`, 'ok');
 }
 
-function removerUsuario(id) {
+async function removerUsuario(id) {
   const u = usuariosDB.find(u => u.id === id);
   if (!u) return;
   if (u.master) { toast('O admin master não pode ser removido.', 'err'); return; }
   if (!confirm(`Remover "${u.nome}" (@${u.usuario})?`)) return;
-  usuariosDB = usuariosDB.filter(u => u.id !== id);
-  saveUsuarios();
+  try {
+    await deleteUsuario(id);
+    usuariosDB = usuariosDB.filter(u => u.id !== id);
+  } catch(e) {
+    toast(`Erro ao remover: ${e.message}`, 'err'); return;
+  }
   renderAdminUserList();
   registrarLog('usuario', `Usuário removido: ${u.nome} (@${u.usuario})`);
   toast(`"${u.nome}" removido.`, 'inf');
 }
 
-function renderAdminUserList() {
-  loadUsuarios();
+async function renderAdminUserList() {
+  await loadUsuarios();
   const list = document.getElementById('admin-user-list');
   if (!list) return;
   if (!usuariosDB.length) {
@@ -4903,9 +3900,84 @@ function toast(msg, type='inf') {
   setTimeout(() => { t.style.transition='.25s'; t.style.opacity='0'; setTimeout(()=>t.remove(),250); }, 3200);
 }
 
+// ── MIGRAÇÃO USUÁRIOS localStorage → Supabase ──
+async function migrarUsuariosLocalStorage() {
+  const KEY = 'gtcon_usuarios';
+  const raw = localStorage.getItem(KEY);
+  if (!raw) return; // nada para migrar
+  try {
+    const local = JSON.parse(raw);
+    if (!local || !local.length) { localStorage.removeItem(KEY); return; }
+    // Buscar quem já existe no Supabase
+    const existentes = await sbFetch('GET', 'usuarios?select=usuario');
+    const jaExistem = new Set((existentes||[]).map(u => u.usuario));
+    let migrados = 0;
+    for (const u of local) {
+      if (u.master) continue; // admin master já foi criado pelo SQL
+      if (jaExistem.has(u.usuario)) continue; // já existe
+      try {
+        await sbFetch('POST', 'usuarios', {
+          id:              u.id || Date.now().toString(),
+          nome:            u.nome,
+          usuario:         u.usuario,
+          senha:           u.senha || '123456',
+          dept:            u.dept || 'Geral',
+          perfil:          u.perfil || 'usuario',
+          master:          false,
+          primeiro_acesso: u.primeiroAcesso !== false,
+        });
+        migrados++;
+      } catch(e) { console.warn('Migração skip:', u.usuario, e.message); }
+    }
+    if (migrados > 0) {
+      console.log(`✅ Migração: ${migrados} usuário(s) movidos para Supabase`);
+      toast(`✅ ${migrados} usuário(s) migrados para o banco centralizado.`, 'ok');
+    }
+    localStorage.removeItem(KEY); // limpar localStorage após migração
+  } catch(e) { console.error('migrarUsuariosLocalStorage:', e); }
+}
+
+// ── SPED INTEGRATION ──
+function abrirSPED() {
+  const cnpj = document.getElementById('cnpj_principal')?.value?.replace(/\D/g,'') || '';
+  const nome = document.getElementById('razao_social')?.value || '';
+  if (!cnpj && !nome) {
+    toast('Salve o cadastro do cliente antes de abrir o SPED.', 'err'); return;
+  }
+  if (!currentUser) { toast('Faça login primeiro.', 'err'); return; }
+
+  // Token simples: btoa(JSON) — identifica o usuário no módulo SPED
+  const token = btoa(unescape(encodeURIComponent(JSON.stringify({
+    usuario: currentUser.usuario,
+    nome: currentUser.nome,
+    dept: currentUser.dept,
+    perfil: currentUser.perfil
+  }))));
+
+  const params = new URLSearchParams({ cnpj, nome, token });
+  window.open(`sped-cruzamento.html?${params}`, '_blank');
+}
+
+async function verificarDadosSPED() {
+  const cnpj = document.getElementById('cnpj_principal')?.value?.replace(/\D/g,'') || '';
+  if (!cnpj) return;
+  try {
+    const rows = await sbFetch('GET', `sped_dados?cnpj=eq.${cnpj}&select=exercicio,tipo,updated_at&order=updated_at.desc&limit=5`);
+    if (rows && rows.length) {
+      const exers = [...new Set(rows.map(r => r.exercicio))].sort().reverse();
+      const badge = document.getElementById('sped-status-badge');
+      if (badge) {
+        badge.style.display = 'inline-block';
+        badge.textContent = `✓ Dados: ${exers.join(', ')}`;
+      }
+    }
+  } catch(e) {}
+}
+
 // ── INIT ──
 document.addEventListener('DOMContentLoaded', async () => {
   updateSidebar('cadastro');
+  migrarUsuariosLocalStorage(); // migração silenciosa, não bloqueia o UI
   document.getElementById('data_diagnostico').valueAsDate = new Date();
   loadUsuarios();
   addPrefeitura(); // linha inicial vazia de prefeitura
