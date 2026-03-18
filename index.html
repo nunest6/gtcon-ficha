@@ -679,9 +679,10 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.55; }
   user-select: none;
 }
 .status-chip:hover { border-color: var(--border-h); color: var(--text-2); }
-.sel-blue   { background: #eff6ff; border-color: #93c5fd; color: #1e40af; font-weight: 600; }
+.sel-red    { background: #fff1f2; border-color: #fca5a5; color: #9f1239; font-weight: 600; }
 .sel-yellow { background: #fffbeb; border-color: #fcd34d; color: #92400e; font-weight: 600; }
 .sel-green  { background: var(--success-bg); border-color: #6ee7b7; color: #065f46; font-weight: 600; }
+.sel-blue   { background: #eff6ff; border-color: #93c5fd; color: #1e40af; font-weight: 600; }
 .sel-purple { background: #f5f3ff; border-color: #c4b5fd; color: #4c1d95; font-weight: 600; }
 
 /* ─────────────────────────────────────────────
@@ -1411,7 +1412,7 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.55; }
       <div class="brand-sub" style="display:flex;align-items:center;gap:6px">
         <button onclick="document.getElementById('modal-changelog').style.display='flex'"
           style="background:rgba(255,255,255,.1);border:none;cursor:pointer;font-size:9.5px;color:#adb2da;font-weight:700;padding:2px 8px;border-radius:20px;font-family:var(--mono)"
-          title="Changelog">v2.6.0</button>
+          title="Changelog">v2.7.0</button>
       </div>
     </div>
   </div>
@@ -1454,6 +1455,7 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.55; }
   <button class="tab-btn" onclick="showTab('cadastro',this)">Cadastro Geral<span class="tab-dot"></span></button>
   <button class="tab-btn" onclick="showTab('dp',this)">Dep. Pessoal<span class="tab-dot"></span></button>
   <button class="tab-btn" onclick="showTab('fiscal',this)">Fiscal<span class="tab-dot"></span></button>
+  <button class="tab-btn" onclick="showTab('tributario',this)">Tributário<span class="tab-dot"></span></button>
   <button class="tab-btn" onclick="showTab('contabil',this)">Contábil<span class="tab-dot"></span></button>
   <button class="tab-btn" onclick="showTab('parametros',this)">Parâmetros<span class="tab-dot"></span></button>
   <button class="tab-btn" onclick="showTab('particularidades',this)">Particularidades<span class="tab-dot"></span></button>
@@ -1473,7 +1475,7 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.55; }
       <text x="2" y="24" font-family="Plus Jakarta Sans, sans-serif" font-size="21" font-weight="800" fill="#f4f8ff" letter-spacing="-0.6">Gtcon</text>
       <text x="2" y="36" font-family="Plus Jakarta Sans, sans-serif" font-size="10.5" font-weight="700" fill="#adb2da" letter-spacing="2.2">BRASIL</text>
     </svg>
-    <button class="sidebar-changelog-btn" onclick="document.getElementById('modal-changelog').style.display='flex'" title="Changelog">v2.6.0</button>
+    <button class="sidebar-changelog-btn" onclick="document.getElementById('modal-changelog').style.display='flex'" title="Changelog">v2.7.0</button>
   </div>
 
   <!-- Nav principal -->
@@ -1589,9 +1591,10 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.55; }
       <div class="fg">
         <label>Status</label>
         <div class="status-row" id="status-onboarding">
-          <div class="status-chip" onclick="selStatus(this,'status-onboarding','sel-blue')">Pré-Análise</div>
-          <div class="status-chip" onclick="selStatus(this,'status-onboarding','sel-yellow')">Em Validação</div>
-          <div class="status-chip" onclick="selStatus(this,'status-onboarding','sel-green')">Cadastrado</div>
+          <div class="status-chip" onclick="selStatus(this,'status-onboarding','sel-red')">Cadastrado</div>
+          <div class="status-chip" onclick="selStatus(this,'status-onboarding','sel-yellow')">Implantando</div>
+          <div class="status-chip" onclick="selStatus(this,'status-onboarding','sel-blue')">Em Estudo</div>
+          <div class="status-chip" onclick="selStatus(this,'status-onboarding','sel-green')">Operação</div>
         </div>
       </div>
       <div class="fg">
@@ -2262,19 +2265,34 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.55; }
   </div>
 
   <!-- SPED Cruzamento -->
-  <div class="card" style="border-color:var(--accent);background:linear-gradient(to right,rgba(37,99,235,.04),transparent)">
-    <div class="card-title"><span class="ct-icon"></span> SPED · Cruzamento de Declarações</div>
-    <p style="font-size:12.5px;color:var(--muted);margin-bottom:14px;line-height:1.6">
-      Importe os arquivos SPED (EFD-Contribuições, ECD, ECF e Fiscal) para cruzar declarações, identificar divergências e gerar relatórios fiscais completos. Os dados ficam salvos no banco vinculados a este cliente.
-    </p>
-    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-      <button class="btn btn-ok" onclick="abrirSPED()" id="btn-abrir-sped">Abrir Módulo SPED</button>
-      <span id="sped-status-badge" style="display:none;font-size:11px;padding:3px 10px;border-radius:20px;background:rgba(5,150,105,.12);color:var(--success);font-weight:500"></span>
-    </div>
-  </div>
+  
 
 
   
+</div>
+
+<!-- ════════════════ TRIBUTÁRIO ════════════════ -->
+<div class="panel tab-tributario" id="panel-tributario">
+  <div class="readonly-banner" id="banner-panel-tributario">Somente leitura</div>
+  <div class="panel-head">
+    <div class="panel-title">Tributário</div>
+    <div class="panel-desc">Análise e cruzamento de declarações fiscais do cliente</div>
+  </div>
+
+  <div class="card" style="border-color:var(--border-focus);background:linear-gradient(to right,rgba(1,25,87,.03),transparent)">
+    <div class="card-title">Auditor — Cruzamento de Declarações</div>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:18px;line-height:1.7">
+      Importe os arquivos SPED (EFD-Contribuições, ECD, ECF e Fiscal) para cruzar declarações,
+      identificar divergências e gerar relatórios fiscais completos.
+      Os dados ficam salvos no banco vinculados a este cliente.
+    </p>
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+      <button class="btn btn-ok" onclick="abrirAuditor()" id="btn-abrir-auditor">
+        Abrir Auditor
+      </button>
+      <span id="sped-status-badge-trib" style="display:none;font-size:11px;padding:3px 10px;border-radius:20px;background:rgba(4,120,87,.1);color:var(--success);font-weight:500;border:1px solid rgba(4,120,87,.2)"></span>
+    </div>
+  </div>
 </div>
 
 <!-- ════════════════ CONTÁBIL ════════════════ -->
@@ -2783,6 +2801,7 @@ function updateSidebar(tab) {
     comercial: ['Consultor','Origem do Lead','Participantes'],
     dp: ['Vínculos','Benefícios','Adicionais','SST','Passivos','Particularidades DP'],
     fiscal: ['Eng. Fiscal','Emissor de NF','Estoque & SPED'],
+    tributario: ['Auditor — Cruzamento'],
     contabil: ['ERP','Contas Bancárias','Contab. Anterior','Mapa de Riscos'],
     parametros: ['Calendário SLA','Relatórios','Key Users','Checklist Saída'],
     particularidades: ['Erros Encontrados','Manual Mensal','Observações','Diagnóstico Final'],
@@ -4489,7 +4508,7 @@ function criarFicha() {
   }
 
   // Pré-Análise como status padrão
-  selStatus(document.querySelector('#status-onboarding .status-chip'), 'status-onboarding', 'sel-blue');
+  selStatus(document.querySelector('#status-onboarding .status-chip'), 'status-onboarding', 'sel-red');
 
   atualizarChipCliente(dadosCapturados?.razao_social || dadosCapturados?.nome || '');
   showTab('cadastro', document.querySelector('.tab-btn'));
@@ -4504,7 +4523,7 @@ function criarFichaSemCNPJ() {
   _fichaExistente = false;
 
   // Pré-Análise como status padrão
-  selStatus(document.querySelector('#status-onboarding .status-chip'), 'status-onboarding', 'sel-blue');
+  selStatus(document.querySelector('#status-onboarding .status-chip'), 'status-onboarding', 'sel-red');
 
   showTab('cadastro', document.querySelector('.tab-btn'));
 }
@@ -4699,15 +4718,16 @@ async function migrarLogsLocalStorage() {
 }
 
 // ── SPED INTEGRATION ──
-function abrirSPED() {
+function abrirSPED() { abrirAuditor(); } // alias para compatibilidade
+
+function abrirAuditor() {
   const cnpj = document.getElementById('cnpj_principal')?.value?.replace(/\D/g,'') || '';
   const nome = document.getElementById('razao_social')?.value || '';
   if (!cnpj && !nome) {
-    toast('Salve o cadastro do cliente antes de abrir o SPED.', 'err'); return;
+    toast('Salve o cadastro do cliente antes de abrir o Auditor.', 'err'); return;
   }
   if (!currentUser) { toast('Faça login primeiro.', 'err'); return; }
 
-  // Token simples: btoa(JSON) — identifica o usuário no módulo SPED
   const token = btoa(unescape(encodeURIComponent(JSON.stringify({
     usuario: currentUser.usuario,
     nome: currentUser.nome,
@@ -4716,7 +4736,7 @@ function abrirSPED() {
   }))));
 
   const params = new URLSearchParams({ cnpj, nome, token });
-  window.open(`sped-cruzamento.html?${params}`, '_blank');
+  window.open(`auditor.html?${params}`, '_blank');
 }
 
 async function verificarDadosSPED() {
@@ -4729,7 +4749,12 @@ async function verificarDadosSPED() {
       const badge = document.getElementById('sped-status-badge');
       if (badge) {
         badge.style.display = 'inline-block';
-        badge.textContent = `✓ Dados: ${exers.join(', ')}`;
+        badge.textContent = `Dados: ${exers.join(', ')}`;
+      }
+      const badgeTrib = document.getElementById('sped-status-badge-trib');
+      if (badgeTrib) {
+        badgeTrib.style.display = 'inline-block';
+        badgeTrib.textContent = `Dados: ${exers.join(', ')}`;
       }
     }
   } catch(e) {}
@@ -5183,6 +5208,42 @@ document.addEventListener('DOMContentLoaded', async () => {
 .tab-btn.has-data .tab-dot { display: block; background: var(--success); }
 </style>
 
+      <!-- v2.7.0 -->
+      <div style="margin-bottom:20px">
+        <div class="cl-ver">
+          <code>v2.7.0</code>
+          <time>18/03/2026</time>
+          <span class="cl-badge new">● Novas Funcionalidades</span>
+        </div>
+        <div class="cl-section">Aba Tributário</div>
+        <ul class="cl-list">
+          <li>Nova aba <strong>Tributário</strong> adicionada entre Fiscal e Contábil</li>
+          <li>Card de acesso ao módulo <strong>Auditor — Cruzamento de Declarações</strong> com badge de exercícios já importados</li>
+          <li>Card de cruzamento SPED removido da aba Fiscal — centralizado no Tributário</li>
+        </ul>
+        <div class="cl-section">Módulo Auditor</div>
+        <ul class="cl-list">
+          <li>Módulo renomeado de <code>sped-cruzamento.html</code> para <code>auditor.html</code></li>
+          <li>Função <code>abrirAuditor()</code> substitui <code>abrirSPED()</code> — alias mantido para compatibilidade</li>
+        </ul>
+        <div class="cl-section">Status do Onboarding</div>
+        <ul class="cl-list">
+          <li>Status renomeados: <strong>Cadastrado</strong> (vermelho) · <strong>Implantando</strong> (amarelo) · <strong>Em Estudo</strong> (azul) · <strong>Operação</strong> (verde)</li>
+          <li>Cor vermelha (<code>sel-red</code>) adicionada ao sistema de status chips</li>
+          <li>Ordem reflete o ciclo real de vida do cliente</li>
+        </ul>
+        <div class="cl-section">CSS Enterprise (v3.0)</div>
+        <ul class="cl-list">
+          <li>Design system completo reescrito — tokens de sombra, raio e cor semântica</li>
+          <li>Formulários redesenhados com border 1.5px, focus ring navy e hover states</li>
+          <li>Botões com elevação, transições e hierarquia clara</li>
+          <li>Tabelas, modais, toasts, checklist e log com nova linguagem visual</li>
+          <li>Botões do header corrigidos — fundo translúcido no estado padrão</li>
+          <li>Changelog sem emojis</li>
+        </ul>
+      </div>
+      <hr class="cl-divider">
+
       <!-- v2.6.0 -->
       <div style="margin-bottom:20px">
         <div class="cl-ver">
@@ -5319,7 +5380,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         </ul>
         <div class="cl-section">Integração SPED</div>
         <ul class="cl-list">
-          <li>Botão  Abrir Módulo SPED na aba Fiscal — abre vinculado ao cliente com token de sessão</li>
+          <li>Botão Abrir Auditor na aba Tributário — abre o módulo auditor.html vinculado ao cliente com token de sessão</li>
           <li>Badge mostra exercícios já importados; dados salvos em <code>sped_dados</code></li>
         </ul>
       </div>
