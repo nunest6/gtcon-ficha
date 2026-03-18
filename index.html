@@ -208,11 +208,18 @@ body {
 .edit-mode-bar {
   display: none;
   align-items: center;
-  gap: 12px;
-  padding: 7px 28px;
+  gap: 10px;
+  padding: 8px 28px;
   background: var(--surface);
   border-bottom: 1px solid var(--border);
   font-size: 12px;
+  position: sticky;
+  top: 58px;
+  z-index: 185;
+  box-shadow: 0 1px 4px rgba(1,25,87,.06);
+}
+.edit-mode-bar #btn-salvar-flutuante {
+  margin-left: auto;
 }
 .edit-mode-bar.show { display: flex; }
 .view-badge {
@@ -1422,7 +1429,8 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.55; }
     <span id="edit-lock-info" style="font-size:11.5px;color:var(--muted)"></span>
     <span style="flex:1"></span>
     <button id="btn-entrar-edicao" class="btn btn-ok btn-sm" onclick="entrarModoEdicao()" style="font-size:11px">Editar</button>
-    <button id="btn-sair-edicao" class="btn btn-s btn-sm" onclick="sairModoEdicao()" style="font-size:11px;display:none">Sair</button>
+    <button id="btn-sair-edicao" class="btn btn-s btn-sm" onclick="sairModoEdicao()" style="font-size:11px;display:none">Sair da edição</button>
+    <button id="btn-salvar-flutuante" class="btn btn-ok" onclick="saveAll()" style="display:none;font-size:13px;padding:8px 28px;font-weight:700;box-shadow:0 4px 16px rgba(1,25,87,.3)">Salvar Ficha</button>
   </div>
 
   <div class="header-right">
@@ -1452,6 +1460,7 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.55; }
 
 <!-- TABS -->
 <div class="tabs-bar">
+  <button class="tab-btn active" onclick="showTab('db',this)">Clientes<span class="tab-dot"></span></button>
   <button class="tab-btn" onclick="showTab('cadastro',this)">Cadastro Geral<span class="tab-dot"></span></button>
   <button class="tab-btn" onclick="showTab('reuniao',this)">Reunião<span class="tab-dot"></span></button>
   <button class="tab-btn" onclick="showTab('dp',this)">Dep. Pessoal<span class="tab-dot"></span></button>
@@ -1460,7 +1469,7 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.55; }
   <button class="tab-btn" onclick="showTab('contabil',this)">Contábil<span class="tab-dot"></span></button>
   <button class="tab-btn" onclick="showTab('parametros',this)">Parâmetros<span class="tab-dot"></span></button>
   <button class="tab-btn" onclick="showTab('particularidades',this)">Particularidades<span class="tab-dot"></span></button>
-  <button class="tab-btn active" onclick="showTab('db',this)">Clientes<span class="tab-dot"></span></button>
+  <button class="tab-btn" onclick="showTab('db',this)">Clientes<span class="tab-dot"></span></button>
   <button class="tab-btn tab-admin-only" onclick="showTab('admin',this)" style="display:none">Usuários<span class="tab-dot"></span></button>
   <button class="tab-btn tab-admin-only" onclick="showTab('log',this)" style="display:none">Log<span class="tab-dot"></span></button>
 </div>
@@ -1583,6 +1592,25 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.55; }
   <div class="panel-head">
     <div class="panel-title"><span>Cadastro Geral</span></div>
     <div class="panel-desc">Identificação da empresa, estrutura societária e regime tributário</div>
+  </div>
+
+  <!-- COMPETÊNCIA -->
+  <div class="card">
+    <div class="card-title"><span class="ct-icon"></span> Competência Contábil</div>
+    <div class="g g2">
+      <div class="fg">
+        <label>Início da Competência <span class="req">*</span></label>
+        <input type="month" id="competencia_inicio" placeholder="MM/AAAA">
+      </div>
+      <div class="fg">
+        <label>Mês de Referência Atual</label>
+        <input type="month" id="competencia_referencia">
+      </div>
+      <div class="fg s2">
+        <label>Observação sobre a Competência</label>
+        <input type="text" id="competencia_obs" placeholder="Ex: Cliente iniciou em meio ao exercício, saldo de abertura pendente...">
+      </div>
+    </div>
   </div>
 
   <!-- STATUS -->
@@ -2736,9 +2764,6 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.55; }
     </div>
   </div>
 
-  <div class="act-bar" id="actbar-salvar" style="display:none">
-    <button class="btn btn-ok ml" onclick="saveAll()">Salvar Ficha Completa</button>
-  </div>
 </div>
 
 <!-- ════════════════ BANCO DE DADOS ════════════════ -->
@@ -3665,6 +3690,9 @@ function collectData() {
       escrit_anterior_nome: gv('escrit_anterior_nome'),
       escrit_anterior_tel: gv('escrit_anterior_tel'),
       escrit_anterior_email: gv('escrit_anterior_email'),
+      competencia_inicio: gv('competencia_inicio'),
+      competencia_referencia: gv('competencia_referencia'),
+      competencia_obs: gv('competencia_obs'),
       licitacoes: gr('licitacoes'), ecommerce: gr('ecommerce'),
       ecommerce_plat: gv('ecommerce_plat'), cert: gr('cert_digital'),
       cert_venc: gv('cert_vencimento'),
@@ -3768,10 +3796,17 @@ async function saveAll() {
   const res = await api('POST', '/api/cliente', d);
   if (btn) { btn.disabled = false; btn.innerHTML = '💾 Salvar'; }
   if (res?.ok) {
-    toast(`✅ ${res.mensagem} — ${res.total} cliente(s) no banco.`, 'ok');
+    toast(`${res.mensagem || 'Salvo'} com sucesso.`, 'ok');
     updateClientCountBadge();
-    // Liberar trava e voltar ao modo visualização
-    await sairModoEdicao();
+    _fichaExistente = true;
+    // Liberar trava e re-entrar automaticamente no modo edição
+    if (_lockHeartbeat) { clearInterval(_lockHeartbeat); _lockHeartbeat = null; }
+    if (_currentCNPJ) await liberarTrava(_currentCNPJ);
+    aplicarModoVisualizacao();
+    // Pequeno delay para o Supabase processar antes de re-adquirir trava
+    setTimeout(async () => {
+      await entrarModoEdicao();
+    }, 400);
   }
 }
 
@@ -3819,6 +3854,11 @@ function resetForm() {
   if (_lockHeartbeat) { clearInterval(_lockHeartbeat); _lockHeartbeat = null; }
   const bar = document.getElementById('edit-mode-bar');
   if (bar) bar.classList.remove('show');
+  // Limpar reuniões ao resetar o formulário
+  _reunioes = [];
+  _participantesSelecionados = [];
+  renderReunioes();
+  renderParticChips();
 }
 
 function clearAll() {
@@ -3954,6 +3994,9 @@ function loadClient(data) {
   sv('escrit_anterior_nome',  data.cadastro?.escrit_anterior_nome);
   sv('escrit_anterior_tel',   data.cadastro?.escrit_anterior_tel);
   sv('escrit_anterior_email', data.cadastro?.escrit_anterior_email);
+  sv('competencia_inicio',     data.cadastro?.competencia_inicio);
+  sv('competencia_referencia', data.cadastro?.competencia_referencia);
+  sv('competencia_obs',        data.cadastro?.competencia_obs);
 
   sv('dp_clt', data.dp?.clt);
   sv('dp_estagiarios', data.dp?.estagiarios);
@@ -4058,6 +4101,13 @@ function loadClient(data) {
   setRadio('imobilizado',   data.contabil?.imobilizado);
   setRadio('lead_origem',   data.comercial?.lead_origem);
 
+  // Reuniões
+  _reunioes = data.reunioes || [];
+  _participantesSelecionados = [];
+  renderReunioes();
+  renderParticChips();
+  aplicarBloqueioParticipantes();
+
   const nm = data.cadastro?.razao_social || '';
   atualizarChipCliente(nm);
   showTab('cadastro', null);
@@ -4121,9 +4171,6 @@ function abrirCliente(data) {
   loadClient(data);
   aplicarBloqueioConsultor();
   updateTribTabs();
-  _reunioes = data.reunioes || [];
-  renderReunioes();
-  aplicarBloqueioParticipantes();
   showTab('cadastro', document.querySelector('.tab-btn'));
   const nome = data.cadastro?.razao_social || data.cadastro?.cnpj || 'Cliente';
   const cnpj = (data.cadastro?.cnpj||'').replace(/\D/g,'');
@@ -4275,9 +4322,14 @@ async function loadUsuarios() {
 }
 
 async function saveUsuario(u) {
-  // Upsert de um único usuário no Supabase
-  await sbFetch('DELETE', `usuarios?id=eq.${u.id}`);
-  await sbFetch('POST', 'usuarios', {
+  // Upsert nativo do Supabase via POST com resolução de conflito na PK (id)
+  const headers_upsert = {
+    'Content-Type': 'application/json',
+    'apikey': SB_KEY,
+    'Authorization': `Bearer ${SB_KEY}`,
+    'Prefer': 'resolution=merge-duplicates,return=minimal',
+  };
+  const payload = {
     id:              u.id,
     nome:            u.nome,
     usuario:         u.usuario,
@@ -4286,7 +4338,16 @@ async function saveUsuario(u) {
     perfil:          u.perfil || 'usuario',
     master:          u.master || false,
     primeiro_acesso: u.primeiroAcesso !== false,
+  };
+  const res = await fetch(`${SB_URL}/rest/v1/usuarios`, {
+    method: 'POST',
+    headers: headers_upsert,
+    body: JSON.stringify(payload),
   });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.message || err.details || `HTTP ${res.status}`);
+  }
 }
 
 async function deleteUsuario(id) {
@@ -4910,11 +4971,11 @@ function aplicarModoVisualizacao() {
   const btnEdit = document.getElementById('btn-entrar-edicao');
   const btnSair = document.getElementById('btn-sair-edicao');
   const btnSalvar = document.getElementById('btn-salvar-header');
-  const actbar = document.getElementById('actbar-salvar');
+  const btnFlutuante = document.getElementById('btn-salvar-flutuante');
   if (btnEdit) btnEdit.style.display = '';
   if (btnSair) btnSair.style.display = 'none';
   if (btnSalvar) btnSalvar.style.display = 'none';
-  if (actbar) actbar.style.display = 'none';
+  if (btnFlutuante) btnFlutuante.style.display = 'none';
 }
 
 // Aplicar modo edição — libera campos conforme permissões do usuário
@@ -4928,11 +4989,11 @@ function aplicarModoEdicao() {
   const btnEdit = document.getElementById('btn-entrar-edicao');
   const btnSair = document.getElementById('btn-sair-edicao');
   const btnSalvar = document.getElementById('btn-salvar-header');
-  const actbar = document.getElementById('actbar-salvar');
+  const btnFlutuante = document.getElementById('btn-salvar-flutuante');
   if (btnEdit) btnEdit.style.display = 'none';
   if (btnSair) btnSair.style.display = '';
   if (btnSalvar) btnSalvar.style.display = '';
-  if (actbar) actbar.style.display = '';
+  if (btnFlutuante) btnFlutuante.style.display = '';
 }
 
 // Tentar adquirir a trava
