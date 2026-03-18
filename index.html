@@ -765,13 +765,16 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
 <div id="login-overlay">
   <div class="login-box">
     <div class="login-logo">
-      <svg width="140" height="52" viewBox="0 0 140 52" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <text x="2" y="32" font-family="Plus Jakarta Sans, sans-serif" font-size="28" font-weight="800" fill="#f4f8ff" letter-spacing="-1">Gtcon</text>
-        <text x="2" y="47" font-family="Plus Jakarta Sans, sans-serif" font-size="14" font-weight="700" fill="#adb2da" letter-spacing="3">BRASIL</text>
+      <svg width="160" height="58" viewBox="0 0 160 58" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <filter id="glow"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        <text x="2" y="36" font-family="Plus Jakarta Sans, sans-serif" font-size="32" font-weight="800" fill="#f4f8ff" letter-spacing="-1.2" filter="url(#glow)">Gtcon</text>
+        <text x="3" y="52" font-family="Plus Jakarta Sans, sans-serif" font-size="12" font-weight="700" fill="#adb2da" letter-spacing="4">BRASIL</text>
+        <line x1="3" y1="56" x2="94" y2="56" stroke="rgba(173,178,218,0.2)" stroke-width="1"/>
       </svg>
     </div>
-    <div class="login-title">Fichas Técnicas</div>
-    <div class="login-sub">Digite suas credenciais de acesso</div>
+    <div class="login-logo-divider"></div>
+    <div class="login-title">Fichas Técnicas de Clientes</div>
+    <div class="login-sub">Acesse com suas credenciais</div>
     <div class="login-field">
       <label>Usuário</label>
       <input type="text" id="login-usuario" placeholder="Seu usuário" autocomplete="off"
@@ -790,7 +793,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
 <!-- ══════ MODAL REDEFINIR SENHA ══════ -->
 <div id="modal-redef-senha" style="display:none;position:fixed;inset:0;z-index:9500;background:rgba(15,20,40,.55);backdrop-filter:blur(4px);align-items:center;justify-content:center;">
   <div style="background:#fff;border:1px solid var(--border);border-radius:16px;padding:36px 40px;width:420px;max-width:95vw;box-shadow:0 12px 48px rgba(26,32,53,.18);">
-    <div style="font-size:20px;font-weight:700;color:var(--text);margin-bottom:6px;">🔑 Defina sua senha</div>
+    <div style="font-size:20px;font-weight:700;color:var(--text);margin-bottom:6px;">Defina sua senha</div>
     <div style="font-size:13px;color:var(--muted);margin-bottom:24px;">Este é seu primeiro acesso. Crie uma senha pessoal para continuar.</div>
     <div class="fg" style="margin-bottom:14px;">
       <label>Nova senha</label>
@@ -809,7 +812,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
 <div id="modal-senha-admin" style="display:none;position:fixed;inset:0;z-index:9500;background:rgba(15,20,40,.55);backdrop-filter:blur(4px);align-items:center;justify-content:center;">
   <div style="background:#fff;border:1px solid var(--border);border-radius:16px;padding:36px 40px;width:420px;max-width:95vw;box-shadow:0 12px 48px rgba(26,32,53,.18);">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
-      <div style="font-size:18px;font-weight:700;color:var(--text);">🔐 Alterar senha do Admin</div>
+      <div style="font-size:18px;font-weight:700;color:var(--text);">Alterar senha do Admin</div>
       <button onclick="fecharModalSenhaAdmin()" style="background:none;border:none;font-size:18px;color:var(--muted);cursor:pointer;">✕</button>
     </div>
     <div class="fg" style="margin-bottom:14px;">
@@ -865,7 +868,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
     <div id="nova-ficha-err" style="display:none;font-size:12px;color:var(--danger);margin-bottom:12px;padding:8px 12px;background:rgba(220,38,38,.06);border-radius:var(--rsm);"></div>
     <div id="nova-ficha-dup" style="display:none;margin-bottom:14px;padding:12px 14px;background:rgba(217,119,6,.07);border:1px solid rgba(217,119,6,.3);border-radius:var(--rsm);">
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
-        <span style="font-size:15px;">⚠️</span>
+        <span style="font-size:15px;"></span>
         <span style="font-size:13px;font-weight:600;color:var(--warning);">Cliente já cadastrado</span>
       </div>
       <div id="nova-ficha-dup-nome" style="font-size:12px;color:var(--text);margin-bottom:6px;"></div>
@@ -889,21 +892,21 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
 <!-- HEADER -->
 <header class="app-header">
   <div class="brand">
-    <span id="edit-mode-badge-header" class="view-badge" style="font-size:11px">👁 Visualização</span>
+    <span id="edit-mode-badge-header" class="view-badge" style="font-size:11px">Visualização</span>
   </div>
   <!-- Barra modo visualização/edição -->
   <div class="edit-mode-bar" id="edit-mode-bar">
-    <span id="edit-mode-badge" class="view-badge">👁 Visualização</span>
+    <span id="edit-mode-badge" class="view-badge">Visualização</span>
     <span id="edit-lock-info" style="font-size:11.5px;color:var(--muted)"></span>
     <span style="flex:1"></span>
-    <button id="btn-entrar-edicao" class="btn btn-ok btn-sm" onclick="entrarModoEdicao()" style="font-size:11px">✏️ Editar</button>
-    <button id="btn-sair-edicao" class="btn btn-s btn-sm" onclick="sairModoEdicao()" style="font-size:11px;display:none">✕ Sair da edição</button>
+    <button id="btn-entrar-edicao" class="btn btn-ok btn-sm" onclick="entrarModoEdicao()" style="font-size:11px">Editar</button>
+    <button id="btn-sair-edicao" class="btn btn-s btn-sm" onclick="sairModoEdicao()" style="font-size:11px;display:none">Sair</button>
   </div>
 
   <div class="header-right">
     <button class="btn btn-s btn-sm" onclick="clearAll()">Limpar</button>
-    <button class="btn btn-s btn-sm" onclick="exportJSON()">⬇ JSON</button>
-    <button class="btn btn-ok btn-sm" id="btn-salvar-header" onclick="saveAll()" style="display:none">💾 Salvar</button>
+    <button class="btn btn-s btn-sm" onclick="exportJSON()">JSON</button>
+    <button class="btn btn-ok btn-sm" id="btn-salvar-header" onclick="saveAll()" style="display:none">Salvar</button>
   </div>
 
 </header>
@@ -921,7 +924,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
       <text x="2" y="24" font-family="Plus Jakarta Sans, sans-serif" font-size="21" font-weight="800" fill="#f4f8ff" letter-spacing="-0.6">Gtcon</text>
       <text x="2" y="36" font-family="Plus Jakarta Sans, sans-serif" font-size="10.5" font-weight="700" fill="#adb2da" letter-spacing="2.2">BRASIL</text>
     </svg>
-    <button class="sidebar-changelog-btn" onclick="document.getElementById('modal-changelog').style.display='flex'" title="Changelog">v2.5.0</button>
+    <button class="sidebar-changelog-btn" onclick="document.getElementById('modal-changelog').style.display='flex'" title="Changelog">v2.6.0</button>
   </div>
 
   <!-- Nav principal -->
@@ -1000,7 +1003,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
   <div class="sidebar-bottom">
     <div id="cliente-ativo-chip" style="display:none">
       <div class="side-client-chip">
-        <div class="side-client-icon">🏢</div>
+        <div class="side-client-icon"></div>
         <div class="side-client-info">
           <span id="cliente-ativo-nome"></span>
           <span id="cliente-ativo-consultor"></span>
@@ -1024,30 +1027,30 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
 
 <!-- ════════════════ CADASTRO GERAL ════════════════ -->
 <div class="panel tab-cadastro active" id="panel-cadastro">
-  <div class="readonly-banner" id="banner-panel-cadastro">🔒 Você tem acesso somente leitura ao módulo Cadastro Geral.</div>
+  <div class="readonly-banner" id="banner-panel-cadastro">Somente leitura — visualização apenas</div>
   <div class="panel-head">
-    <div class="panel-title">🏢 <span>Cadastro Geral</span></div>
+    <div class="panel-title"><span>Cadastro Geral</span></div>
     <div class="panel-desc">Identificação da empresa, estrutura societária e regime tributário</div>
   </div>
 
   <!-- STATUS -->
   <div class="card">
-    <div class="card-title"><span class="ct-icon">📌</span> Status do Onboarding</div>
+    <div class="card-title"><span class="ct-icon"></span> Status do Onboarding</div>
     <div class="g">
       <div class="fg">
         <label>Status</label>
         <div class="status-row" id="status-onboarding">
-          <div class="status-chip" onclick="selStatus(this,'status-onboarding','sel-blue')">🔵 Pré-Análise</div>
-          <div class="status-chip" onclick="selStatus(this,'status-onboarding','sel-yellow')">🟡 Em Validação</div>
-          <div class="status-chip" onclick="selStatus(this,'status-onboarding','sel-green')">🟢 Cadastrado</div>
+          <div class="status-chip" onclick="selStatus(this,'status-onboarding','sel-blue')">Pré-Análise</div>
+          <div class="status-chip" onclick="selStatus(this,'status-onboarding','sel-yellow')">Em Validação</div>
+          <div class="status-chip" onclick="selStatus(this,'status-onboarding','sel-green')">Cadastrado</div>
         </div>
       </div>
       <div class="fg">
         <label>Nível de Complexidade</label>
         <div class="status-row" id="status-complexidade">
-          <div class="status-chip" onclick="selStatus(this,'status-complexidade','sel-green')">🟢 Baixa</div>
-          <div class="status-chip" onclick="selStatus(this,'status-complexidade','sel-yellow')">🟡 Média </div>
-          <div class="status-chip" onclick="selStatus(this,'status-complexidade','sel-purple')">🟣 Alta</div>
+          <div class="status-chip" onclick="selStatus(this,'status-complexidade','sel-green')">Baixa</div>
+          <div class="status-chip" onclick="selStatus(this,'status-complexidade','sel-yellow')">Média</div>
+          <div class="status-chip" onclick="selStatus(this,'status-complexidade','sel-purple')">Alta</div>
         </div>
       </div>
     </div>
@@ -1055,7 +1058,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
 
   <!-- DADOS EMPRESA -->
   <div class="card">
-    <div class="card-title"><span class="ct-icon">🏢</span> Dados Gerais da Empresa</div>
+    <div class="card-title"><span class="ct-icon"></span> Dados Gerais da Empresa</div>
     <div class="g g2">
       <div class="fg s2">
         <label>Razão Social <span class="req">*</span></label>
@@ -1092,9 +1095,9 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
       <div class="fg s2">
         <label>Ramo de Atividade <span style="font-size:10px;color:var(--muted);font-weight:400;">(selecione um ou mais)</span></label>
         <div class="check-row">
-          <label class="co" onclick="togC(this,event)"><input type="checkbox" name="ramo" value="servicos">🔧 Serviço</label>
-          <label class="co" onclick="togC(this,event)"><input type="checkbox" name="ramo" value="comercio">🛒 Comércio</label>
-          <label class="co" onclick="togC(this,event)"><input type="checkbox" name="ramo" value="industria">🏭 Indústria</label>
+          <label class="co" onclick="togC(this,event)"><input type="checkbox" name="ramo" value="servicos">Serviço</label>
+          <label class="co" onclick="togC(this,event)"><input type="checkbox" name="ramo" value="comercio">Comércio</label>
+          <label class="co" onclick="togC(this,event)"><input type="checkbox" name="ramo" value="industria">Indústria</label>
         </div>
       </div>
       <div class="fg s2">
@@ -1132,14 +1135,14 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
       </div>
     </div>
 
-    <div class="sec-div">🏛️ Acessos — Prefeitura / Portais Governamentais</div>
+    <div class="sec-div">Acessos — Prefeitura / Portais Governamentais</div>
     <div id="prefeituras-container" style="display:flex;flex-direction:column;gap:8px;margin-bottom:10px;"></div>
     <button class="btn btn-s btn-sm" onclick="addPrefeitura()">+ Adicionar portal</button>
   </div>
 
   <!-- CONSULTOR / RESPONSÁVEL COMERCIAL -->
   <div class="card" id="card-consultor">
-    <div class="card-title"><span class="ct-icon">🤝</span> Responsável Comercial
+    <div class="card-title"><span class="ct-icon"></span> Responsável Comercial
       <span style="margin-left:auto;font-size:10px;font-weight:400;color:var(--muted);text-transform:none;letter-spacing:0" id="consultor-lock-info"></span>
     </div>
     <div class="g g2">
@@ -1156,7 +1159,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
 
   <!-- CONTATO / ASSINATURA -->
   <div class="card">
-    <div class="card-title"><span class="ct-icon">📞</span> Contato e Assinatura</div>
+    <div class="card-title"><span class="ct-icon"></span> Contato e Assinatura</div>
     <div class="g g2">
       <div class="fg">
         <label>Responsável Legal (Assinatura)</label>
@@ -1199,7 +1202,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
 
   <!-- ESTRUTURA SOCIETÁRIA -->
   <div class="card">
-    <div class="card-title"><span class="ct-icon">🏗</span> Estrutura Societária e Filiais</div>
+    <div class="card-title"><span class="ct-icon"></span> Estrutura Societária e Filiais</div>
     <div style="overflow-x:auto;margin-bottom:14px;">
       <table class="data-table" id="filiais-table">
         <thead><tr>
@@ -1283,15 +1286,15 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
 
   <!-- DOR / SPIN -->
   <div class="card">
-    <div class="card-title"><span class="ct-icon">🎯</span> Dor Principal e Motivações (SPIN Selling)</div>
+    <div class="card-title"><span class="ct-icon"></span> Dor Principal e Motivações (SPIN Selling)</div>
     <div class="g">
       <div class="fg">
         <label>Problemas Atuais (Dores Explícitas)</label>
         <div class="check-row">
-          <label class="co" onclick="togC(this,event)"><input type="checkbox" value="atendimento">😤 Atendimento lento/ruim</label>
-          <label class="co" onclick="togC(this,event)"><input type="checkbox" value="erros_guias">❌ Erros em guias de impostos</label>
-          <label class="co" onclick="togC(this,event)"><input type="checkbox" value="falta_consultoria">💡 Falta consultoria gerencial</label>
-          <label class="co" onclick="togC(this,event)"><input type="checkbox" value="tech_obsoleta">📠 Tecnologia obsoleta</label>
+          <label class="co" onclick="togC(this,event)"><input type="checkbox" value="atendimento">Atendimento lento/ruim</label>
+          <label class="co" onclick="togC(this,event)"><input type="checkbox" value="erros_guias">Erros em guias de impostos</label>
+          <label class="co" onclick="togC(this,event)"><input type="checkbox" value="falta_consultoria">Falta consultoria gerencial</label>
+          <label class="co" onclick="togC(this,event)"><input type="checkbox" value="tech_obsoleta">Tecnologia obsoleta</label>
         </div>
       </div>
       <div class="fg">
@@ -1314,14 +1317,14 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
 
 <!-- ════════════════ COMERCIAL ════════════════ -->
 <div class="panel tab-comercial" id="panel-comercial">
-  <div class="readonly-banner" id="banner-panel-comercial">🔒 Você tem acesso somente leitura ao módulo Comercial.</div>
+  <div class="readonly-banner" id="banner-panel-comercial">Somente leitura</div>
   <div class="panel-head">
-    <div class="panel-title">🤝 <span>Comercial</span></div>
+    <div class="panel-title"><span>Comercial</span></div>
     <div class="panel-desc">Identificação do consultor, origem do lead e participantes da reunião de diagnóstico</div>
   </div>
 
   <div class="card">
-    <div class="card-title"><span class="ct-icon">🤝</span> Identificação do Comercial</div>
+    <div class="card-title"><span class="ct-icon"></span> Identificação do Comercial</div>
     <div class="g g2">
       <div class="fg">
         <label>Usuário Responsável <span class="req">*</span> <span style="font-size:10px;color:var(--muted);font-weight:400;">(preenchido automaticamente)</span></label>
@@ -1368,14 +1371,14 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
 
 <!-- ════════════════ DEPARTAMENTO PESSOAL ════════════════ -->
 <div class="panel tab-dp" id="panel-dp">
-  <div class="readonly-banner" id="banner-panel-dp">🔒 Você tem acesso somente leitura ao módulo Dep. Pessoal.</div>
+  <div class="readonly-banner" id="banner-panel-dp">Somente leitura</div>
   <div class="panel-head">
-    <div class="panel-title">👷 <span>Departamento Pessoal</span></div>
+    <div class="panel-title">Departamento Pessoal</span></div>
     <div class="panel-desc">eSocial, vínculos, benefícios, SST e passivos trabalhistas</div>
   </div>
 
   <div class="card">
-    <div class="card-title"><span class="ct-icon">👥</span> Vínculos Empregatícios</div>
+    <div class="card-title"><span class="ct-icon"></span> Vínculos Empregatícios</div>
     <div class="g g4">
       <div class="fg">
         <label>Qtd. CLT</label>
@@ -1420,14 +1423,14 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
   </div>
 
   <div class="card">
-    <div class="card-title"><span class="ct-icon">🎁</span> Benefícios Concedidos</div>
+    <div class="card-title"><span class="ct-icon"></span> Benefícios Concedidos</div>
     <div class="check-row">
-      <label class="co" onclick="togC(this,event)"><input type="checkbox" value="vt">🚌 Vale Transporte</label>
-      <label class="co" onclick="togC(this,event)"><input type="checkbox" value="vr">🍽 Vale Refeição/Alimentação</label>
-      <label class="co" onclick="togC(this,event)"><input type="checkbox" value="plano_saude">🏥 Plano de Saúde</label>
-      <label class="co" onclick="togC(this,event)"><input type="checkbox" value="seguro_vida">🛡 Seguro de Vida</label>
-      <label class="co" onclick="togC(this,event)"><input type="checkbox" value="plr">💰 PLR</label>
-      <label class="co" onclick="togC(this,event)"><input type="checkbox" value="anuenio">📅 Anuênio/Biênio</label>
+      <label class="co" onclick="togC(this,event)"><input type="checkbox" value="vt">Vale Transporte</label>
+      <label class="co" onclick="togC(this,event)"><input type="checkbox" value="vr">Vale Refeição/Alimentação</label>
+      <label class="co" onclick="togC(this,event)"><input type="checkbox" value="plano_saude">Plano de Saúde</label>
+      <label class="co" onclick="togC(this,event)"><input type="checkbox" value="seguro_vida">Seguro de Vida</label>
+      <label class="co" onclick="togC(this,event)"><input type="checkbox" value="plr">PLR</label>
+      <label class="co" onclick="togC(this,event)"><input type="checkbox" value="anuenio">Anuênio/Biênio</label>
     </div>
     <div class="fg" style="margin-top:12px;">
       <label>Outros benefícios</label>
@@ -1436,7 +1439,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
   </div>
 
   <div class="card">
-    <div class="card-title"><span class="ct-icon">⚠️</span> Adicionais e Riscos</div>
+    <div class="card-title"><span class="ct-icon"></span> Adicionais e Riscos</div>
     <div class="g g3">
       <div class="fg">
         <label>Insalubridade</label>
@@ -1473,7 +1476,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
   </div>
 
   <div class="card">
-    <div class="card-title"><span class="ct-icon">🏥</span> Saúde e Segurança do Trabalho (SST)</div>
+    <div class="card-title"><span class="ct-icon"></span> Saúde e Segurança do Trabalho (SST)</div>
     <div class="g g2">
       <div class="fg">
         <label>PCMSO / PGR / LTCAT atualizados?</label>
@@ -1495,11 +1498,11 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
   </div>
 
   <div class="card">
-    <div class="card-title"><span class="ct-icon">🚨</span> Pontos Críticos / Passivos Trabalhistas</div>
+    <div class="card-title"><span class="ct-icon"></span> Pontos Críticos / Passivos Trabalhistas</div>
     <div class="check-row" style="margin-bottom:14px;">
-      <label class="co" onclick="togC(this,event)"><input type="checkbox" value="sem_registro">❌ Funcionários sem registro</label>
-      <label class="co" onclick="togC(this,event)"><input type="checkbox" value="pag_por_fora">💸 Pagamentos "por fora" da folha</label>
-      <label class="co" onclick="togC(this,event)"><input type="checkbox" value="ferias_vencidas">📅 Férias vencidas (dobra)</label>
+      <label class="co" onclick="togC(this,event)"><input type="checkbox" value="sem_registro">Funcionários sem registro</label>
+      <label class="co" onclick="togC(this,event)"><input type="checkbox" value="pag_por_fora">Pagamentos "por fora" da folha</label>
+      <label class="co" onclick="togC(this,event)"><input type="checkbox" value="ferias_vencidas">Férias vencidas (dobra)</label>
     </div>
     <div class="fg">
       <label>Observações sobre passivos</label>
@@ -1508,11 +1511,11 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
   </div>
 
   <div class="card">
-    <div class="card-title"><span class="ct-icon">📋</span> Particularidades do DP</div>
+    <div class="card-title"><span class="ct-icon"></span> Particularidades do DP</div>
     <div class="check-row" style="margin-bottom:14px;">
-      <label class="co" onclick="togC(this,event)"><input type="checkbox" value="tomadores">👷 Tomadores de serviços</label>
-      <label class="co" onclick="togC(this,event)"><input type="checkbox" value="centro_custo">📊 Centro de Custos</label>
-      <label class="co" onclick="togC(this,event)"><input type="checkbox" value="pensao">⚖️ Pensão Alimentícia</label>
+      <label class="co" onclick="togC(this,event)"><input type="checkbox" value="tomadores">Tomadores de serviços</label>
+      <label class="co" onclick="togC(this,event)"><input type="checkbox" value="centro_custo">Centro de Custos</label>
+      <label class="co" onclick="togC(this,event)"><input type="checkbox" value="pensao">Pensão Alimentícia</label>
     </div>
     <div class="fg">
       <label>Outras particularidades do DP</label>
@@ -1525,14 +1528,14 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
 
 <!-- ════════════════ FISCAL ════════════════ -->
 <div class="panel tab-fiscal" id="panel-fiscal">
-  <div class="readonly-banner" id="banner-panel-fiscal">🔒 Você tem acesso somente leitura ao módulo Fiscal.</div>
+  <div class="readonly-banner" id="banner-panel-fiscal">Somente leitura</div>
   <div class="panel-head">
-    <div class="panel-title">🧾 <span>Fiscal</span></div>
+    <div class="panel-title">Fiscal</span></div>
     <div class="panel-desc">Emissão de notas, volume, estoque, SPED e obrigações acessórias</div>
   </div>
 
   <div class="card">
-    <div class="card-title"><span class="ct-icon">🏛</span> Tributário — Engenharia Fiscal</div>
+    <div class="card-title"><span class="ct-icon"></span> Tributário — Engenharia Fiscal</div>
     <div class="g g2">
       <div class="fg">
         <label>Regime de Apuração</label>
@@ -1593,14 +1596,14 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
     </div>
     <div class="sec-div">Riscos Identificados</div>
     <div class="check-row">
-      <label class="co" onclick="togC(this,event)"><input type="checkbox" value="cnae_div">⚠️ CNAE divergente da atividade real</label>
-      <label class="co" onclick="togC(this,event)"><input type="checkbox" value="ncm_desatual">📦 NCM dos produtos desatualizada</label>
-      <label class="co" onclick="togC(this,event)"><input type="checkbox" value="sem_segreg">🔀 Ausência de segregação de receitas (Simples)</label>
+      <label class="co" onclick="togC(this,event)"><input type="checkbox" value="cnae_div">CNAE divergente da atividade real</label>
+      <label class="co" onclick="togC(this,event)"><input type="checkbox" value="ncm_desatual">NCM dos produtos desatualizada</label>
+      <label class="co" onclick="togC(this,event)"><input type="checkbox" value="sem_segreg">Ausência de segregação de receitas (Simples)</label>
     </div>
   </div>
 
   <div class="card">
-    <div class="card-title"><span class="ct-icon">🖨</span> Emissor de Notas Fiscais</div>
+    <div class="card-title"><span class="ct-icon"></span> Emissor de Notas Fiscais</div>
     <div class="g g2">
       <div class="fg">
         <label>Sistema de Emissão (NFe/NFCe/NFSe)</label>
@@ -1640,7 +1643,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
   </div>
 
   <div class="card">
-    <div class="card-title"><span class="ct-icon">📦</span> Controle de Estoque e SPED</div>
+    <div class="card-title"><span class="ct-icon"></span> Controle de Estoque e SPED</div>
     <div class="g g2">
       <div class="fg">
         <label>Controle de Estoque</label>
@@ -1677,7 +1680,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
 
   <!-- Particularidades por Tributo -->
   <div class="card">
-    <div class="card-title"><span class="ct-icon">⚡</span> Particularidades por Tributo</div>
+    <div class="card-title"><span class="ct-icon"></span> Particularidades por Tributo</div>
 
     <!-- Tabs dos tributos -->
     <div style="display:flex;gap:0;border-bottom:2px solid var(--border);margin-bottom:14px;flex-wrap:wrap">
@@ -1711,14 +1714,12 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
 
   <!-- SPED Cruzamento -->
   <div class="card" style="border-color:var(--accent);background:linear-gradient(to right,rgba(37,99,235,.04),transparent)">
-    <div class="card-title"><span class="ct-icon">📊</span> SPED · Cruzamento de Declarações</div>
+    <div class="card-title"><span class="ct-icon"></span> SPED · Cruzamento de Declarações</div>
     <p style="font-size:12.5px;color:var(--muted);margin-bottom:14px;line-height:1.6">
       Importe os arquivos SPED (EFD-Contribuições, ECD, ECF e Fiscal) para cruzar declarações, identificar divergências e gerar relatórios fiscais completos. Os dados ficam salvos no banco vinculados a este cliente.
     </p>
     <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-      <button class="btn btn-ok" onclick="abrirSPED()" id="btn-abrir-sped">
-        📂 Abrir Módulo SPED
-      </button>
+      <button class="btn btn-ok" onclick="abrirSPED()" id="btn-abrir-sped">Abrir Módulo SPED</button>
       <span id="sped-status-badge" style="display:none;font-size:11px;padding:3px 10px;border-radius:20px;background:rgba(5,150,105,.12);color:var(--success);font-weight:500"></span>
     </div>
   </div>
@@ -1729,16 +1730,16 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
 
 <!-- ════════════════ CONTÁBIL ════════════════ -->
 <div class="panel tab-contabil" id="panel-contabil">
-  <div class="readonly-banner" id="banner-panel-contabil">🔒 Você tem acesso somente leitura ao módulo Contábil.</div>
+  <div class="readonly-banner" id="banner-panel-contabil">Somente leitura</div>
   <div class="panel-head">
-    <div class="panel-title">📊 <span>Contábil</span></div>
+    <div class="panel-title"><span>Contábil</span></div>
     <div class="panel-desc">ERP, contas bancárias, patrimônio, mapa de riscos e contabilidade anterior</div>
   </div>
 
 
 
   <div class="card">
-    <div class="card-title"><span class="ct-icon">🏦</span> Contas Bancárias (PJ)</div>
+    <div class="card-title"><span class="ct-icon"></span> Contas Bancárias (PJ)</div>
     <div id="bancos-container">
       <div class="g g4" style="margin-bottom:8px;" id="banco-1">
         <div class="fg s2"><label>Banco</label><input type="text" placeholder="Nome do banco"></div>
@@ -1756,7 +1757,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
   </div>
 
   <div class="card">
-    <div class="card-title"><span class="ct-icon">📚</span> Contabilidade Anterior</div>
+    <div class="card-title"><span class="ct-icon"></span> Contabilidade Anterior</div>
     <div class="g g2">
       <div class="fg">
         <label>Balancete fechado do último exercício?</label>
@@ -1788,7 +1789,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
   </div>
 
   <div class="card">
-    <div class="card-title"><span class="ct-icon">🗺</span> Mapa de Riscos e Alertas Críticos</div>
+    <div class="card-title"><span class="ct-icon"></span> Mapa de Riscos e Alertas Críticos</div>
     <div id="riscos-container">
       <div class="risk-item">
         <div class="risk-num r-danger">1</div>
@@ -1827,14 +1828,14 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
 
 <!-- ════════════════ PARÂMETROS ════════════════ -->
 <div class="panel tab-parametros" id="panel-parametros">
-  <div class="readonly-banner" id="banner-panel-parametros">🔒 Você tem acesso somente leitura ao módulo Parâmetros.</div>
+  <div class="readonly-banner" id="banner-panel-parametros">Somente leitura</div>
   <div class="panel-head">
-    <div class="panel-title">⚙️ <span>Parâmetros</span></div>
+    <div class="panel-title">Parâmetros</span></div>
     <div class="panel-desc">Calendário de envio, relatórios exigidos, key users e checklist de saída</div>
   </div>
 
   <div class="card">
-    <div class="card-title"><span class="ct-icon">📅</span> Calendário Operacional (SLA)</div>
+    <div class="card-title"><span class="ct-icon"></span> Calendário Operacional (SLA)</div>
     <div class="g g3">
       <div class="fg">
         <label>Dia de Fechamento do Ponto</label>
@@ -1852,21 +1853,21 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
     <div class="fg" style="margin-top:14px;">
       <label>Forma de Envio de Guias</label>
       <div class="radio-row">
-        <label class="ro" onclick="selR(this,'envio_guias')"><input type="radio" name="envio_guias" value="email">📧 E-mail</label>
-        <label class="ro" onclick="selR(this,'envio_guias')"><input type="radio" name="envio_guias" value="portal">🖥 Portal do Cliente</label>
-        <label class="ro" onclick="selR(this,'envio_guias')"><input type="radio" name="envio_guias" value="whatsapp">📱 WhatsApp</label>
+        <label class="ro" onclick="selR(this,'envio_guias')"><input type="radio" name="envio_guias" value="email">E-mail</label>
+        <label class="ro" onclick="selR(this,'envio_guias')"><input type="radio" name="envio_guias" value="portal">Portal do Cliente</label>
+        <label class="ro" onclick="selR(this,'envio_guias')"><input type="radio" name="envio_guias" value="whatsapp">WhatsApp</label>
       </div>
     </div>
   </div>
 
   <div class="card">
-    <div class="card-title"><span class="ct-icon">📈</span> Relatórios Gerenciais Exigidos</div>
+    <div class="card-title"><span class="ct-icon"></span> Relatórios Gerenciais Exigidos</div>
     <div class="check-row" style="margin-bottom:14px;">
-      <label class="co" onclick="togC(this,event)"><input type="checkbox" value="balancete_mensal">📊 Balancete Mensal</label>
-      <label class="co" onclick="togC(this,event)"><input type="checkbox" value="dre">📉 DRE Gerencial</label>
-      <label class="co" onclick="togC(this,event)"><input type="checkbox" value="rel_fat">📄 Rel. Faturamento (bancos)</label>
-      <label class="co" onclick="togC(this,event)"><input type="checkbox" value="fluxo_caixa">💸 Fluxo de Caixa</label>
-      <label class="co" onclick="togC(this,event)"><input type="checkbox" value="folha">👥 Resumo de Folha</label>
+      <label class="co" onclick="togC(this,event)"><input type="checkbox" value="balancete_mensal">Balancete Mensal</label>
+      <label class="co" onclick="togC(this,event)"><input type="checkbox" value="dre">DRE Gerencial</label>
+      <label class="co" onclick="togC(this,event)"><input type="checkbox" value="rel_fat">Rel. Faturamento (bancos)</label>
+      <label class="co" onclick="togC(this,event)"><input type="checkbox" value="fluxo_caixa">Fluxo de Caixa</label>
+      <label class="co" onclick="togC(this,event)"><input type="checkbox" value="folha">Resumo de Folha</label>
     </div>
     <div class="fg">
       <label>Outros relatórios solicitados</label>
@@ -1875,7 +1876,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
   </div>
 
   <div class="card">
-    <div class="card-title"><span class="ct-icon">🙋</span> Responsáveis no Cliente</div>
+    <div class="card-title"><span class="ct-icon"></span> Responsáveis no Cliente</div>
 
     <div class="sec-div">Implantação</div>
     <div class="g g2">
@@ -1939,7 +1940,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
   </div>
 
   <div class="card">
-    <div class="card-title"><span class="ct-icon">✅</span> Checklist de Saída — Itens Bloqueantes</div>
+    <div class="card-title"><span class="ct-icon"></span> Checklist de Saída — Itens Bloqueantes</div>
     <div class="checklist" id="checklist-saida">
       <div class="check-line" onclick="toggleCheckLine(this)">
         <div class="check-box"></div>
@@ -1989,14 +1990,14 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
 
 <!-- ════════════════ PARTICULARIDADES ════════════════ -->
 <div class="panel tab-particularidades" id="panel-particularidades">
-  <div class="readonly-banner" id="banner-panel-particularidades">🔒 Você tem acesso somente leitura ao módulo Particularidades.</div>
+  <div class="readonly-banner" id="banner-panel-particularidades">Somente leitura</div>
   <div class="panel-head">
-    <div class="panel-title">📝 <span>Particularidades Gerais</span></div>
+    <div class="panel-title">Particularidades Gerais</span></div>
     <div class="panel-desc">Manual mensal, erros encontrados, observações e instruções especiais ao time</div>
   </div>
 
   <div class="card">
-    <div class="card-title"><span class="ct-icon">💻</span> Software de Gestão (ERP)</div>
+    <div class="card-title"><span class="ct-icon"></span> Software de Gestão (ERP)</div>
     <div class="g g2">
       <div class="fg">
         <label>Sistema ERP / Financeiro</label>
@@ -2023,24 +2024,24 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
       <div class="fg s2">
         <label>Departamentos Envolvidos</label>
         <div class="radio-row" style="flex-wrap:wrap;gap:8px">
-          <label class="co" onclick="togC(this,'depts')"><input type="checkbox" name="depts" value="contabil">📊 Contábil</label>
-          <label class="co" onclick="togC(this,'depts')"><input type="checkbox" name="depts" value="fiscal">🧾 Fiscal</label>
-          <label class="co" onclick="togC(this,'depts')"><input type="checkbox" name="depts" value="dp">👥 Dep. Pessoal</label>
-          <label class="co" onclick="togC(this,'depts')"><input type="checkbox" name="depts" value="societario">🏛 Societário</label>
-          <label class="co" onclick="togC(this,'depts')"><input type="checkbox" name="depts" value="financeiro">💰 Financeiro</label>
+          <label class="co" onclick="togC(this,'depts')"><input type="checkbox" name="depts" value="contabil">Contábil</label>
+          <label class="co" onclick="togC(this,'depts')"><input type="checkbox" name="depts" value="fiscal">Fiscal</label>
+          <label class="co" onclick="togC(this,'depts')"><input type="checkbox" name="depts" value="dp">Dep. Pessoal</label>
+          <label class="co" onclick="togC(this,'depts')"><input type="checkbox" name="depts" value="societario">Societário</label>
+          <label class="co" onclick="togC(this,'depts')"><input type="checkbox" name="depts" value="financeiro">Financeiro</label>
         </div>
       </div>
     </div>
   </div>
 
   <div class="card">
-    <div class="card-title"><span class="ct-icon">⚠️</span> Erros Encontrados</div>
+    <div class="card-title"><span class="ct-icon"></span> Erros Encontrados</div>
     <div id="erros-container"></div>
     <button class="btn btn-s btn-sm" onclick="addErro()">+ Registrar erro</button>
   </div>
 
   <div class="card">
-    <div class="card-title"><span class="ct-icon">📋</span> Manual de Particularidades Mensais</div>
+    <div class="card-title"><span class="ct-icon"></span> Manual de Particularidades Mensais</div>
     <div class="g">
       <div class="fg">
         <label>Instruções especiais ao time operacional</label>
@@ -2054,7 +2055,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
   </div>
 
   <div class="card">
-    <div class="card-title"><span class="ct-icon">📝</span> Observações Gerais</div>
+    <div class="card-title"><span class="ct-icon"></span> Observações Gerais</div>
     <div class="fg">
       <label>Observações adicionais sobre o cliente</label>
       <textarea id="obs_gerais" placeholder="Qualquer outra informação relevante que o time deva conhecer..." rows="4"></textarea>
@@ -2062,7 +2063,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
   </div>
 
   <div class="card">
-    <div class="card-title"><span class="ct-icon">📄</span> Relatório / Diagnóstico Final</div>
+    <div class="card-title"><span class="ct-icon"></span> Relatório / Diagnóstico Final</div>
     <div class="g">
       <div class="fg">
         <label>Resumo da reunião comercial</label>
@@ -2076,14 +2077,14 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
   </div>
 
   <div class="act-bar" id="actbar-salvar" style="display:none">
-    <button class="btn btn-ok ml" onclick="saveAll()">💾 Salvar Ficha Completa</button>
+    <button class="btn btn-ok ml" onclick="saveAll()">Salvar Ficha Completa</button>
   </div>
 </div>
 
 <!-- ════════════════ BANCO DE DADOS ════════════════ -->
 <div class="panel tab-db" id="panel-db">
   <div class="panel-head">
-    <div class="panel-title">👥 <span>Clientes</span></div>
+    <div class="panel-title"><span>Clientes</span></div>
     <div class="panel-desc">Selecione um cliente para abrir a ficha ou cadastre um novo</div>
   </div>
 
@@ -2105,18 +2106,18 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
   <div class="card">
     <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap;">
       <div style="flex:1;min-width:200px;position:relative;">
-        <span style="position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--dim);font-size:14px;">🔍</span>
+        <span style="position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--dim);font-size:14px;"></span>
         <input type="text" id="db-search-input"
           placeholder="Buscar por Razão Social, CNPJ ou Código SCI..."
           oninput="renderDBTable()"
           style="width:100%;padding:9px 12px 9px 34px;border:1px solid var(--border);border-radius:var(--rsm);background:var(--surface2);font-family:var(--sans);font-size:13px;outline:none;">
       </div>
       <button class="btn btn-s btn-sm" onclick="exportAllJSON()">⬇ Exportar</button>
-      <button class="btn btn-ok btn-sm" onclick="novaFicha()">➕ Nova Ficha</button>
+      <button class="btn btn-ok btn-sm" onclick="novaFicha()">+ Nova Ficha</button>
     </div>
     <div class="db-table-wrap" id="db-table-wrap">
       <div class="db-empty">
-        <div class="de-icon">📂</div>
+        <div class="de-icon"></div>
         <p>Nenhum cliente cadastrado ainda.</p>
         <small>Clique em "Nova Ficha" para começar.</small>
       </div>
@@ -2128,14 +2129,14 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
 <div class="panel tab-admin" id="panel-admin">
   <div class="panel-head" style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;">
     <div>
-      <div class="panel-title">🔐 <span>Gerenciamento de Usuários</span></div>
+      <div class="panel-title"><span>Gerenciamento de Usuários</span></div>
       <div class="panel-desc">Apenas administradores podem visualizar e editar esta seção</div>
     </div>
-    <button class="btn btn-s btn-sm" onclick="abrirModalSenhaAdmin()" style="margin-top:4px;white-space:nowrap;">🔑 Alterar senha do Admin</button>
+    <button class="btn btn-s btn-sm" onclick="abrirModalSenhaAdmin()" style="margin-top:4px;white-space:nowrap;">Alterar senha do Admin</button>
   </div>
 
   <div class="card">
-    <div class="card-title"><span class="ct-icon">➕</span> Adicionar Usuário</div>
+    <div class="card-title"><span class="ct-icon"></span> Adicionar Usuário</div>
     <div class="admin-add-form">
       <div class="g g3">
         <div class="fg s2">
@@ -2171,7 +2172,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
   </div>
 
   <div class="card">
-    <div class="card-title"><span class="ct-icon">👥</span> Usuários Cadastrados</div>
+    <div class="card-title"><span class="ct-icon"></span> Usuários Cadastrados</div>
     <div id="admin-user-list">
       <div style="text-align:center;padding:20px;color:var(--muted);font-size:13px;">Carregando...</div>
     </div>
@@ -2181,7 +2182,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
 <!-- ════════════════ LOG ════════════════ -->
 <div class="panel tab-log" id="panel-log">
   <div class="panel-head">
-    <div class="panel-title">📋 <span>Log de Atividades</span></div>
+    <div class="panel-title"><span>Log de Atividades</span></div>
     <div class="panel-desc">Registro completo de todas as ações no sistema — visível apenas para administradores</div>
   </div>
   <div class="card">
@@ -2194,8 +2195,8 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
         <option value="ficha">Fichas de Clientes</option>
         <option value="usuario">Usuários</option>
       </select>
-      <button class="btn btn-s btn-sm" onclick="exportarLogCSV()" style="margin-left:4px;">📥 Exportar CSV</button>
-      <button class="btn btn-d btn-sm" onclick="limparLog()">🗑 Limpar Log</button>
+      <button class="btn btn-s btn-sm" onclick="exportarLogCSV()" style="margin-left:4px;">Exportar CSV</button>
+      <button class="btn btn-d btn-sm" onclick="limparLog()">Limpar Log</button>
     </div>
     <div id="log-container">
       <div style="text-align:center;padding:40px;color:var(--muted);font-size:13px;">Nenhum registro ainda.</div>
@@ -2949,7 +2950,7 @@ async function api(method, path, body) {
     return { ok: false, erro: 'Rota desconhecida' };
   } catch(e) {
     console.error('Supabase error:', e);
-    toast(`❌ Erro banco de dados: ${e.message}`, 'err');
+    toast(`Erro banco de dados: ${e.message}`, 'err');
     return { ok: false, erro: e.message };
   }
 }
@@ -3080,7 +3081,7 @@ async function saveAll() {
     const jaExiste = (await getClientesDB()).find(c => c.cadastro?.cnpj?.replace(/\D/g,'') === cnpjNovo);
     if (jaExiste) {
       const nome = jaExiste.cadastro?.razao_social || cnpjNovo;
-      toast(`❌ Duplicidade! "${nome}" já está cadastrado com este CNPJ. Localize-o na aba Clientes.`, 'err');
+      toast(`Duplicidade! "${nome}" já está cadastrado com este CNPJ. Localize-o na aba Clientes.`, 'err');
       return;
     }
   }
@@ -4516,7 +4517,119 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 /* Panel title mais limpo */
 .panel-title { color: var(--navy); }
+
+/* ── LOGIN REFINADO ── */
+#login-overlay {
+  position: fixed; inset: 0; z-index: 9000;
+  background: #000d36;
+  display: flex; align-items: center; justify-content: center;
+}
+#login-overlay::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 30%, rgba(26,77,184,.35) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 80% at 80% 70%, rgba(1,25,87,.5) 0%, transparent 60%);
+  pointer-events: none;
+}
+.login-box {
+  position: relative; z-index: 1;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 20px;
+  padding: 48px 52px;
+  width: 420px; max-width: 95vw;
+  box-shadow:
+    0 0 0 1px rgba(173,178,218,.08),
+    0 32px 64px rgba(0,0,0,.5),
+    0 8px 24px rgba(0,0,0,.3),
+    inset 0 1px 0 rgba(255,255,255,.1);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+.login-logo {
+  text-align: center; margin-bottom: 8px;
+  display: flex; justify-content: center;
+}
+.login-logo-divider {
+  width: 32px; height: 2px;
+  background: linear-gradient(to right, transparent, rgba(173,178,218,.4), transparent);
+  margin: 0 auto 20px;
+}
+.login-title {
+  font-size: 16px; font-weight: 600; text-align: center;
+  color: rgba(255,255,255,.75); margin-bottom: 3px;
+  letter-spacing: .01em;
+}
+.login-sub {
+  font-size: 12px; color: rgba(173,178,218,.6);
+  text-align: center; margin-bottom: 32px;
+}
+.login-field { text-align: left; margin-bottom: 14px; }
+.login-field label {
+  font-size: 10.5px; font-weight: 600; color: rgba(173,178,218,.6);
+  text-transform: uppercase; letter-spacing: .08em;
+  display: block; margin-bottom: 7px;
+}
+#login-overlay .login-field input {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 10px;
+  color: #f0f4ff; font-size: 13.5px;
+  padding: 11px 14px; width: 100%;
+  outline: none; font-family: var(--sans);
+  transition: border-color .15s, box-shadow .15s;
+}
+#login-overlay .login-field input::placeholder { color: rgba(255,255,255,.2); }
+#login-overlay .login-field input:focus {
+  border-color: rgba(173,178,218,.45);
+  box-shadow: 0 0 0 3px rgba(173,178,218,.1);
+  background: rgba(255,255,255,.09);
+}
+.login-err {
+  font-size: 11.5px; color: #f87171; margin-bottom: 14px;
+  min-height: 16px; text-align: center;
+}
+.login-btn {
+  width: 100%; padding: 12px;
+  background: #011957; color: #f0f4ff;
+  border: 1px solid rgba(173,178,218,.25);
+  border-radius: 10px;
+  font-family: var(--sans); font-size: 13.5px; font-weight: 600;
+  cursor: pointer; transition: all .18s;
+  box-shadow: 0 2px 8px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.08);
+  letter-spacing: .02em;
+}
+.login-btn:hover {
+  background: #0a2d7a;
+  box-shadow: 0 4px 16px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.1);
+  transform: translateY(-1px);
+}
+.login-btn:active { transform: translateY(0); }
 </style>
+
+      <!-- v2.6.0 -->
+      <div style="margin-bottom:20px">
+        <div class="cl-ver">
+          <code>v2.6.0</code>
+          <time>17/03/2026</time>
+          <span class="cl-badge imp">● Refinamentos</span>
+        </div>
+        <div class="cl-section">🚫 Emojis removidos</div>
+        <ul class="cl-list">
+          <li>Todos os emojis removidos da interface — botões, títulos de card, panel titles, checkboxes, status chips e banners</li>
+          <li>Visual mais sóbrio e profissional; ícones SVG inline onde necessário</li>
+        </ul>
+        <div class="cl-section">🔐 Login redesenhado</div>
+        <ul class="cl-list">
+          <li>Fundo navy escuro com gradiente radial sutil de profundidade</li>
+          <li>Card com glass morphism refinado — sombra em camadas, borda interna luminosa, backdrop-blur</li>
+          <li>Logo com efeito glow no SVG (feGaussianBlur)</li>
+          <li>Linha decorativa fina sob o logo</li>
+          <li>Inputs e botão com border-radius 10px, sombras e transições suaves</li>
+        </ul>
+      </div>
+      <hr class="cl-divider">
 
       <!-- v2.5.0 -->
       <div style="margin-bottom:20px">
@@ -4583,7 +4696,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           <li>Card com 6 abas: PIS/COFINS · IRPJ/CSLL · ISS · ICMS · IPI · DAS</li>
           <li>Ponto verde na aba quando há conteúdo preenchido</li>
         </ul>
-        <div class="cl-section">🔧 Ajustes de Interface</div>
+        <div class="cl-section">Ajustes de Interface</div>
         <ul class="cl-list">
           <li>Botões Próximo/Anterior entre abas removidos — navegação pelas tabs do topo</li>
           <li>"Vende para cliente final (B2C)?" adicionado em Tributário — Engenharia Fiscal</li>
@@ -4721,7 +4834,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           <span class="cl-badge new">● Novas Funcionalidades</span>
         </div>
         <ul class="cl-list">
-          <li>Botão 📊 Excel e 📄 PDF no header — exporta ficha ativa</li>
+          <li>Botão Excel e PDF no header — exporta ficha ativa</li>
           <li>Modal 📥 Importar — importação em massa via JSON/CSV</li>
           <li>Correção de duplicidade falsa ao salvar ficha já aberta</li>
         </ul>
