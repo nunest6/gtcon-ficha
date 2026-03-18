@@ -1412,7 +1412,7 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.55; }
       <div class="brand-sub" style="display:flex;align-items:center;gap:6px">
         <button onclick="document.getElementById('modal-changelog').style.display='flex'"
           style="background:rgba(255,255,255,.1);border:none;cursor:pointer;font-size:9.5px;color:#adb2da;font-weight:700;padding:2px 8px;border-radius:20px;font-family:var(--mono)"
-          title="Changelog">v2.7.0</button>
+          title="Changelog">v2.8.0</button>
       </div>
     </div>
   </div>
@@ -1453,6 +1453,7 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.55; }
 <!-- TABS -->
 <div class="tabs-bar">
   <button class="tab-btn" onclick="showTab('cadastro',this)">Cadastro Geral<span class="tab-dot"></span></button>
+  <button class="tab-btn" onclick="showTab('reuniao',this)">Reunião<span class="tab-dot"></span></button>
   <button class="tab-btn" onclick="showTab('dp',this)">Dep. Pessoal<span class="tab-dot"></span></button>
   <button class="tab-btn" onclick="showTab('fiscal',this)">Fiscal<span class="tab-dot"></span></button>
   <button class="tab-btn" onclick="showTab('tributario',this)">Tributário<span class="tab-dot"></span></button>
@@ -1475,7 +1476,7 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.55; }
       <text x="2" y="24" font-family="Plus Jakarta Sans, sans-serif" font-size="21" font-weight="800" fill="#f4f8ff" letter-spacing="-0.6">Gtcon</text>
       <text x="2" y="36" font-family="Plus Jakarta Sans, sans-serif" font-size="10.5" font-weight="700" fill="#adb2da" letter-spacing="2.2">BRASIL</text>
     </svg>
-    <button class="sidebar-changelog-btn" onclick="document.getElementById('modal-changelog').style.display='flex'" title="Changelog">v2.7.0</button>
+    <button class="sidebar-changelog-btn" onclick="document.getElementById('modal-changelog').style.display='flex'" title="Changelog">v2.8.0</button>
   </div>
 
   <!-- Nav principal -->
@@ -1919,6 +1920,98 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.55; }
   </div>
 
   
+</div>
+
+<!-- ════════════════ REUNIÃO ════════════════ -->
+<div class="panel tab-reuniao" id="panel-reuniao">
+  <div class="readonly-banner" id="banner-panel-reuniao">Somente leitura</div>
+  <div class="panel-head">
+    <div class="panel-title">Reunião</div>
+    <div class="panel-desc">Registro de reuniões, tópicos discutidos e participantes</div>
+  </div>
+
+  <!-- Formulário de nova reunião -->
+  <div class="card">
+    <div class="card-title">Nova Reunião</div>
+
+    <div class="g g2" style="margin-bottom:14px">
+      <div class="fg s2" style="grid-column: span 1">
+        <label>Tópico da Reunião</label>
+        <input type="text" id="reuniao_topico" placeholder="Assunto principal da reunião...">
+      </div>
+      <div class="fg" style="grid-column: span 1">
+        <label>Data da Reunião</label>
+        <input type="date" id="reuniao_data">
+        <label style="margin-top:10px">Horário</label>
+        <input type="time" id="reuniao_hora">
+      </div>
+    </div>
+
+    <div class="fg" style="margin-bottom:14px" id="reuniao-partic-wrapper">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+        <label style="margin:0">Participantes</label>
+        <span id="reuniao-partic-lock" style="font-size:10px;color:var(--muted)">Editável apenas pelo admin após registro</span>
+      </div>
+
+      <!-- Chips dos selecionados -->
+      <div id="reuniao-partic-chips" style="display:flex;flex-wrap:wrap;gap:6px;min-height:0;margin-bottom:8px"></div>
+
+      <!-- Dropdown de seleção -->
+      <div id="reuniao-partic-select-wrap" style="position:relative">
+        <div id="reuniao-partic-input"
+          onclick="toggleParticDropdown()"
+          style="display:flex;align-items:center;justify-content:space-between;padding:9px 12px;border:1.5px solid var(--border);border-radius:var(--r-sm);cursor:pointer;background:var(--surface);font-size:13px;color:var(--dim);user-select:none;transition:border-color var(--tr)">
+          <span>Selecionar participante...</span>
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;opacity:.5"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </div>
+        <div id="reuniao-partic-dropdown"
+          style="display:none;position:absolute;top:calc(100% + 4px);left:0;right:0;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow-lg);z-index:100;overflow:hidden;max-height:240px;overflow-y:auto">
+          <div style="padding:8px 10px;border-bottom:1px solid var(--border)">
+            <input type="text" id="reuniao-partic-search" placeholder="Buscar usuário..." autocomplete="off"
+              style="font-size:12px;padding:6px 10px;width:100%;border:1px solid var(--border);border-radius:var(--r-sm);outline:none"
+              oninput="filtrarParticDropdown(this.value)" onclick="event.stopPropagation()">
+          </div>
+          <div id="reuniao-partic-lista"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="fg" style="margin-bottom:18px">
+      <label>Departamentos Envolvidos</label>
+      <div class="radio-row" style="flex-wrap:wrap;gap:8px;margin-top:4px">
+        <label class="co" onclick="togC(this,'reuniao_depts')">
+          <input type="checkbox" name="reuniao_depts" value="contabil">Contábil
+        </label>
+        <label class="co" onclick="togC(this,'reuniao_depts')">
+          <input type="checkbox" name="reuniao_depts" value="fiscal">Fiscal
+        </label>
+        <label class="co" onclick="togC(this,'reuniao_depts')">
+          <input type="checkbox" name="reuniao_depts" value="tributario">Tributário
+        </label>
+        <label class="co" onclick="togC(this,'reuniao_depts')">
+          <input type="checkbox" name="reuniao_depts" value="dp">DP
+        </label>
+      </div>
+    </div>
+
+    <div class="g g2" style="margin-bottom:14px">
+      <div class="fg">
+        <label>Link da Reunião</label>
+        <input type="text" id="reuniao_link" placeholder="https://meet.google.com/... ou Zoom, Teams...">
+      </div>
+      <div class="fg">
+        <label>Transcrição / Ata</label>
+        <textarea id="reuniao_transcricao" rows="3" placeholder="Pontos decididos, ações combinadas, observações importantes..."></textarea>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:8px;align-items:center">
+      <button class="btn btn-ok" onclick="adicionarReuniao()">+ Registrar Reunião</button>
+    </div>
+  </div>
+
+  <!-- Lista de reuniões registradas -->
+  <div id="reunioes-lista"></div>
 </div>
 
 <!-- ════════════════ DEPARTAMENTO PESSOAL ════════════════ -->
@@ -2798,6 +2891,7 @@ function showTab(id, btn) {
 function updateSidebar(tab) {
   const maps = {
     cadastro: ['Status','Dados Empresa','Contato','Soc. & Filiais','Dores / SPIN'],
+    reuniao: ['Reuniões Registradas'],
     comercial: ['Consultor','Origem do Lead','Participantes'],
     dp: ['Vínculos','Benefícios','Adicionais','SST','Passivos','Particularidades DP'],
     fiscal: ['Eng. Fiscal','Emissor de NF','Estoque & SPED'],
@@ -3623,6 +3717,7 @@ function collectData() {
       resp_tecnico: gv('resp_tecnico'), data_corte: gv('data_corte'),
       outros_relatorios: gv('outros_relatorios'),
     },
+    reunioes: _reunioes,
     particularidades: {
       erp: gr('erp'), erp_outro: gv('erp_outro'), erp_integ: gr('erp_integ'),
       depts: Array.from(document.querySelectorAll('[name="depts"]:checked')).map(el => el.value),
@@ -4026,6 +4121,9 @@ function abrirCliente(data) {
   loadClient(data);
   aplicarBloqueioConsultor();
   updateTribTabs();
+  _reunioes = data.reunioes || [];
+  renderReunioes();
+  aplicarBloqueioParticipantes();
   showTab('cadastro', document.querySelector('.tab-btn'));
   const nome = data.cadastro?.razao_social || data.cadastro?.cnpj || 'Cliente';
   const cnpj = (data.cadastro?.cnpj||'').replace(/\D/g,'');
@@ -4949,6 +5047,253 @@ async function verificarTravaAtiva(cnpj) {
   } catch(e) { console.warn('verificarTravaAtiva:', e); }
 }
 
+
+// ── REUNIÕES ──
+let _reunioes = [];
+let _participantesSelecionados = []; // [{id, nome, usuario, dept}]
+let _participDropdownAberto = false;
+
+// Abrir/fechar dropdown
+function toggleParticDropdown() {
+  const wrap = document.getElementById('reuniao-partic-select-wrap');
+  // Bloquear se não-admin e já há participantes
+  if (_participantesSelecionados.length > 0 && currentUser?.perfil !== 'admin') return;
+  _participDropdownAberto = !_participDropdownAberto;
+  const dd = document.getElementById('reuniao-partic-dropdown');
+  if (!dd) return;
+  if (_participDropdownAberto) {
+    dd.style.display = '';
+    renderParticDropdown('');
+    setTimeout(() => document.getElementById('reuniao-partic-search')?.focus(), 50);
+  } else {
+    dd.style.display = 'none';
+  }
+}
+
+// Fechar dropdown ao clicar fora
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('#reuniao-partic-select-wrap')) {
+    const dd = document.getElementById('reuniao-partic-dropdown');
+    if (dd) dd.style.display = 'none';
+    _participDropdownAberto = false;
+  }
+});
+
+// Renderizar lista do dropdown
+function renderParticDropdown(filtro) {
+  const lista = document.getElementById('reuniao-partic-lista');
+  if (!lista) return;
+  const f = filtro.toLowerCase();
+  const users = usuariosDB.filter(u =>
+    (!f || u.nome.toLowerCase().includes(f) || u.usuario.toLowerCase().includes(f))
+  );
+  if (!users.length) {
+    lista.innerHTML = '<div style="padding:16px;text-align:center;color:var(--dim);font-size:12px">Nenhum usuário encontrado</div>';
+    return;
+  }
+  const selecionadosIds = new Set(_participantesSelecionados.map(p => p.id));
+  lista.innerHTML = users.map(u => {
+    const iniciais = u.nome.split(' ').slice(0,2).map(w => w[0]).join('').toUpperCase();
+    const jaSel = selecionadosIds.has(u.id);
+    return `<div class="partic-dropdown-item${jaSel ? ' selecionado' : ''}" onclick="selecionarPartic('${u.id}')">
+      <div class="partic-avatar">${iniciais}</div>
+      <div style="flex:1;min-width:0">
+        <div class="partic-info-nome">${u.nome}</div>
+        <div style="display:flex;gap:4px;align-items:center">
+          <span class="partic-info-user">@${u.usuario}</span>
+          <span class="partic-info-dept">${u.dept || ''}</span>
+        </div>
+      </div>
+      ${jaSel ? '<span style="font-size:11px;color:var(--success)">✓</span>' : ''}
+    </div>`;
+  }).join('');
+}
+
+// Filtrar dropdown
+function filtrarParticDropdown(v) {
+  renderParticDropdown(v);
+}
+
+// Selecionar participante
+function selecionarPartic(userId) {
+  const u = usuariosDB.find(u => u.id === userId);
+  if (!u || _participantesSelecionados.find(p => p.id === userId)) return;
+  _participantesSelecionados.push({ id: u.id, nome: u.nome, usuario: u.usuario, dept: u.dept });
+  renderParticChips();
+  renderParticDropdown(document.getElementById('reuniao-partic-search')?.value || '');
+  aplicarBloqueioParticipantes();
+}
+
+// Remover participante (só admin)
+function removerPartic(userId) {
+  if (currentUser?.perfil !== 'admin') return;
+  _participantesSelecionados = _participantesSelecionados.filter(p => p.id !== userId);
+  renderParticChips();
+  renderParticDropdown('');
+  aplicarBloqueioParticipantes();
+}
+
+// Renderizar chips
+function renderParticChips() {
+  const container = document.getElementById('reuniao-partic-chips');
+  if (!container) return;
+  if (!_participantesSelecionados.length) {
+    container.innerHTML = '';
+    container.style.marginBottom = '0';
+    return;
+  }
+  container.style.marginBottom = '8px';
+  const isAdmin = currentUser?.perfil === 'admin';
+  container.innerHTML = _participantesSelecionados.map(p => `
+    <span class="partic-chip">
+      <span class="partic-chip-nome">${p.nome}</span>
+      <span class="partic-chip-user">@${p.usuario}</span>
+      ${isAdmin ? `<button class="partic-chip-del" onclick="removerPartic('${p.id}')" title="Remover">✕</button>` : ''}
+    </span>`).join('');
+}
+
+// Bloquear/desbloquear seletor de participantes
+function aplicarBloqueioParticipantes() {
+  const isAdmin = currentUser?.perfil === 'admin';
+  const temPartic = _participantesSelecionados.length > 0;
+  const input = document.getElementById('reuniao-partic-input');
+  const lockInfo = document.getElementById('reuniao-partic-lock');
+  const searchWrap = document.getElementById('reuniao-partic-select-wrap');
+
+  if (temPartic && !isAdmin) {
+    // Bloquear para não-admins quando já tem participantes
+    if (input) {
+      input.style.pointerEvents = 'none';
+      input.style.opacity = '.55';
+      input.style.cursor = 'default';
+      input.style.background = 'var(--surface3)';
+    }
+    if (lockInfo) {
+      lockInfo.textContent = 'Editável apenas pelo admin';
+      lockInfo.style.color = 'var(--muted)';
+    }
+  } else {
+    if (input) {
+      input.style.pointerEvents = '';
+      input.style.opacity = '';
+      input.style.cursor = 'pointer';
+      input.style.background = 'var(--surface)';
+    }
+    if (lockInfo) {
+      lockInfo.textContent = isAdmin ? 'Editável (admin)' : 'Editável apenas pelo admin após registro';
+      lockInfo.style.color = 'var(--dim)';
+    }
+  }
+}
+
+// Limpar seleção de participantes
+function limparParticipantes() {
+  _participantesSelecionados = [];
+  renderParticChips();
+  const dd = document.getElementById('reuniao-partic-dropdown');
+  if (dd) dd.style.display = 'none';
+  _participDropdownAberto = false;
+}
+
+// ── REUNIÕES ──
+
+
+function adicionarReuniao() {
+  const topico = document.getElementById('reuniao_topico')?.value?.trim();
+  const data   = document.getElementById('reuniao_data')?.value;
+  const hora   = document.getElementById('reuniao_hora')?.value;
+  const depts       = Array.from(document.querySelectorAll('[name="reuniao_depts"]:checked')).map(el => el.value);
+  const link        = document.getElementById('reuniao_link')?.value?.trim() || '';
+  const transcricao = document.getElementById('reuniao_transcricao')?.value?.trim() || '';
+
+  if (!topico) { toast('Informe o tópico da reunião.', 'err'); return; }
+  if (!data)   { toast('Informe a data da reunião.', 'err');   return; }
+
+  const reuniao = {
+    id: Date.now(),
+    topico,
+    data,
+    hora: hora || '',
+    participantes: [..._participantesSelecionados],
+    depts,
+    link,
+    transcricao,
+    criadoEm: new Date().toISOString(),
+    criadoPor: currentUser?.nome || '',
+  };
+
+  _reunioes.unshift(reuniao);
+  renderReunioes();
+  limparFormReuniao();
+  toast('Reunião registrada.', 'ok');
+}
+
+function removerReuniao(id) {
+  if (!confirm('Remover este registro de reunião?')) return;
+  _reunioes = _reunioes.filter(r => r.id !== id);
+  renderReunioes();
+}
+
+function limparFormReuniao() {
+  ['reuniao_topico','reuniao_link','reuniao_transcricao'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  ['reuniao_data','reuniao_hora'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  document.querySelectorAll('[name="reuniao_depts"]').forEach(el => {
+    el.checked = false;
+    el.closest('label')?.classList.remove('sel');
+  });
+  limparParticipantes();
+  aplicarBloqueioParticipantes();
+}
+
+function renderReunioes() {
+  const container = document.getElementById('reunioes-lista');
+  if (!container) return;
+
+  if (!_reunioes.length) {
+    container.innerHTML = '<div style="text-align:center;padding:40px;color:var(--dim);font-size:13px">Nenhuma reunião registrada ainda.</div>';
+    return;
+  }
+
+  const deptLabels = { contabil: 'Contábil', fiscal: 'Fiscal', tributario: 'Tributário', dp: 'DP' };
+
+  container.innerHTML = _reunioes.map(r => {
+    const dataFmt = r.data ? new Date(r.data + 'T12:00').toLocaleDateString('pt-BR') : '';
+    const horaFmt = r.hora ? ` às ${r.hora}` : '';
+    const deptBadges = (r.depts || []).map(d =>
+      `<span class="reuniao-dept-badge">${deptLabels[d] || d}</span>`
+    ).join('');
+
+    return `
+    <div class="reuniao-card">
+      <div class="reuniao-header">
+        <div class="reuniao-topico">${r.topico}</div>
+        <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
+          <span class="reuniao-data">${dataFmt}${horaFmt}</span>
+          <button class="reuniao-del" onclick="removerReuniao(${r.id})" title="Remover">✕</button>
+        </div>
+      </div>
+      ${r.participantes && r.participantes.length ? `
+      <div class="reuniao-participantes" style="display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin-bottom:6px">
+        <span style="font-size:11px;color:var(--dim);margin-right:2px">Participantes:</span>
+        ${r.participantes.map(p => `<span class="partic-chip" style="font-size:11px">
+          <span class="partic-chip-nome">${p.nome}</span>
+          <span class="partic-chip-user">@${p.usuario}</span>
+        </span>`).join('')}
+      </div>` : ''}
+      ${deptBadges ? `<div class="reuniao-depts">${deptBadges}</div>` : ''}
+      ${r.link ? `<div style="margin-top:8px"><a href="${r.link}" target="_blank" style="font-size:11.5px;color:var(--accent);text-decoration:none;font-weight:500">Acessar gravação/reunião →</a></div>` : ''}
+      ${r.transcricao ? `<div style="margin-top:8px;padding:10px 12px;background:var(--surface2);border-radius:var(--r-sm);font-size:12px;color:var(--text-2);line-height:1.6;white-space:pre-wrap;border-left:3px solid var(--border)">${r.transcricao}</div>` : ''}
+      ${r.criadoPor ? `<div style="font-size:10.5px;color:var(--dim);margin-top:8px">Registrado por ${r.criadoPor}</div>` : ''}
+    </div>`;
+  }).join('');
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
   showTab('db', document.querySelector('[onclick*="db"]'));
   migrarUsuariosLocalStorage(); // migração silenciosa, não bloqueia o UI
@@ -5206,7 +5551,115 @@ document.addEventListener('DOMContentLoaded', async () => {
   position: absolute; top: 9px; right: 8px; display: none;
 }
 .tab-btn.has-data .tab-dot { display: block; background: var(--success); }
+
+/* ── REUNIÕES ── */
+.reuniao-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 18px 20px;
+  margin-bottom: 10px;
+  transition: border-color var(--tr), box-shadow var(--tr);
+  box-shadow: var(--shadow-xs);
+}
+.reuniao-card:hover { border-color: var(--border-h); box-shadow: var(--shadow-sm); }
+.reuniao-header {
+  display: flex; align-items: flex-start;
+  justify-content: space-between; gap: 12px;
+  margin-bottom: 10px;
+}
+.reuniao-topico {
+  font-size: 13.5px; font-weight: 600;
+  color: var(--text); line-height: 1.4; flex: 1;
+}
+.reuniao-data {
+  font-size: 11.5px; color: var(--muted); white-space: nowrap;
+  font-family: var(--mono); flex-shrink: 0;
+}
+.reuniao-participantes {
+  font-size: 12px; color: var(--muted);
+  margin-bottom: 8px; line-height: 1.5;
+}
+.reuniao-depts {
+  display: flex; flex-wrap: wrap; gap: 5px;
+}
+.reuniao-dept-badge {
+  font-size: 10.5px; font-weight: 600;
+  padding: 2px 9px; border-radius: 10px;
+  background: var(--surface3); color: var(--label);
+  border: 1px solid var(--border);
+}
+.reuniao-del {
+  background: none; border: none;
+  color: var(--dim); cursor: pointer;
+  font-size: 13px; padding: 2px 4px;
+  border-radius: var(--r-xs);
+  transition: color var(--tr), background var(--tr);
+  flex-shrink: 0;
+}
+.reuniao-del:hover { color: var(--danger); background: var(--danger-bg); }
+
+/* ── SELETOR DE PARTICIPANTES (REUNIÃO) ── */
+.partic-chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 10px 4px 8px;
+  background: var(--surface3);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  font-size: 12px; font-weight: 500; color: var(--text-2);
+  transition: all var(--tr);
+}
+.partic-chip-nome  { font-weight: 600; color: var(--navy); }
+.partic-chip-user  { font-size: 10.5px; color: var(--muted); font-family: var(--mono); }
+.partic-chip-del {
+  background: none; border: none; cursor: pointer;
+  color: var(--dim); font-size: 12px; padding: 0 1px;
+  line-height: 1; transition: color var(--tr);
+  display: flex; align-items: center;
+}
+.partic-chip-del:hover { color: var(--danger); }
+.partic-dropdown-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 14px; cursor: pointer;
+  transition: background var(--tr); border-bottom: 1px solid var(--border);
+  font-size: 13px;
+}
+.partic-dropdown-item:last-child { border-bottom: none; }
+.partic-dropdown-item:hover { background: var(--surface2); }
+.partic-dropdown-item.selecionado { opacity: .4; pointer-events: none; }
+.partic-avatar {
+  width: 30px; height: 30px; border-radius: 50%;
+  background: var(--navy); color: #e8edf8;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; flex-shrink: 0;
+}
+.partic-info-nome  { font-weight: 600; color: var(--text); }
+.partic-info-user  { font-size: 11px; color: var(--muted); font-family: var(--mono); }
+.partic-info-dept  { font-size: 10.5px; color: var(--dim); margin-left: 4px; }
+/* Estado bloqueado (não-admin após registro) */
+.reuniao-card-locked #reuniao-partic-select-wrap { display: none !important; }
 </style>
+
+      <!-- v2.8.0 -->
+      <div style="margin-bottom:20px">
+        <div class="cl-ver">
+          <code>v2.8.0</code>
+          <time>18/03/2026</time>
+          <span class="cl-badge new">● Novas Funcionalidades</span>
+        </div>
+        <div class="cl-section">Aba Reunião</div>
+        <ul class="cl-list">
+          <li>Nova aba <strong>Reunião</strong> entre Cadastro Geral e Dep. Pessoal</li>
+          <li>Formulário com tópico (input), data, horário, link e transcrição/ata</li>
+          <li>Seletor de participantes vinculado aos usuários cadastrados no sistema — dropdown com busca, chips visuais com nome e @usuario</li>
+          <li>Departamentos envolvidos: Contábil · Fiscal · Tributário · DP</li>
+          <li>Campo de participantes bloqueado para não-admins após o primeiro registro — somente admin pode editar</li>
+          <li>Link da reunião vira link clicável nos cards registrados</li>
+          <li>Transcrição/ata exibida em bloco destacado com formatação preservada</li>
+          <li>Reuniões salvas junto à ficha no Supabase via <code>collectData()</code></li>
+        </ul>
+      </div>
+      <hr class="cl-divider">
 
       <!-- v2.7.0 -->
       <div style="margin-bottom:20px">
