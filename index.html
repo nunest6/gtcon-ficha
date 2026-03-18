@@ -967,7 +967,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
 
 <!-- TABS -->
 <div class="tabs-bar">
-  <button class="tab-btn active" onclick="showTab('cadastro',this)">
+  <button class="tab-btn" onclick="showTab('cadastro',this)">
     Cadastro Geral
     <span class="tab-dot"></span>
   </button>
@@ -995,7 +995,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
     Particularidades
     <span class="tab-dot"></span>
   </button>
-  <button class="tab-btn" onclick="showTab('db',this)">
+  <button class="tab-btn active" onclick="showTab('db',this)">
     Clientes
     <span class="tab-dot"></span>
   </button>
@@ -1023,7 +1023,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
 <main class="main">
 
 <!-- ════════════════ CADASTRO GERAL ════════════════ -->
-<div class="panel tab-cadastro active" id="panel-cadastro">
+<div class="panel tab-cadastro" id="panel-cadastro">
   <div class="readonly-banner" id="banner-panel-cadastro">Somente leitura</div>
   <div class="panel-head">
     <div class="panel-title"><span>Cadastro Geral</span></div>
@@ -2013,7 +2013,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
 </div>
 
 <!-- ════════════════ BANCO DE DADOS ════════════════ -->
-<div class="panel tab-db" id="panel-db">
+<div class="panel tab-db active" id="panel-db">
   <div class="panel-head">
     <div class="panel-title"><span>Clientes</span></div>
     <div class="panel-desc">Selecione um cliente para abrir a ficha ou cadastre um novo</div>
@@ -3939,7 +3939,7 @@ function toast(msg, type='inf') {
 
 // ── INIT ──
 document.addEventListener('DOMContentLoaded', async () => {
-  updateSidebar('cadastro');
+  showTab('db', document.querySelector('[onclick*="db"]'));
   document.getElementById('data_diagnostico').valueAsDate = new Date();
   loadUsuarios();
   addPrefeitura(); // linha inicial vazia de prefeitura
