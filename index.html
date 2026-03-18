@@ -220,6 +220,25 @@ body {
 }
 .edit-mode-bar #btn-salvar-flutuante {
   margin-left: auto;
+  background: var(--navy) !important;
+  color: #fff !important;
+  border-color: var(--navy) !important;
+  padding: 9px 32px !important;
+  font-size: 13.5px !important;
+  font-weight: 700 !important;
+  letter-spacing: .02em;
+  box-shadow: 0 2px 0 rgba(0,0,0,.15), 0 4px 16px rgba(1,25,87,.35) !important;
+  border-radius: 8px !important;
+  transition: all .15s !important;
+}
+.edit-mode-bar #btn-salvar-flutuante:hover {
+  background: var(--navy-md) !important;
+  box-shadow: 0 4px 20px rgba(1,25,87,.45) !important;
+  transform: translateY(-1px);
+}
+.edit-mode-bar #btn-salvar-flutuante:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(1,25,87,.3) !important;
 }
 .edit-mode-bar.show { display: flex; }
 .view-badge {
@@ -1434,11 +1453,12 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.55; }
   </div>
 
   <div class="header-right">
-    <div id="cliente-ativo-chip" style="display:none;align-items:center;gap:7px;padding:4px 12px 4px 8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:20px;font-size:12px;color:#e8edf8;max-width:220px;overflow:hidden;">
+    <div id="cliente-ativo-chip" style="display:none;align-items:center;gap:7px;padding:4px 12px 4px 8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:20px;font-size:12px;color:#e8edf8;max-width:260px;overflow:hidden;cursor:pointer;transition:background .15s" onclick="trocarCliente()" title="Clique para trocar de cliente">
       <div style="display:flex;flex-direction:column;overflow:hidden;min-width:0">
         <span id="cliente-ativo-nome" style="font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;line-height:1.2"></span>
         <span id="cliente-ativo-consultor" style="font-size:10px;color:#8a9ab8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.2;display:none"></span>
       </div>
+      <svg width="10" height="10" viewBox="0 0 10 10" fill="none" style="flex-shrink:0;opacity:.5"><path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
       <button onclick="novaFicha()" title="Nova ficha / Trocar cliente" style="background:none;border:none;cursor:pointer;color:rgba(255,255,255,.4);font-size:13px;padding:0 0 0 4px;line-height:1;">✕</button>
     </div>
     <button class="btn btn-s btn-sm" onclick="clearAll()">Limpar</button>
@@ -1694,16 +1714,17 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.55; }
         <label>Faturamento Anual</label>
         <input type="text" id="fat_anual" placeholder="R$ 0,00" oninput="fmtCur(this)">
       </div>
-      <div class="fg">
-        <label>Grupo Econômico?</label>
-        <div class="radio-row">
-          <label class="ro" onclick="selR(this,'grupo_eco')"><input type="radio" name="grupo_eco" value="nao">Não</label>
-          <label class="ro" onclick="selR(this,'grupo_eco')"><input type="radio" name="grupo_eco" value="sim">Sim</label>
+      <div class="fg s2">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+          <label style="margin:0">Grupo Econômico</label>
+          <button class="btn btn-s btn-sm" onclick="abrirModalGrupos()" type="button" style="font-size:10.5px">Gerenciar grupos</button>
         </div>
-      </div>
-      <div class="fg">
-        <label>Empresas do Grupo</label>
-        <input type="text" id="grupo_empresas" placeholder="Listar empresas se sim">
+        <div style="position:relative">
+          <input type="text" id="grupo_empresas" placeholder="Digite para buscar ou criar grupo..."
+            autocomplete="off" oninput="filtrarGruposInput(this.value)" onfocus="filtrarGruposInput(this.value)">
+          <div id="grupos-dropdown" style="display:none;position:absolute;top:100%;left:0;right:0;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-sm);box-shadow:var(--shadow-lg);z-index:200;max-height:200px;overflow-y:auto;margin-top:3px"></div>
+        </div>
+        <div id="grupo-selecionado-badge" style="display:none;margin-top:6px;display:flex;align-items:center;gap:6px;flex-wrap:wrap"></div>
       </div>
     </div>
 
@@ -3669,8 +3690,8 @@ function collectData() {
       endereco: gv('endereco_completo'),
       ramos, cnaes,
       regime: gr('regime'), fat_mensal: gv('fat_mensal'),
-      fat_anual: gv('fat_anual'), grupo_eco: gr('grupo_eco'),
-      grupo_empresas: gv('grupo_empresas'),
+      fat_anual: gv('fat_anual'), grupo_nome: _grupoSelecionado?.nome || gv('grupo_empresas') || '',
+      grupo_id: _grupoSelecionado?.id || '',
       prefeituras: Array.from(document.querySelectorAll('.prefeitura-item')).map(el => ({
         nome:  el.querySelector('.pref-nome')?.value  || '',
         login: el.querySelector('.pref-login')?.value || '',
@@ -4039,7 +4060,13 @@ function loadClient(data) {
   sv('resumo_reuniao', data.particularidades?.resumo);
 
   // Restaurar campos extras
-  sv('grupo_empresas', data.cadastro?.grupo_empresas);
+  // Grupo econômico
+  _grupoSelecionado = data.cadastro?.grupo_id
+    ? { id: data.cadastro.grupo_id, nome: data.cadastro.grupo_nome || '' }
+    : (data.cadastro?.grupo_empresas ? { id: '', nome: data.cadastro.grupo_empresas } : null);
+  const inputGrupo = document.getElementById('grupo_empresas');
+  if (inputGrupo) inputGrupo.value = _grupoSelecionado?.nome || '';
+  renderGrupoBadge();
   sv('outros_relatorios', data.parametros?.outros_relatorios);
 
   // Restaurar radio buttons — seleciona o input e marca a label visualmente
@@ -5342,7 +5369,176 @@ function renderReunioes() {
   }).join('');
 }
 
+
+// ── TROCA DE CLIENTE VIA CHIP ──
+async function trocarCliente() {
+  if (_modoEdicao) {
+    const escolha = await confirmarAcaoComDados();
+    if (escolha === 'cancelar') return;
+    if (escolha === 'salvar') {
+      await saveAll();
+      return; // saveAll já re-entra em edição; usuário pode clicar de novo
+    }
+    // descartar — liberar trava e limpar
+    if (_lockHeartbeat) { clearInterval(_lockHeartbeat); _lockHeartbeat = null; }
+    if (_currentCNPJ) await liberarTrava(_currentCNPJ);
+    resetForm();
+  }
+  openClientModal();
+}
+
+// Modal de confirmação salvar/descartar/cancelar
+function confirmarAcaoComDados() {
+  return new Promise(resolve => {
+    // Criar modal inline
+    const overlay = document.createElement('div');
+    overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,13,48,.5);z-index:9999;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(3px)';
+    overlay.innerHTML = `
+      <div style="background:var(--surface);border-radius:var(--r-lg);padding:32px 36px;width:380px;max-width:95vw;box-shadow:var(--shadow-xl);text-align:center">
+        <div style="font-size:16px;font-weight:700;color:var(--navy);margin-bottom:8px">Ficha em edição</div>
+        <div style="font-size:13px;color:var(--muted);margin-bottom:24px;line-height:1.6">Você está editando esta ficha.<br>O que deseja fazer antes de trocar de cliente?</div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <button id="acao-salvar" class="btn btn-ok" style="width:100%;justify-content:center;font-size:13px">Salvar e trocar</button>
+          <button id="acao-descartar" class="btn btn-s" style="width:100%;justify-content:center;font-size:13px;color:var(--danger);border-color:rgba(190,18,60,.25)">Descartar alterações</button>
+          <button id="acao-cancelar" class="btn btn-s" style="width:100%;justify-content:center;font-size:13px">Cancelar</button>
+        </div>
+      </div>`;
+    document.body.appendChild(overlay);
+    overlay.querySelector('#acao-salvar').onclick    = () => { document.body.removeChild(overlay); resolve('salvar'); };
+    overlay.querySelector('#acao-descartar').onclick = () => { document.body.removeChild(overlay); resolve('descartar'); };
+    overlay.querySelector('#acao-cancelar').onclick  = () => { document.body.removeChild(overlay); resolve('cancelar'); };
+    overlay.onclick = (e) => { if (e.target===overlay) { document.body.removeChild(overlay); resolve('cancelar'); } };
+  });
+}
+
+// ── GRUPOS ECONÔMICOS ──
+let _gruposCache = [];
+let _grupoSelecionado = null; // {id, nome}
+
+async function carregarGrupos() {
+  try {
+    const rows = await sbFetch('GET', 'grupos_economicos?order=nome.asc');
+    _gruposCache = rows || [];
+  } catch(e) { _gruposCache = []; }
+}
+
+function filtrarGruposInput(valor) {
+  const dd = document.getElementById('grupos-dropdown');
+  if (!dd) return;
+  const v = valor.trim().toLowerCase();
+
+  // Buscar clientes com o grupo para mostrar contagem
+  const matchingGroups = _gruposCache.filter(g =>
+    !v || g.nome.toLowerCase().includes(v)
+  );
+
+  let html = '';
+  // Opção de criar novo
+  if (v && !_gruposCache.find(g => g.nome.toLowerCase() === v)) {
+    html += `<div class="grupos-dd-item grupos-dd-criar" onclick="criarEselecionarGrupo('${valor.replace(/'/g,"\'")}')">
+      <span style="color:var(--navy);font-weight:600">+ Criar "${valor}"</span>
+    </div>`;
+  }
+  // Nenhum grupo
+  if (!matchingGroups.length && !v) {
+    html += '<div style="padding:14px 16px;color:var(--dim);font-size:12px;text-align:center">Nenhum grupo cadastrado</div>';
+  }
+  matchingGroups.forEach(g => {
+    const sel = _grupoSelecionado?.id === g.id;
+    html += `<div class="grupos-dd-item${sel?' grupos-dd-sel':''}" onclick="selecionarGrupo('${g.id}','${g.nome.replace(/'/g,"\'")}')">
+      <span style="font-weight:500">${g.nome}</span>
+      ${sel ? '<span style="color:var(--success);font-size:12px;margin-left:auto">✓</span>' : ''}
+    </div>`;
+  });
+
+  dd.innerHTML = html;
+  dd.style.display = (html && document.getElementById('grupo_empresas') === document.activeElement) ? '' : 'none';
+  if (document.getElementById('grupo_empresas') === document.activeElement) dd.style.display = '';
+}
+
+function selecionarGrupo(id, nome) {
+  _grupoSelecionado = {id, nome};
+  const input = document.getElementById('grupo_empresas');
+  if (input) input.value = nome;
+  const dd = document.getElementById('grupos-dropdown');
+  if (dd) dd.style.display = 'none';
+  renderGrupoBadge();
+}
+
+async function criarEselecionarGrupo(nome) {
+  if (!nome.trim()) return;
+  try {
+    const id = 'grp_' + Date.now();
+    await sbFetch('POST', 'grupos_economicos', { id, nome: nome.trim() });
+    _gruposCache.push({id, nome: nome.trim()});
+    _gruposCache.sort((a,b) => a.nome.localeCompare(b.nome));
+    selecionarGrupo(id, nome.trim());
+    toast('Grupo criado.', 'ok');
+  } catch(e) { toast('Erro ao criar grupo: ' + e.message, 'err'); }
+}
+
+function renderGrupoBadge() {
+  const badge = document.getElementById('grupo-selecionado-badge');
+  if (!badge) return;
+  if (!_grupoSelecionado) { badge.style.display = 'none'; return; }
+  badge.style.display = 'flex';
+  badge.innerHTML = `
+    <span style="font-size:11.5px;font-weight:600;padding:3px 10px;background:rgba(1,25,87,.08);border:1px solid rgba(1,25,87,.2);border-radius:20px;color:var(--navy)">${_grupoSelecionado.nome}</span>
+    <button onclick="removerGrupo()" style="background:none;border:none;cursor:pointer;color:var(--dim);font-size:12px;padding:2px 4px" title="Remover grupo">✕</button>`;
+}
+
+function removerGrupo() {
+  _grupoSelecionado = null;
+  const input = document.getElementById('grupo_empresas');
+  if (input) input.value = '';
+  renderGrupoBadge();
+}
+
+// Fechar dropdown ao clicar fora
+document.addEventListener('click', e => {
+  if (!e.target.closest('#grupos-dropdown') && e.target.id !== 'grupo_empresas') {
+    const dd = document.getElementById('grupos-dropdown');
+    if (dd) dd.style.display = 'none';
+  }
+});
+
+function abrirModalGrupos() {
+  // Modal simples de gerenciamento
+  const overlay = document.createElement('div');
+  overlay.id = 'modal-grupos-overlay';
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,13,48,.5);z-index:9999;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(3px)';
+  const lista = _gruposCache.map(g => `
+    <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--border)">
+      <span style="flex:1;font-size:13px;font-weight:500">${g.nome}</span>
+      <button onclick="excluirGrupo('${g.id}')" style="background:none;border:1px solid rgba(190,18,60,.2);color:var(--danger);border-radius:4px;padding:3px 9px;cursor:pointer;font-size:11.5px;font-family:var(--sans)">Excluir</button>
+    </div>`).join('') || '<div style="padding:20px;text-align:center;color:var(--dim);font-size:13px">Nenhum grupo cadastrado</div>';
+  overlay.innerHTML = `
+    <div style="background:var(--surface);border-radius:var(--r-lg);width:420px;max-width:95vw;max-height:80vh;display:flex;flex-direction:column;box-shadow:var(--shadow-xl)">
+      <div style="padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
+        <span style="font-size:14px;font-weight:700;color:var(--navy)">Grupos Econômicos</span>
+        <button onclick="document.body.removeChild(document.getElementById('modal-grupos-overlay'))" style="background:none;border:none;cursor:pointer;color:var(--muted);font-size:16px">✕</button>
+      </div>
+      <div style="overflow-y:auto;flex:1">${lista}</div>
+    </div>`;
+  document.body.appendChild(overlay);
+  overlay.onclick = e => { if(e.target===overlay) document.body.removeChild(overlay); };
+}
+
+async function excluirGrupo(id) {
+  if (!confirm('Excluir este grupo? Clientes vinculados não serão afetados.')) return;
+  try {
+    await sbFetch('DELETE', `grupos_economicos?id=eq.${id}`);
+    _gruposCache = _gruposCache.filter(g => g.id !== id);
+    if (_grupoSelecionado?.id === id) removerGrupo();
+    // Reabrir modal
+    document.body.removeChild(document.getElementById('modal-grupos-overlay'));
+    abrirModalGrupos();
+    toast('Grupo excluído.', 'ok');
+  } catch(e) { toast('Erro: ' + e.message, 'err'); }
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
+  carregarGrupos();
   showTab('db', document.querySelector('[onclick*="db"]'));
   migrarUsuariosLocalStorage(); // migração silenciosa, não bloqueia o UI
   document.getElementById('data_diagnostico').valueAsDate = new Date();
@@ -5686,6 +5882,19 @@ document.addEventListener('DOMContentLoaded', async () => {
 .partic-info-dept  { font-size: 10.5px; color: var(--dim); margin-left: 4px; }
 /* Estado bloqueado (não-admin após registro) */
 .reuniao-card-locked #reuniao-partic-select-wrap { display: none !important; }
+
+/* ── GRUPOS ECONÔMICOS ── */
+.grupos-dd-item {
+  padding: 10px 14px; cursor: pointer; font-size: 13px;
+  display: flex; align-items: center; gap: 8px;
+  border-bottom: 1px solid var(--border);
+  transition: background var(--tr);
+  color: var(--text-2);
+}
+.grupos-dd-item:last-child { border-bottom: none; }
+.grupos-dd-item:hover { background: var(--surface2); }
+.grupos-dd-sel { background: rgba(1,25,87,.05); }
+.grupos-dd-criar { color: var(--navy); }
 </style>
 
       <!-- v2.8.0 -->
