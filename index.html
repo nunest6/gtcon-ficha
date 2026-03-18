@@ -7,21 +7,16 @@
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root {
-  /* ── Marca GTCON Brasil ── */
   --navy:     #011957;
   --navy-dk:  #000d36;
   --navy-md:  #0a2d7a;
   --navy-lt:  #1a4db8;
-
-  /* ── UI ── */
   --bg:       #eef2fb;
   --surface:  #ffffff;
   --surface2: #f7f9fd;
   --surface3: #edf1f9;
   --border:   #d1d9ee;
   --border-h: #a8b8d8;
-
-  /* ── Semânticas ── */
   --accent:   #1a4db8;
   --accent2:  #0a2d7a;
   --blue:     #1a4db8;
@@ -31,14 +26,10 @@
   --purple:   #6d28d9;
   --teal:     #0f766e;
   --orange:   #c2410c;
-
-  /* ── Tipografia ── */
   --text:     #0d1836;
   --muted:    #5a6a8a;
   --dim:      #8a9ab8;
   --label:    #3d4d6e;
-
-  /* ── Raios e outros ── */
   --r: 10px; --rsm: 6px;
   --tr: 0.18s ease;
   --sans: 'Plus Jakarta Sans', system-ui, sans-serif;
@@ -49,19 +40,29 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
 
 /* ── HEADER ── */
 .app-header {
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
-  padding: 0 20px;
-  height: 48px;
+  background: var(--navy);
+  border-bottom: none;
+  padding: 0 24px;
+  height: 56px;
+  box-shadow: 0 2px 12px rgba(1,25,87,.2);
   display: flex; align-items: center; justify-content: space-between;
   position: sticky; top: 0; z-index: 200;
-  margin-left: 220px;
 }
-.brand { display: flex; align-items: center; gap: 8px; }
-.brand-logo { display: flex; align-items: center; flex-shrink: 0; }
-.brand-name { font-size: 13px; font-weight: 600; letter-spacing: -.1px; color: var(--text); }
-.brand-sub { font-size: 11px; color: var(--muted); font-weight: 400; display:flex;align-items:center;gap:6px }
+.brand { display: flex; align-items: center; gap: 10px; }
+.brand-logo {
+  width: 34px; height: 34px;
+  background: linear-gradient(135deg, #2563eb, #7c3aed);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; flex-shrink: 0;
+}
+.brand-name { font-size: 15px; font-weight: 700; letter-spacing: -.3px; }
+.brand-sub { font-size: 11px; color: var(--muted); font-weight: 400; }
 .header-right { display: flex; align-items: center; gap: 8px; }
+.header-right .btn { border-color: rgba(255,255,255,.2); color: #c8d8f0; }
+.header-right .btn:hover { background: rgba(255,255,255,.1); color:#fff; border-color:rgba(255,255,255,.3); }
+.header-right .btn-ok { background: rgba(255,255,255,.12) !important; color:#fff !important; border-color:rgba(255,255,255,.25) !important; }
+.header-right .btn-ok:hover { background: rgba(255,255,255,.22) !important; }
 
 /* ── CNPJ BANNER ── */
 .client-bar {
@@ -100,84 +101,80 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
   white-space: nowrap;
 }
 
-/* ── TABS (sidebar) ── */
-.tabs-bar-hidden {
+/* ── TABS ── */
+.tabs-bar {
   background: var(--surface);
   border-bottom: 1px solid var(--border);
   display: flex; align-items: flex-end;
-  padding: 0 24px;
-  gap: 0;
+  padding: 0 28px;
+  gap: 2px;
   overflow-x: auto;
   scrollbar-width: none;
-  box-shadow: 0 1px 0 var(--border);
 }
 .tabs-bar::-webkit-scrollbar { display: none; }
 .tab-btn {
-  display: flex; align-items: center; gap: 6px;
-  padding: 12px 16px;
+  display: flex; align-items: center; gap: 7px;
+  padding: 12px 18px;
   border: none; background: none;
-  font-family: var(--sans); font-size: 12px; font-weight: 600;
+  font-family: var(--sans); font-size: 12.5px; font-weight: 500;
   color: var(--muted);
   cursor: pointer;
   border-bottom: 2px solid transparent;
   transition: all var(--tr);
   white-space: nowrap;
   position: relative;
-  letter-spacing: .01em;
 }
-.tab-btn:hover { color: var(--text); background: var(--surface3); }
-.tab-btn.active { color: var(--navy); border-bottom-color: var(--navy); background: none; }
-.tab-icon { font-size: 13px; }
+.tab-btn:hover { color: var(--text); }
+.tab-btn.active { color: var(--navy); border-bottom-color: var(--navy); font-weight: 600; }
+.tab-icon { font-size: 14px; }
 .tab-dot {
-  width: 5px; height: 5px; border-radius: 50%;
-  position: absolute; top: 9px; right: 8px;
+  width: 6px; height: 6px; border-radius: 50%;
+  position: absolute; top: 10px; right: 10px;
   display: none;
 }
 .tab-btn.has-data .tab-dot { display: block; background: var(--success); }
 
 /* ── LAYOUT ── */
-.app-body { display: flex; min-height: 100vh; }
+.app-body { display: flex; min-height: calc(100vh - 164px); }
 
 /* ── SIDEBAR ── */
 .sidebar {
-  width: 220px; flex-shrink: 0;
-  background: var(--navy);
+  width: 200px; flex-shrink: 0;
+  background: var(--navy-dk);
   border-right: none;
-  padding: 0;
-  position: fixed; top: 0; left: 0;
-  height: 100vh;
+  padding: 20px 0;
+  position: sticky; top: 164px;
+  height: calc(100vh - 164px);
   overflow-y: auto;
-  z-index: 300;
-  display: flex; flex-direction: column;
 }
 .sidebar-group { margin-bottom: 20px; }
 .sidebar-label {
-  font-size: 9px; font-weight: 700;
-  letter-spacing: .12em; text-transform: uppercase;
-  color: rgba(255,255,255,0.3); padding: 0 16px; margin-bottom: 3px;
+  font-size: 10px; font-weight: 600;
+  letter-spacing: 1px; text-transform: uppercase;
+  color: rgba(255,255,255,.28); padding: 0 16px; margin-bottom: 4px;
 }
 .side-btn {
   display: flex; align-items: center; gap: 8px;
   width: 100%; padding: 8px 16px;
   background: none; border: none;
-  font-family: var(--sans); font-size: 12px;
-  color: rgba(255,255,255,0.55); cursor: pointer;
+  font-family: var(--sans); font-size: 12.5px;
+  color: rgba(255,255,255,.5); cursor: pointer;
   transition: all var(--tr); text-align: left;
-  border-radius: 0; font-weight: 500;
+  border-radius: 0;
 }
-.side-btn:hover { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.9); }
-.side-btn.active { background: rgba(255,255,255,0.1); color: #fff; font-weight: 700; border-left: 2px solid #7ea8f8; padding-left: 14px; }
+.side-btn:hover { background: rgba(255,255,255,.07); color: rgba(255,255,255,.9); }
+.side-btn.active { background: rgba(255,255,255,.1); color: #fff; font-weight: 600; border-left: 2px solid #adb2da; padding-left: 14px; }
 .side-icon { font-size: 13px; width: 18px; text-align: center; }
 
 /* ── MAIN ── */
-.main { flex: 1; padding: 28px 32px; max-width: 920px; margin-left: 220px; }
+.main { flex: 1; padding: 28px 32px; max-width: 900px; overflow-y: auto; }
 
 /* ── PANELS ── */
 .panel { display: none; }
 .panel.active { display: block; }
 
 .panel-head { margin-bottom: 24px; }
-.panel-title { font-size: 20px; font-weight: 700; letter-spacing: -.4px; margin-bottom: 3px; color: var(--navy); }
+.panel-title { font-size: 20px; font-weight: 700; letter-spacing: -.4px; margin-bottom: 3px; }
 .panel-desc { font-size: 12.5px; color: var(--muted); }
 
 /* ── CARDS ── */
@@ -186,18 +183,18 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
   border: 1px solid var(--border);
   border-radius: var(--r);
   padding: 20px;
-  margin-bottom: 14px;
-  transition: border-color var(--tr), box-shadow var(--tr);
+  margin-bottom: 16px;
+  transition: border-color var(--tr);
 }
-.card:hover { border-color: var(--border-h); box-shadow: 0 2px 8px rgba(1,25,87,.06); }
+.card:hover { border-color: var(--border-h); }
 .card-title {
-  font-size: 11px; font-weight: 700;
-  color: var(--navy); letter-spacing: .06em; text-transform: uppercase;
+  font-size: 11.5px; font-weight: 600;
+  color: var(--navy); letter-spacing: .5px; text-transform: uppercase;
   display: flex; align-items: center; gap: 7px;
-  padding-bottom: 13px; margin-bottom: 15px;
+  padding-bottom: 14px; margin-bottom: 16px;
   border-bottom: 1px solid var(--border);
 }
-.card-title .ct-icon { font-size: 13px; }
+.card-title .ct-icon { font-size: 14px; }
 
 /* ── GRIDS ── */
 .g { display: grid; gap: 14px; }
@@ -227,7 +224,7 @@ input[type=date], input[type=time], input[type=password], select, textarea {
 input:focus, select:focus, textarea:focus {
   border-color: var(--navy);
   box-shadow: 0 0 0 3px rgba(1,25,87,.1);
-  background: #f7f9fd;
+  background: #f8faff;
 }
 input::placeholder, textarea::placeholder { color: var(--dim); font-size: 12.5px; }
 textarea { resize: vertical; min-height: 80px; }
@@ -612,20 +609,19 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
 ══════════════════════════════════════ */
 #login-overlay {
   position: fixed; inset: 0; z-index: 9000;
-  background: var(--navy-dk);
+  background: #f0f2f7;
   display: flex; align-items: center; justify-content: center;
   font-family: var(--sans);
 }
 #login-overlay.hidden { display: none; }
 
 .login-box {
-  background: rgba(255,255,255,0.07);
-  border: 1px solid rgba(255,255,255,0.12);
+  background: #fff;
+  border: 1px solid var(--border);
   border-radius: 16px;
   padding: 40px 44px;
   width: 420px; max-width: 95vw;
-  box-shadow: 0 20px 60px rgba(0,0,0,.4);
-  backdrop-filter: blur(12px);
+  box-shadow: 0 8px 40px rgba(26,32,53,.1);
   text-align: center;
 }
 .login-logo {
@@ -635,10 +631,10 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
   display: flex; align-items: center; justify-content: center;
   font-size: 24px; margin: 0 auto 20px;
 }
-.login-title { font-size: 18px; font-weight: 700; color: #e8edf8; margin-bottom: 4px; }
-.login-sub { font-size: 13px; color: #8a9ab8; margin-bottom: 28px; }
+.login-title { font-size: 20px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+.login-sub { font-size: 13px; color: var(--muted); margin-bottom: 28px; }
 .login-field { text-align: left; margin-bottom: 16px; }
-.login-field label { font-size: 11px; font-weight: 600; color: #8a9ab8; text-transform: uppercase; letter-spacing: .5px; display: block; margin-bottom: 6px; }
+.login-field label { font-size: 11px; font-weight: 600; color: var(--label); text-transform: uppercase; letter-spacing: .5px; display: block; margin-bottom: 6px; }
 .login-field input, .login-field select {
   width: 100%; padding: 10px 13px;
   background: var(--surface2); border: 1px solid var(--border);
@@ -647,23 +643,16 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
   transition: border-color var(--tr);
   appearance: none;
 }
-.login-field input:focus, .login-field select:focus { border-color: #adb2da; box-shadow: 0 0 0 3px rgba(173,178,218,.15); }
+.login-field input:focus, .login-field select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(37,99,235,.1); }
 .login-field input::placeholder { color: var(--dim); }
 .login-btn {
   width: 100%; padding: 11px;
-  background: var(--navy); color: #fff;
+  background: var(--accent); color: #fff;
   border: none; border-radius: var(--rsm);
   font-family: var(--sans); font-size: 14px; font-weight: 600;
   cursor: pointer; transition: all var(--tr); margin-top: 8px;
 }
 .login-btn:hover { background: #1d4ed8; transform: translateY(-1px); box-shadow: 0 4px 14px rgba(37,99,235,.3); }
-#login-overlay .login-field input, #login-overlay .login-field select {
-  background: rgba(255,255,255,0.08);
-  border-color: rgba(255,255,255,0.15);
-  color: #f0f4ff;
-}
-#login-overlay .login-field input::placeholder { color: rgba(255,255,255,0.3); }
-#login-overlay .login-field input:focus { background: rgba(255,255,255,0.12); border-color: #adb2da; box-shadow: 0 0 0 3px rgba(173,178,218,.12); }
 .login-btn:disabled { opacity: .5; cursor: not-allowed; transform: none; }
 .login-err { font-size: 12px; color: var(--danger); margin-top: 10px; display: none; }
 .login-err.show { display: block; }
@@ -747,16 +736,74 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
   align-items:center; gap:8px;
 }
 .readonly-banner.show { display:flex; }
-.trib-tab{padding:5px 14px;font-size:11.5px;font-weight:600;border:none;border-bottom:2px solid transparent;margin-bottom:-2px;background:transparent;color:var(--muted);cursor:pointer;transition:all .15s;}
-.trib-tab:hover{color:var(--text);}
-.trib-tab.active{color:var(--accent2);border-bottom-color:var(--accent);}
-.trib-tab.filled::after{content:'●';font-size:7px;color:var(--success);vertical-align:super;margin-left:3px;}
-.edit-mode-bar{display:none;align-items:center;gap:10px;padding:6px 20px;background:rgba(1,25,87,.05);border-bottom:1px solid rgba(1,25,87,.12);font-size:12px;}
-.edit-mode-bar.show{display:flex;}
-.view-mode-overlay{pointer-events:none;opacity:.85;user-select:none;}
-.view-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;background:rgba(100,116,139,.12);color:var(--muted);}
-.edit-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;background:rgba(37,99,235,.12);color:var(--accent2);}
-.lock-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;background:rgba(220,38,38,.1);color:var(--danger);}
+
+/* ── LOGIN ── */
+#login-overlay {
+  position: fixed; inset: 0; z-index: 9000;
+  background: #000d36;
+  display: flex; align-items: center; justify-content: center;
+}
+#login-overlay::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 30%, rgba(26,77,184,.3) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 80% at 80% 70%, rgba(1,25,87,.45) 0%, transparent 60%);
+  pointer-events: none;
+}
+.login-box {
+  position: relative; z-index: 1;
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 20px;
+  padding: 48px 52px;
+  width: 420px; max-width: 95vw;
+  box-shadow:
+    0 0 0 1px rgba(173,178,218,.06),
+    0 32px 64px rgba(0,0,0,.5),
+    0 8px 24px rgba(0,0,0,.3),
+    inset 0 1px 0 rgba(255,255,255,.1);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+.login-logo { text-align: center; margin-bottom: 6px; display: flex; justify-content: center; }
+.login-logo-divider {
+  width: 40px; height: 1px;
+  background: linear-gradient(to right, transparent, rgba(173,178,218,.35), transparent);
+  margin: 0 auto 22px;
+}
+.login-title { font-size: 15px; font-weight: 600; text-align: center; color: rgba(255,255,255,.7); margin-bottom: 3px; }
+.login-sub   { font-size: 12px; color: rgba(173,178,218,.55); text-align: center; margin-bottom: 30px; }
+.login-field { text-align: left; margin-bottom: 14px; }
+.login-field label { font-size: 10px; font-weight: 700; color: rgba(173,178,218,.55); text-transform: uppercase; letter-spacing: .09em; display: block; margin-bottom: 7px; }
+.login-field input {
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.11);
+  border-radius: 10px;
+  color: #f0f4ff; font-size: 13.5px;
+  padding: 11px 14px; width: 100%;
+  outline: none; font-family: var(--sans);
+  transition: border-color .15s, box-shadow .15s;
+}
+.login-field input::placeholder { color: rgba(255,255,255,.18); }
+.login-field input:focus {
+  border-color: rgba(173,178,218,.4);
+  box-shadow: 0 0 0 3px rgba(173,178,218,.09);
+  background: rgba(255,255,255,.09);
+}
+.login-err { font-size: 11.5px; color: #f87171; margin-bottom: 14px; min-height: 16px; text-align: center; }
+.login-err.show { display: block !important; }
+.login-btn {
+  width: 100%; padding: 12px;
+  background: var(--navy); color: #f0f4ff;
+  border: 1px solid rgba(173,178,218,.2);
+  border-radius: 10px;
+  font-family: var(--sans); font-size: 13.5px; font-weight: 600;
+  cursor: pointer; transition: all .18s; letter-spacing: .02em;
+  box-shadow: 0 2px 8px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.07);
+}
+.login-btn:hover { background: var(--navy-md); transform: translateY(-1px); box-shadow: 0 6px 18px rgba(0,0,0,.35); }
+.login-btn:active { transform: translateY(0); }
 </style>
 </head>
 <body>
@@ -765,17 +812,16 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
 <div id="login-overlay">
   <div class="login-box">
     <div class="login-logo">
-      <svg width="160" height="58" viewBox="0 0 160 58" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <filter id="glow"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-        <text x="2" y="36" font-family="Plus Jakarta Sans, sans-serif" font-size="32" font-weight="800" fill="#f4f8ff" letter-spacing="-1.2" filter="url(#glow)">Gtcon</text>
-        <text x="3" y="52" font-family="Plus Jakarta Sans, sans-serif" font-size="12" font-weight="700" fill="#adb2da" letter-spacing="4">BRASIL</text>
-        <line x1="3" y1="56" x2="94" y2="56" stroke="rgba(173,178,218,0.2)" stroke-width="1"/>
+      <svg width="148" height="54" viewBox="0 0 148 54" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <filter id="gl"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        <text x="2" y="33" font-family="Plus Jakarta Sans,sans-serif" font-size="30" font-weight="800" fill="#f4f8ff" letter-spacing="-1.2" filter="url(#gl)">Gtcon</text>
+        <text x="3" y="49" font-family="Plus Jakarta Sans,sans-serif" font-size="12" font-weight="700" fill="#adb2da" letter-spacing="4">BRASIL</text>
       </svg>
     </div>
     <div class="login-logo-divider"></div>
     <div class="login-title">Fichas Técnicas de Clientes</div>
     <div class="login-sub">Acesse com suas credenciais</div>
-    <div class="login-field">
+<div class="login-field">
       <label>Usuário</label>
       <input type="text" id="login-usuario" placeholder="Seu usuário" autocomplete="off"
         onkeydown="if(event.key==='Enter')document.getElementById('login-senha').focus()">
@@ -868,7 +914,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
     <div id="nova-ficha-err" style="display:none;font-size:12px;color:var(--danger);margin-bottom:12px;padding:8px 12px;background:rgba(220,38,38,.06);border-radius:var(--rsm);"></div>
     <div id="nova-ficha-dup" style="display:none;margin-bottom:14px;padding:12px 14px;background:rgba(217,119,6,.07);border:1px solid rgba(217,119,6,.3);border-radius:var(--rsm);">
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
-        <span style="font-size:15px;"></span>
+        <span style="font-size:15px;">⚠️</span>
         <span style="font-size:13px;font-weight:600;color:var(--warning);">Cliente já cadastrado</span>
       </div>
       <div id="nova-ficha-dup-nome" style="font-size:12px;color:var(--text);margin-bottom:6px;"></div>
@@ -892,133 +938,84 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
 <!-- HEADER -->
 <header class="app-header">
   <div class="brand">
-    <span id="edit-mode-badge-header" class="view-badge" style="font-size:11px">Visualização</span>
+    <div class="brand-logo">
+      <svg width="120" height="40" viewBox="0 0 120 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <text x="2" y="24" font-family="Plus Jakarta Sans,sans-serif" font-size="22" font-weight="800" fill="#f4f8ff" letter-spacing="-0.7">Gtcon</text>
+        <text x="2" y="36" font-family="Plus Jakarta Sans,sans-serif" font-size="10" font-weight="700" fill="#adb2da" letter-spacing="2.5">BRASIL</text>
+      </svg>
+    </div>
   </div>
-  <!-- Barra modo visualização/edição -->
-  <div class="edit-mode-bar" id="edit-mode-bar">
-    <span id="edit-mode-badge" class="view-badge">Visualização</span>
-    <span id="edit-lock-info" style="font-size:11.5px;color:var(--muted)"></span>
-    <span style="flex:1"></span>
-    <button id="btn-entrar-edicao" class="btn btn-ok btn-sm" onclick="entrarModoEdicao()" style="font-size:11px">Editar</button>
-    <button id="btn-sair-edicao" class="btn btn-s btn-sm" onclick="sairModoEdicao()" style="font-size:11px;display:none">Sair</button>
-  </div>
-
   <div class="header-right">
+    <div id="cliente-ativo-chip" style="display:none;align-items:center;gap:7px;padding:4px 12px 4px 8px;background:rgba(37,99,235,.08);border:1px solid rgba(37,99,235,.2);border-radius:20px;font-size:12px;color:var(--accent2);max-width:220px;overflow:hidden;">
+      <span style="font-size:14px;"></span>
+      <span id="cliente-ativo-nome" style="font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"></span>
+      <button onclick="novaFicha()" title="Nova ficha / Trocar cliente" style="background:none;border:none;cursor:pointer;color:var(--muted);font-size:13px;padding:0 0 0 4px;line-height:1;">✕</button>
+    </div>
     <button class="btn btn-s btn-sm" onclick="clearAll()">Limpar</button>
     <button class="btn btn-s btn-sm" onclick="exportJSON()">JSON</button>
-    <button class="btn btn-ok btn-sm" id="btn-salvar-header" onclick="saveAll()" style="display:none">Salvar</button>
+    <button class="btn btn-ok btn-sm" onclick="saveAll()">Salvar</button>
+    <div class="user-chip" id="user-chip" style="display:none;">
+      <div class="user-avatar" id="user-avatar"></div>
+      <div>
+        <div class="user-name" id="user-name-chip"></div>
+        <div class="user-dept" id="user-dept-chip"></div>
+      </div>
+      <button class="user-logout" onclick="fazerLogout()" title="Trocar usuário / Sair">⇄</button>
+    </div>
   </div>
-
 </header>
 
-
+<!-- TABS -->
+<div class="tabs-bar">
+  <button class="tab-btn active" onclick="showTab('cadastro',this)">
+    Cadastro Geral
+    <span class="tab-dot"></span>
+  </button>
+  <button class="tab-btn" onclick="showTab('comercial',this)">
+    Comercial
+    <span class="tab-dot"></span>
+  </button>
+  <button class="tab-btn" onclick="showTab('dp',this)">
+    Dep. Pessoal
+    <span class="tab-dot"></span>
+  </button>
+  <button class="tab-btn" onclick="showTab('fiscal',this)">
+    Fiscal
+    <span class="tab-dot"></span>
+  </button>
+  <button class="tab-btn" onclick="showTab('contabil',this)">
+    Contábil
+    <span class="tab-dot"></span>
+  </button>
+  <button class="tab-btn" onclick="showTab('parametros',this)">
+    Parâmetros
+    <span class="tab-dot"></span>
+  </button>
+  <button class="tab-btn" onclick="showTab('particularidades',this)">
+    Particularidades
+    <span class="tab-dot"></span>
+  </button>
+  <button class="tab-btn" onclick="showTab('db',this)">
+    Clientes
+    <span class="tab-dot"></span>
+  </button>
+  <button class="tab-btn tab-admin-only" onclick="showTab('admin',this)" style="display:none;">
+    Usuários
+    <span class="tab-dot"></span>
+  </button>
+  <button class="tab-btn tab-admin-only" onclick="showTab('log',this)" style="display:none;">
+    Log
+    <span class="tab-dot"></span>
+  </button>
+</div>
 
 <!-- BODY -->
 <div class="app-body">
 
 <!-- SIDEBAR -->
 <nav class="sidebar" id="sidebar">
-  <!-- Logo -->
-  <div class="sidebar-logo">
-    <svg width="108" height="40" viewBox="0 0 108 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <text x="2" y="24" font-family="Plus Jakarta Sans, sans-serif" font-size="21" font-weight="800" fill="#f4f8ff" letter-spacing="-0.6">Gtcon</text>
-      <text x="2" y="36" font-family="Plus Jakarta Sans, sans-serif" font-size="10.5" font-weight="700" fill="#adb2da" letter-spacing="2.2">BRASIL</text>
-    </svg>
-    <button class="sidebar-changelog-btn" onclick="document.getElementById('modal-changelog').style.display='flex'" title="Changelog">v2.6.0</button>
-  </div>
-
-  <!-- Nav principal -->
-  <div class="sidebar-section">
-    <div class="sidebar-label">Ficha</div>
-    <button class="tab-btn side-nav active" onclick="showTab('cadastro',this)" data-tab="cadastro">
-      <span class="side-nav-icon">
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="4" rx="1.5" fill="currentColor" opacity=".7"/><rect x="2" y="8" width="7" height="2" rx="1" fill="currentColor" opacity=".5"/><rect x="2" y="12" width="5" height="2" rx="1" fill="currentColor" opacity=".4"/></svg>
-      </span>
-      Cadastro Geral
-      <span class="tab-dot"></span>
-    </button>
-    <button class="tab-btn side-nav" onclick="showTab('dp',this)" data-tab="dp">
-      <span class="side-nav-icon">
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5" r="3" fill="currentColor" opacity=".7"/><path d="M2 14c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke="currentColor" stroke-width="1.5" opacity=".5"/></svg>
-      </span>
-      Dep. Pessoal
-      <span class="tab-dot"></span>
-    </button>
-    <button class="tab-btn side-nav" onclick="showTab('fiscal',this)" data-tab="fiscal">
-      <span class="side-nav-icon">
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="2" y="1" width="12" height="14" rx="2" stroke="currentColor" stroke-width="1.3" opacity=".6"/><rect x="5" y="5" width="6" height="1.2" rx=".6" fill="currentColor" opacity=".5"/><rect x="5" y="8" width="4" height="1.2" rx=".6" fill="currentColor" opacity=".5"/></svg>
-      </span>
-      Fiscal
-      <span class="tab-dot"></span>
-    </button>
-    <button class="tab-btn side-nav" onclick="showTab('contabil',this)" data-tab="contabil">
-      <span class="side-nav-icon">
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="1" y="9" width="3" height="6" rx="1" fill="currentColor" opacity=".5"/><rect x="6" y="6" width="3" height="9" rx="1" fill="currentColor" opacity=".6"/><rect x="11" y="2" width="3" height="13" rx="1" fill="currentColor" opacity=".7"/></svg>
-      </span>
-      Contábil
-      <span class="tab-dot"></span>
-    </button>
-    <button class="tab-btn side-nav" onclick="showTab('parametros',this)" data-tab="parametros">
-      <span class="side-nav-icon">
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="2.5" stroke="currentColor" stroke-width="1.3" opacity=".7"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2" stroke="currentColor" stroke-width="1.3" opacity=".4"/></svg>
-      </span>
-      Parâmetros
-      <span class="tab-dot"></span>
-    </button>
-    <button class="tab-btn side-nav" onclick="showTab('particularidades',this)" data-tab="particularidades">
-      <span class="side-nav-icon">
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 4h10M3 8h7M3 12h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity=".6"/></svg>
-      </span>
-      Particularidades
-      <span class="tab-dot"></span>
-    </button>
-  </div>
-
-  <div class="sidebar-section">
-    <div class="sidebar-label">Sistema</div>
-    <button class="tab-btn side-nav" onclick="showTab('db',this)" data-tab="db">
-      <span class="side-nav-icon">
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><ellipse cx="8" cy="4" rx="6" ry="2.5" stroke="currentColor" stroke-width="1.3" opacity=".6"/><path d="M2 4v4c0 1.4 2.7 2.5 6 2.5S14 9.4 14 8V4" stroke="currentColor" stroke-width="1.3" opacity=".5"/><path d="M2 8v4c0 1.4 2.7 2.5 6 2.5S14 13.4 14 12V8" stroke="currentColor" stroke-width="1.3" opacity=".4"/></svg>
-      </span>
-      Clientes
-      <span class="tab-dot"></span>
-    </button>
-    <button class="tab-btn side-nav tab-admin-only" onclick="showTab('admin',this)" data-tab="admin" style="display:none">
-      <span class="side-nav-icon">
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="3" y="7" width="10" height="7" rx="1.5" stroke="currentColor" stroke-width="1.3" opacity=".6"/><path d="M5 7V5a3 3 0 016 0v2" stroke="currentColor" stroke-width="1.3" opacity=".5"/></svg>
-      </span>
-      Usuários
-      <span class="tab-dot"></span>
-    </button>
-    <button class="tab-btn side-nav tab-admin-only" onclick="showTab('log',this)" data-tab="log" style="display:none">
-      <span class="side-nav-icon">
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.3" opacity=".6"/><path d="M5 6h6M5 9h4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity=".5"/></svg>
-      </span>
-      Log
-      <span class="tab-dot"></span>
-    </button>
-  </div>
-
-  <!-- Cliente ativo -->
-  <div class="sidebar-bottom">
-    <div id="cliente-ativo-chip" style="display:none">
-      <div class="side-client-chip">
-        <div class="side-client-icon"></div>
-        <div class="side-client-info">
-          <span id="cliente-ativo-nome"></span>
-          <span id="cliente-ativo-consultor"></span>
-        </div>
-        <button onclick="novaFicha()" title="Trocar cliente" class="side-client-close">✕</button>
-      </div>
-    </div>
-    <div id="user-chip" class="side-user-chip" style="display:none">
-      <div id="user-avatar" class="side-user-avatar"></div>
-      <div class="side-user-info">
-        <span id="user-name-chip"></span>
-        <span id="user-dept-chip"></span>
-      </div>
-      <button class="user-logout" onclick="fazerLogout()" title="Sair">⇄</button>
-    </div>
+  <div class="sidebar-group">
+    <div class="sidebar-label">Navegação</div>
   </div>
 </nav>
 
@@ -1027,7 +1024,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
 
 <!-- ════════════════ CADASTRO GERAL ════════════════ -->
 <div class="panel tab-cadastro active" id="panel-cadastro">
-  <div class="readonly-banner" id="banner-panel-cadastro">Somente leitura — visualização apenas</div>
+  <div class="readonly-banner" id="banner-panel-cadastro">Somente leitura</div>
   <div class="panel-head">
     <div class="panel-title"><span>Cadastro Geral</span></div>
     <div class="panel-desc">Identificação da empresa, estrutura societária e regime tributário</div>
@@ -1035,7 +1032,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
 
   <!-- STATUS -->
   <div class="card">
-    <div class="card-title"><span class="ct-icon"></span> Status do Onboarding</div>
+    <div class="card-title">Status do Onboarding</div>
     <div class="g">
       <div class="fg">
         <label>Status</label>
@@ -1049,7 +1046,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
         <label>Nível de Complexidade</label>
         <div class="status-row" id="status-complexidade">
           <div class="status-chip" onclick="selStatus(this,'status-complexidade','sel-green')">Baixa</div>
-          <div class="status-chip" onclick="selStatus(this,'status-complexidade','sel-yellow')">Média</div>
+          <div class="status-chip" onclick="selStatus(this,'status-complexidade','sel-yellow')">Média </div>
           <div class="status-chip" onclick="selStatus(this,'status-complexidade','sel-purple')">Alta</div>
         </div>
       </div>
@@ -1058,7 +1055,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
 
   <!-- DADOS EMPRESA -->
   <div class="card">
-    <div class="card-title"><span class="ct-icon"></span> Dados Gerais da Empresa</div>
+    <div class="card-title">Dados Gerais da Empresa</div>
     <div class="g g2">
       <div class="fg s2">
         <label>Razão Social <span class="req">*</span></label>
@@ -1140,26 +1137,9 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
     <button class="btn btn-s btn-sm" onclick="addPrefeitura()">+ Adicionar portal</button>
   </div>
 
-  <!-- CONSULTOR / RESPONSÁVEL COMERCIAL -->
-  <div class="card" id="card-consultor">
-    <div class="card-title"><span class="ct-icon"></span> Responsável Comercial
-      <span style="margin-left:auto;font-size:10px;font-weight:400;color:var(--muted);text-transform:none;letter-spacing:0" id="consultor-lock-info"></span>
-    </div>
-    <div class="g g2">
-      <div class="fg">
-        <label>Nome do Consultor / Comercial</label>
-        <input type="text" id="consultor_nome" placeholder="Nome do responsável GTCON" autocomplete="off">
-      </div>
-      <div class="fg">
-        <label>Usuário responsável <span style="font-size:10px;color:var(--muted);font-weight:400">(login)</span></label>
-        <input type="text" id="consultor_usuario" placeholder="@usuario" class="api-filled" autocomplete="off">
-      </div>
-    </div>
-  </div>
-
   <!-- CONTATO / ASSINATURA -->
   <div class="card">
-    <div class="card-title"><span class="ct-icon"></span> Contato e Assinatura</div>
+    <div class="card-title">Contato e Assinatura</div>
     <div class="g g2">
       <div class="fg">
         <label>Responsável Legal (Assinatura)</label>
@@ -1202,7 +1182,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
 
   <!-- ESTRUTURA SOCIETÁRIA -->
   <div class="card">
-    <div class="card-title"><span class="ct-icon"></span> Estrutura Societária e Filiais</div>
+    <div class="card-title">Estrutura Societária e Filiais</div>
     <div style="overflow-x:auto;margin-bottom:14px;">
       <table class="data-table" id="filiais-table">
         <thead><tr>
@@ -1286,7 +1266,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
 
   <!-- DOR / SPIN -->
   <div class="card">
-    <div class="card-title"><span class="ct-icon"></span> Dor Principal e Motivações (SPIN Selling)</div>
+    <div class="card-title">Dor Principal e Motivações (SPIN Selling)</div>
     <div class="g">
       <div class="fg">
         <label>Problemas Atuais (Dores Explícitas)</label>
@@ -1312,7 +1292,9 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
     </div>
   </div>
 
-  
+  <div class="act-bar">
+    <button class="btn btn-ok" onclick="showTab('comercial',document.querySelector('[onclick*=\"comercial\"]'))">Próximo: Comercial →</button>
+  </div>
 </div>
 
 <!-- ════════════════ COMERCIAL ════════════════ -->
@@ -1324,7 +1306,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
   </div>
 
   <div class="card">
-    <div class="card-title"><span class="ct-icon"></span> Identificação do Comercial</div>
+    <div class="card-title">Identificação do Comercial</div>
     <div class="g g2">
       <div class="fg">
         <label>Usuário Responsável <span class="req">*</span> <span style="font-size:10px;color:var(--muted);font-weight:400;">(preenchido automaticamente)</span></label>
@@ -1366,19 +1348,22 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
     </div>
   </div>
 
-  
+  <div class="act-bar">
+    <button class="btn btn-s" onclick="showTab('cadastro',document.querySelector('[onclick*=\"cadastro\"]'))">← Cadastro Geral</button>
+    <button class="btn btn-ok ml" onclick="showTab('dp',document.querySelector('[onclick*=\"dp\"]'))">Próximo: Dep. Pessoal →</button>
+  </div>
 </div>
 
 <!-- ════════════════ DEPARTAMENTO PESSOAL ════════════════ -->
 <div class="panel tab-dp" id="panel-dp">
   <div class="readonly-banner" id="banner-panel-dp">Somente leitura</div>
   <div class="panel-head">
-    <div class="panel-title">Departamento Pessoal</span></div>
+    <div class="panel-title"><span>Departamento Pessoal</span></div>
     <div class="panel-desc">eSocial, vínculos, benefícios, SST e passivos trabalhistas</div>
   </div>
 
   <div class="card">
-    <div class="card-title"><span class="ct-icon"></span> Vínculos Empregatícios</div>
+    <div class="card-title">Vínculos Empregatícios</div>
     <div class="g g4">
       <div class="fg">
         <label>Qtd. CLT</label>
@@ -1423,7 +1408,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
   </div>
 
   <div class="card">
-    <div class="card-title"><span class="ct-icon"></span> Benefícios Concedidos</div>
+    <div class="card-title">Benefícios Concedidos</div>
     <div class="check-row">
       <label class="co" onclick="togC(this,event)"><input type="checkbox" value="vt">Vale Transporte</label>
       <label class="co" onclick="togC(this,event)"><input type="checkbox" value="vr">Vale Refeição/Alimentação</label>
@@ -1439,7 +1424,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
   </div>
 
   <div class="card">
-    <div class="card-title"><span class="ct-icon"></span> Adicionais e Riscos</div>
+    <div class="card-title">Adicionais e Riscos</div>
     <div class="g g3">
       <div class="fg">
         <label>Insalubridade</label>
@@ -1476,7 +1461,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
   </div>
 
   <div class="card">
-    <div class="card-title"><span class="ct-icon"></span> Saúde e Segurança do Trabalho (SST)</div>
+    <div class="card-title">Saúde e Segurança do Trabalho (SST)</div>
     <div class="g g2">
       <div class="fg">
         <label>PCMSO / PGR / LTCAT atualizados?</label>
@@ -1498,7 +1483,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
   </div>
 
   <div class="card">
-    <div class="card-title"><span class="ct-icon"></span> Pontos Críticos / Passivos Trabalhistas</div>
+    <div class="card-title">Pontos Críticos / Passivos Trabalhistas</div>
     <div class="check-row" style="margin-bottom:14px;">
       <label class="co" onclick="togC(this,event)"><input type="checkbox" value="sem_registro">Funcionários sem registro</label>
       <label class="co" onclick="togC(this,event)"><input type="checkbox" value="pag_por_fora">Pagamentos "por fora" da folha</label>
@@ -1511,7 +1496,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
   </div>
 
   <div class="card">
-    <div class="card-title"><span class="ct-icon"></span> Particularidades do DP</div>
+    <div class="card-title">Particularidades do DP</div>
     <div class="check-row" style="margin-bottom:14px;">
       <label class="co" onclick="togC(this,event)"><input type="checkbox" value="tomadores">Tomadores de serviços</label>
       <label class="co" onclick="togC(this,event)"><input type="checkbox" value="centro_custo">Centro de Custos</label>
@@ -1523,19 +1508,22 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
     </div>
   </div>
 
-  
+  <div class="act-bar">
+    <button class="btn btn-s" onclick="showTab('cadastro',document.querySelector('[onclick*=\"cadastro\"]'))">← Cadastro</button>
+    <button class="btn btn-ok ml" onclick="showTab('fiscal',document.querySelector('[onclick*=\"fiscal\"]'))">Próximo: Fiscal →</button>
+  </div>
 </div>
 
 <!-- ════════════════ FISCAL ════════════════ -->
 <div class="panel tab-fiscal" id="panel-fiscal">
   <div class="readonly-banner" id="banner-panel-fiscal">Somente leitura</div>
   <div class="panel-head">
-    <div class="panel-title">Fiscal</span></div>
+    <div class="panel-title"><span>Fiscal</span></div>
     <div class="panel-desc">Emissão de notas, volume, estoque, SPED e obrigações acessórias</div>
   </div>
 
   <div class="card">
-    <div class="card-title"><span class="ct-icon"></span> Tributário — Engenharia Fiscal</div>
+    <div class="card-title">Tributário — Engenharia Fiscal</div>
     <div class="g g2">
       <div class="fg">
         <label>Regime de Apuração</label>
@@ -1585,14 +1573,6 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
           <label class="ro" onclick="selR(this,'monofasico')"><input type="radio" name="monofasico" value="sim">Sim (Bebidas, Autopeças, Farmácia)</label>
         </div>
       </div>
-      <div class="fg">
-        <label>Vende para cliente final (B2C)?</label>
-        <div class="radio-row">
-          <label class="ro" onclick="selR(this,'vende_cf')"><input type="radio" name="vende_cf" value="sim">Sim</label>
-          <label class="ro" onclick="selR(this,'vende_cf')"><input type="radio" name="vende_cf" value="nao">Não</label>
-          <label class="ro" onclick="selR(this,'vende_cf')"><input type="radio" name="vende_cf" value="ambos">Ambos (B2B e B2C)</label>
-        </div>
-      </div>
     </div>
     <div class="sec-div">Riscos Identificados</div>
     <div class="check-row">
@@ -1603,7 +1583,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
   </div>
 
   <div class="card">
-    <div class="card-title"><span class="ct-icon"></span> Emissor de Notas Fiscais</div>
+    <div class="card-title">Emissor de Notas Fiscais</div>
     <div class="g g2">
       <div class="fg">
         <label>Sistema de Emissão (NFe/NFCe/NFSe)</label>
@@ -1643,7 +1623,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
   </div>
 
   <div class="card">
-    <div class="card-title"><span class="ct-icon"></span> Controle de Estoque e SPED</div>
+    <div class="card-title">Controle de Estoque e SPED</div>
     <div class="g g2">
       <div class="fg">
         <label>Controle de Estoque</label>
@@ -1678,54 +1658,10 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
     </div>
   </div>
 
-  <!-- Particularidades por Tributo -->
-  <div class="card">
-    <div class="card-title"><span class="ct-icon"></span> Particularidades por Tributo</div>
-
-    <!-- Tabs dos tributos -->
-    <div style="display:flex;gap:0;border-bottom:2px solid var(--border);margin-bottom:14px;flex-wrap:wrap">
-      <button class="trib-tab active" onclick="switchTribTab('pis_cofins',this)" type="button">PIS/COFINS</button>
-      <button class="trib-tab" onclick="switchTribTab('irpj_csll',this)" type="button">IRPJ/CSLL</button>
-      <button class="trib-tab" onclick="switchTribTab('iss',this)" type="button">ISS</button>
-      <button class="trib-tab" onclick="switchTribTab('icms',this)" type="button">ICMS</button>
-      <button class="trib-tab" onclick="switchTribTab('ipi',this)" type="button">IPI</button>
-      <button class="trib-tab" onclick="switchTribTab('das',this)" type="button">DAS</button>
-    </div>
-
-    <div id="trib-pis_cofins" class="trib-panel">
-      <div class="fg"><textarea id="part_pis_cofins" rows="5" placeholder="Regime, créditos especiais, exclusões, monofásicos, não cumulativo, etc..."></textarea></div>
-    </div>
-    <div id="trib-irpj_csll" class="trib-panel" style="display:none">
-      <div class="fg"><textarea id="part_irpj_csll" rows="5" placeholder="Estimativas mensais, balanço de redução/suspensão, distribuição de lucros, JSCP, etc..."></textarea></div>
-    </div>
-    <div id="trib-iss" class="trib-panel" style="display:none">
-      <div class="fg"><textarea id="part_iss" rows="5" placeholder="Município de incidência, alíquota fixada, responsabilidade de recolhimento, ISS retido, etc..."></textarea></div>
-    </div>
-    <div id="trib-icms" class="trib-panel" style="display:none">
-      <div class="fg"><textarea id="part_icms" rows="5" placeholder="ST, diferencial de alíquota, DIFAL, benefícios fiscais, partilha EC 87, etc..."></textarea></div>
-    </div>
-    <div id="trib-ipi" class="trib-panel" style="display:none">
-      <div class="fg"><textarea id="part_ipi" rows="5" placeholder="Classificação fiscal, NT, suspensão, imunidade, IPI nas entradas para crédito, etc..."></textarea></div>
-    </div>
-    <div id="trib-das" class="trib-panel" style="display:none">
-      <div class="fg"><textarea id="part_das" rows="5" placeholder="Anexo aplicável, sublimite estadual, atividades vedadas, risco de exclusão, parcelamentos, etc..."></textarea></div>
-    </div>
+  <div class="act-bar">
+    <button class="btn btn-s" onclick="showTab('dp',document.querySelector('[onclick*=\"dp\"]'))">← Dep. Pessoal</button>
+    <button class="btn btn-ok ml" onclick="showTab('contabil',document.querySelector('[onclick*=\"contabil\"]'))">Próximo: Contábil →</button>
   </div>
-
-  <!-- SPED Cruzamento -->
-  <div class="card" style="border-color:var(--accent);background:linear-gradient(to right,rgba(37,99,235,.04),transparent)">
-    <div class="card-title"><span class="ct-icon"></span> SPED · Cruzamento de Declarações</div>
-    <p style="font-size:12.5px;color:var(--muted);margin-bottom:14px;line-height:1.6">
-      Importe os arquivos SPED (EFD-Contribuições, ECD, ECF e Fiscal) para cruzar declarações, identificar divergências e gerar relatórios fiscais completos. Os dados ficam salvos no banco vinculados a este cliente.
-    </p>
-    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-      <button class="btn btn-ok" onclick="abrirSPED()" id="btn-abrir-sped">Abrir Módulo SPED</button>
-      <span id="sped-status-badge" style="display:none;font-size:11px;padding:3px 10px;border-radius:20px;background:rgba(5,150,105,.12);color:var(--success);font-weight:500"></span>
-    </div>
-  </div>
-
-
-  
 </div>
 
 <!-- ════════════════ CONTÁBIL ════════════════ -->
@@ -1736,10 +1672,36 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
     <div class="panel-desc">ERP, contas bancárias, patrimônio, mapa de riscos e contabilidade anterior</div>
   </div>
 
-
+  <div class="card">
+    <div class="card-title">Software de Gestão (ERP)</div>
+    <div class="g g2">
+      <div class="fg">
+        <label>Sistema ERP / Financeiro</label>
+        <div class="radio-row">
+          <label class="ro" onclick="selR(this,'erp')"><input type="radio" name="erp" value="omie">Omie</label>
+          <label class="ro" onclick="selR(this,'erp')"><input type="radio" name="erp" value="contaazul">ContaAzul</label>
+          <label class="ro" onclick="selR(this,'erp')"><input type="radio" name="erp" value="tiny">Tiny</label>
+          <label class="ro" onclick="selR(this,'erp')"><input type="radio" name="erp" value="nao">Não usa</label>
+          <label class="ro" onclick="selR(this,'erp')"><input type="radio" name="erp" value="outro">Outro</label>
+        </div>
+      </div>
+      <div class="fg">
+        <label>Qual ERP? (se Outro)</label>
+        <input type="text" id="erp_outro" placeholder="Nome do sistema">
+      </div>
+      <div class="fg">
+        <label>Forma de Integração</label>
+        <div class="radio-row">
+          <label class="ro" onclick="selR(this,'erp_integ')"><input type="radio" name="erp_integ" value="api">API</label>
+          <label class="ro" onclick="selR(this,'erp_integ')"><input type="radio" name="erp_integ" value="ofx">Importação OFX</label>
+          <label class="ro" onclick="selR(this,'erp_integ')"><input type="radio" name="erp_integ" value="manual">Manual</label>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <div class="card">
-    <div class="card-title"><span class="ct-icon"></span> Contas Bancárias (PJ)</div>
+    <div class="card-title">Contas Bancárias (PJ)</div>
     <div id="bancos-container">
       <div class="g g4" style="margin-bottom:8px;" id="banco-1">
         <div class="fg s2"><label>Banco</label><input type="text" placeholder="Nome do banco"></div>
@@ -1757,7 +1719,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
   </div>
 
   <div class="card">
-    <div class="card-title"><span class="ct-icon"></span> Contabilidade Anterior</div>
+    <div class="card-title">Contabilidade Anterior</div>
     <div class="g g2">
       <div class="fg">
         <label>Balancete fechado do último exercício?</label>
@@ -1789,7 +1751,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
   </div>
 
   <div class="card">
-    <div class="card-title"><span class="ct-icon"></span> Mapa de Riscos e Alertas Críticos</div>
+    <div class="card-title">Mapa de Riscos e Alertas Críticos</div>
     <div id="riscos-container">
       <div class="risk-item">
         <div class="risk-num r-danger">1</div>
@@ -1823,19 +1785,22 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
     <button class="btn btn-s btn-sm" onclick="addRisco()" style="margin-top:8px;">+ Adicionar risco</button>
   </div>
 
-  
+  <div class="act-bar">
+    <button class="btn btn-s" onclick="showTab('fiscal',document.querySelector('[onclick*=\"fiscal\"]'))">← Fiscal</button>
+    <button class="btn btn-ok ml" onclick="showTab('parametros',document.querySelector('[onclick*=\"parametros\"]'))">Próximo: Parâmetros →</button>
+  </div>
 </div>
 
 <!-- ════════════════ PARÂMETROS ════════════════ -->
 <div class="panel tab-parametros" id="panel-parametros">
   <div class="readonly-banner" id="banner-panel-parametros">Somente leitura</div>
   <div class="panel-head">
-    <div class="panel-title">Parâmetros</span></div>
+    <div class="panel-title"><span>Parâmetros</span></div>
     <div class="panel-desc">Calendário de envio, relatórios exigidos, key users e checklist de saída</div>
   </div>
 
   <div class="card">
-    <div class="card-title"><span class="ct-icon"></span> Calendário Operacional (SLA)</div>
+    <div class="card-title">Calendário Operacional (SLA)</div>
     <div class="g g3">
       <div class="fg">
         <label>Dia de Fechamento do Ponto</label>
@@ -1861,7 +1826,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
   </div>
 
   <div class="card">
-    <div class="card-title"><span class="ct-icon"></span> Relatórios Gerenciais Exigidos</div>
+    <div class="card-title">Relatórios Gerenciais Exigidos</div>
     <div class="check-row" style="margin-bottom:14px;">
       <label class="co" onclick="togC(this,event)"><input type="checkbox" value="balancete_mensal">Balancete Mensal</label>
       <label class="co" onclick="togC(this,event)"><input type="checkbox" value="dre">DRE Gerencial</label>
@@ -1876,7 +1841,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
   </div>
 
   <div class="card">
-    <div class="card-title"><span class="ct-icon"></span> Responsáveis no Cliente</div>
+    <div class="card-title">Responsáveis no Cliente</div>
 
     <div class="sec-div">Implantação</div>
     <div class="g g2">
@@ -1940,7 +1905,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
   </div>
 
   <div class="card">
-    <div class="card-title"><span class="ct-icon"></span> Checklist de Saída — Itens Bloqueantes</div>
+    <div class="card-title">Checklist de Saída — Itens Bloqueantes</div>
     <div class="checklist" id="checklist-saida">
       <div class="check-line" onclick="toggleCheckLine(this)">
         <div class="check-box"></div>
@@ -1985,63 +1950,28 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
     </div>
   </div>
 
-  
+  <div class="act-bar">
+    <button class="btn btn-s" onclick="showTab('contabil',document.querySelector('[onclick*=\"contabil\"]'))">← Contábil</button>
+    <button class="btn btn-ok ml" onclick="showTab('particularidades',document.querySelector('[onclick*=\"particularidades\"]'))">Próximo: Particularidades →</button>
+  </div>
 </div>
 
 <!-- ════════════════ PARTICULARIDADES ════════════════ -->
 <div class="panel tab-particularidades" id="panel-particularidades">
   <div class="readonly-banner" id="banner-panel-particularidades">Somente leitura</div>
   <div class="panel-head">
-    <div class="panel-title">Particularidades Gerais</span></div>
+    <div class="panel-title"><span>Particularidades Gerais</span></div>
     <div class="panel-desc">Manual mensal, erros encontrados, observações e instruções especiais ao time</div>
   </div>
 
   <div class="card">
-    <div class="card-title"><span class="ct-icon"></span> Software de Gestão (ERP)</div>
-    <div class="g g2">
-      <div class="fg">
-        <label>Sistema ERP / Financeiro</label>
-        <div class="radio-row">
-          <label class="ro" onclick="selR(this,'erp')"><input type="radio" name="erp" value="omie">Omie</label>
-          <label class="ro" onclick="selR(this,'erp')"><input type="radio" name="erp" value="contaazul">ContaAzul</label>
-          <label class="ro" onclick="selR(this,'erp')"><input type="radio" name="erp" value="tiny">Tiny</label>
-          <label class="ro" onclick="selR(this,'erp')"><input type="radio" name="erp" value="nao">Não usa</label>
-          <label class="ro" onclick="selR(this,'erp')"><input type="radio" name="erp" value="outro">Outro</label>
-        </div>
-      </div>
-      <div class="fg">
-        <label>Qual ERP? (se Outro)</label>
-        <input type="text" id="erp_outro" placeholder="Nome do sistema">
-      </div>
-      <div class="fg">
-        <label>Forma de Integração</label>
-        <div class="radio-row">
-          <label class="ro" onclick="selR(this,'erp_integ')"><input type="radio" name="erp_integ" value="api">API</label>
-          <label class="ro" onclick="selR(this,'erp_integ')"><input type="radio" name="erp_integ" value="ofx">Importação OFX</label>
-          <label class="ro" onclick="selR(this,'erp_integ')"><input type="radio" name="erp_integ" value="manual">Manual</label>
-        </div>
-      </div>
-      <div class="fg s2">
-        <label>Departamentos Envolvidos</label>
-        <div class="radio-row" style="flex-wrap:wrap;gap:8px">
-          <label class="co" onclick="togC(this,'depts')"><input type="checkbox" name="depts" value="contabil">Contábil</label>
-          <label class="co" onclick="togC(this,'depts')"><input type="checkbox" name="depts" value="fiscal">Fiscal</label>
-          <label class="co" onclick="togC(this,'depts')"><input type="checkbox" name="depts" value="dp">Dep. Pessoal</label>
-          <label class="co" onclick="togC(this,'depts')"><input type="checkbox" name="depts" value="societario">Societário</label>
-          <label class="co" onclick="togC(this,'depts')"><input type="checkbox" name="depts" value="financeiro">Financeiro</label>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-title"><span class="ct-icon"></span> Erros Encontrados</div>
+    <div class="card-title">Erros Encontrados</div>
     <div id="erros-container"></div>
     <button class="btn btn-s btn-sm" onclick="addErro()">+ Registrar erro</button>
   </div>
 
   <div class="card">
-    <div class="card-title"><span class="ct-icon"></span> Manual de Particularidades Mensais</div>
+    <div class="card-title">Manual de Particularidades Mensais</div>
     <div class="g">
       <div class="fg">
         <label>Instruções especiais ao time operacional</label>
@@ -2055,7 +1985,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
   </div>
 
   <div class="card">
-    <div class="card-title"><span class="ct-icon"></span> Observações Gerais</div>
+    <div class="card-title">Observações Gerais</div>
     <div class="fg">
       <label>Observações adicionais sobre o cliente</label>
       <textarea id="obs_gerais" placeholder="Qualquer outra informação relevante que o time deva conhecer..." rows="4"></textarea>
@@ -2063,7 +1993,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
   </div>
 
   <div class="card">
-    <div class="card-title"><span class="ct-icon"></span> Relatório / Diagnóstico Final</div>
+    <div class="card-title">Relatório / Diagnóstico Final</div>
     <div class="g">
       <div class="fg">
         <label>Resumo da reunião comercial</label>
@@ -2076,7 +2006,8 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
     </div>
   </div>
 
-  <div class="act-bar" id="actbar-salvar" style="display:none">
+  <div class="act-bar">
+    <button class="btn btn-s" onclick="showTab('parametros',document.querySelector('[onclick*=\"parametros\"]'))">← Parâmetros</button>
     <button class="btn btn-ok ml" onclick="saveAll()">Salvar Ficha Completa</button>
   </div>
 </div>
@@ -2112,8 +2043,8 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
           oninput="renderDBTable()"
           style="width:100%;padding:9px 12px 9px 34px;border:1px solid var(--border);border-radius:var(--rsm);background:var(--surface2);font-family:var(--sans);font-size:13px;outline:none;">
       </div>
-      <button class="btn btn-s btn-sm" onclick="exportAllJSON()">⬇ Exportar</button>
-      <button class="btn btn-ok btn-sm" onclick="novaFicha()">+ Nova Ficha</button>
+      <button class="btn btn-s btn-sm" onclick="exportAllJSON()">Exportar</button>
+      <button class="btn btn-ok btn-sm" onclick="novaFicha()">Nova Ficha</button>
     </div>
     <div class="db-table-wrap" id="db-table-wrap">
       <div class="db-empty">
@@ -2136,7 +2067,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
   </div>
 
   <div class="card">
-    <div class="card-title"><span class="ct-icon"></span> Adicionar Usuário</div>
+    <div class="card-title">Adicionar Usuário</div>
     <div class="admin-add-form">
       <div class="g g3">
         <div class="fg s2">
@@ -2172,7 +2103,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
   </div>
 
   <div class="card">
-    <div class="card-title"><span class="ct-icon"></span> Usuários Cadastrados</div>
+    <div class="card-title">Usuários Cadastrados</div>
     <div id="admin-user-list">
       <div style="text-align:center;padding:20px;color:var(--muted);font-size:13px;">Carregando...</div>
     </div>
@@ -2257,7 +2188,7 @@ function updateSidebar(tab) {
 // Mapa: dept → abas que pode EDITAR (demais são só leitura)
 const EDIT_PERMISSIONS = {
   'Administrativo': [],  // só leitura em tudo
-  'Comercial':      [],  // somente leitura — consulta
+  'Comercial':      ['cadastro','comercial'],
   'Contábil':       ['contabil','fiscal'],
   'Dep. Pessoal':   ['dp'],
   'Fiscal':         ['fiscal'],
@@ -2328,31 +2259,31 @@ function clientePertenceAoUsuario(cliente) {
 const LOG_KEY = 'gtcon_log';
 const LOG_MAX = 500; // máximo de entradas
 
-// getLogs e saveLogs — Supabase
-async function getLogs() {
-  try {
-    const rows = await sbFetch('GET', 'logs?order=ts.desc&limit=500');
-    return (rows || []).map(r => ({
-      id: r.id, ts: r.ts, tipo: r.tipo, acao: r.acao,
-      usuario: r.usuario, login: r.login, dept: r.dept,
-      detalhes: r.detalhes || {},
-    }));
-  } catch(e) { return []; }
+function getLogs() {
+  try { return JSON.parse(localStorage.getItem(LOG_KEY) || '[]'); }
+  catch(e) { return []; }
 }
-async function saveLogs() {} // não usado — cada entrada gravada individualmente
+
+function saveLogs(logs) {
+  // Manter só os últimos LOG_MAX registros
+  if (logs.length > LOG_MAX) logs = logs.slice(-LOG_MAX);
+  localStorage.setItem(LOG_KEY, JSON.stringify(logs));
+}
 
 function registrarLog(tipo, acao, detalhes = {}) {
   if (!currentUser) return;
-  // Gravar direto no Supabase — fire and forget (não bloqueia o UI)
-  sbFetch('POST', 'logs', {
-    ts:       new Date().toISOString(),
-    tipo,
-    acao,
-    usuario:  currentUser.nome,
-    login:    currentUser.usuario,
-    dept:     currentUser.dept,
-    detalhes,
-  }).catch(e => console.warn('registrarLog:', e));
+  const logs = getLogs();
+  logs.push({
+    id: Date.now(),
+    ts: new Date().toISOString(),
+    tipo,          // 'login' | 'ficha' | 'usuario'
+    acao,          // ex: 'Login realizado', 'Ficha salva', 'Usuário criado'
+    usuario: currentUser.nome,
+    login: currentUser.usuario,
+    dept: currentUser.dept,
+    detalhes,      // { cliente, campo, de, para } etc
+  });
+  saveLogs(logs);
 }
 
 function registrarDiff(clienteAntes, clienteDepois) {
@@ -2409,15 +2340,18 @@ function registrarDiff(clienteAntes, clienteDepois) {
   if (!diffs.length) return;
 
   const nome = clienteDepois.cadastro?.razao_social || clienteDepois.cadastro?.cnpj || 'Cliente';
-  sbFetch('POST', 'logs', {
-    ts:       new Date().toISOString(),
-    tipo:     'ficha',
-    acao:     `Ficha atualizada: ${nome}`,
-    usuario:  currentUser.nome,
-    login:    currentUser.usuario,
-    dept:     currentUser.dept,
+  const logs = getLogs();
+  logs.push({
+    id: Date.now(),
+    ts: new Date().toISOString(),
+    tipo: 'ficha',
+    acao: `Ficha atualizada: ${nome}`,
+    usuario: currentUser.nome,
+    login: currentUser.usuario,
+    dept: currentUser.dept,
     detalhes: { cliente: nome, diffs },
-  }).catch(e => console.warn('registrarDiff:', e));
+  });
+  saveLogs(logs);
 }
 
 function exportarLogCSV() {
@@ -2446,19 +2380,17 @@ function exportarLogCSV() {
   a.download = `gtcon_log_${new Date().toISOString().slice(0,10)}.csv`;
   a.click();
   URL.revokeObjectURL(url);
-  toast('📥 Log exportado com sucesso!', 'ok');
+  toast('Log exportado com sucesso!', 'ok');
 }
 
-async function renderLog() {
+function renderLog() {
   const container = document.getElementById('log-container');
   if (!container) return;
-
-  container.innerHTML = '<div style="text-align:center;padding:40px;color:var(--muted);font-size:13px;">⏳ Carregando...</div>';
 
   const q    = (document.getElementById('log-search')?.value || '').toLowerCase();
   const tipo = document.getElementById('log-filter-tipo')?.value || '';
 
-  let logs = await getLogs(); // já vem ordenado desc do Supabase
+  let logs = getLogs().reverse(); // mais recente primeiro
 
   if (q) logs = logs.filter(l =>
     (l.usuario||'').toLowerCase().includes(q) ||
@@ -2502,15 +2434,11 @@ async function renderLog() {
   }).join('');
 }
 
-async function limparLog() {
+function limparLog() {
   if (!confirm('Limpar todo o log? Esta ação não pode ser desfeita.')) return;
-  try {
-    await sbFetch('DELETE', 'logs?id=gt.0');
-    renderLog();
-    toast('Log limpo.', 'inf');
-  } catch(e) {
-    toast('Erro ao limpar log: ' + e.message, 'err');
-  }
+  localStorage.removeItem(LOG_KEY);
+  renderLog();
+  toast('Log limpo.', 'inf');
 }
 
 // ══════════════════════════════════════
@@ -2578,7 +2506,7 @@ async function buscarCNPJ() {
     );
     if (found) {
       loadClient(found);
-      toast(`✅ Cliente "${found.cadastro?.razao_social}" encontrado pelo Código SCI!`, 'ok');
+      toast(`Cliente "${found.cadastro?.razao_social}" encontrado pelo Código SCI!`, 'ok');
     } else {
       toast('CNPJ inválido ou código SCI não encontrado. Verifique e tente novamente.', 'err');
     }
@@ -2594,18 +2522,18 @@ async function buscarCNPJ() {
     if (!res.ok) throw new Error('CNPJ não encontrado');
     const d = await res.json();
     fillCNPJ(d, raw);
-    toast('✅ Dados da Receita Federal carregados!', 'ok');
+    toast('Dados da Receita Federal carregados!', 'ok');
   } catch(e) {
     try {
       const r2 = await fetch(`https://receitaws.com.br/v1/cnpj/${raw}`);
       const d2 = await r2.json();
       if (d2.status === 'ERROR') throw new Error(d2.message);
       fillCNPJAlt(d2, raw);
-      toast('✅ Dados carregados (fonte alternativa)', 'ok');
+      toast('Dados carregados (fonte alternativa)', 'ok');
     } catch(e2) {
       toast('Erro: ' + e.message, 'err');
     }
-  } finally { btn.disabled = false; icon.textContent = '🔍'; }
+  } finally { btn.disabled = false; icon.textContent = ''; }
 }
 
 function renderCNAEs(lista) {
@@ -2668,15 +2596,9 @@ function fillCNPJAlt(d, raw) {
   atualizarChipCliente(nm);
 }
 
-function atualizarChipCliente(nome, consultor) {
+function atualizarChipCliente(nome) {
   if (!nome) { document.getElementById('cliente-ativo-chip').style.display = 'none'; return; }
   document.getElementById('cliente-ativo-nome').textContent = nome;
-  const elCons = document.getElementById('cliente-ativo-consultor');
-  if (elCons) {
-    const cons = consultor || document.getElementById('consultor_nome')?.value || '';
-    if (cons) { elCons.textContent = '🤝 ' + cons; elCons.style.display = ''; }
-    else { elCons.style.display = 'none'; }
-  }
   document.getElementById('cliente-ativo-chip').style.display = 'flex';
 }
 function sv(id, val) { const el = document.getElementById(id); if(el) el.value = val; }
@@ -2689,26 +2611,18 @@ let partCnt=0, socioCnt=2, bancoCnt=2, filialRows=0, erroCnt=0, riscoCnt=5;
 let contatoCnt = 0;
 function aplicarBloqueioConsultor() {
   const isAdmin = currentUser?.perfil === 'admin';
+  const isComercialUser = currentUser?.dept === 'Comercial' && !isAdmin;
   ['consultor_usuario', 'consultor_nome'].forEach(id => {
     const el = document.getElementById(id);
     if (!el) return;
-    if (!isAdmin) {
-      // Bloquear para todos exceto admin
+    if (isComercialUser) {
       el.classList.add('api-filled');
       el.style.pointerEvents = 'none';
-      el.readOnly = true;
-    } else {
+    } else if (isAdmin) {
       el.classList.remove('api-filled');
       el.style.pointerEvents = '';
-      el.readOnly = false;
     }
   });
-  // Mostrar info de bloqueio
-  const lockInfo = document.getElementById('consultor-lock-info');
-  if (lockInfo) {
-    lockInfo.textContent = isAdmin ? '✏️ Editável (admin)' : '🔒 Editável apenas pelo admin';
-    lockInfo.style.color = isAdmin ? 'var(--success)' : 'var(--muted)';
-  }
 }
 
 function addRespExtra(dados = {}) {
@@ -2856,7 +2770,7 @@ function addErro() {
   div.innerHTML = `
     <input type="text" placeholder="Descreva o erro encontrado..." style="flex:1">
     <input type="date" style="width:150px">
-    <select style="width:120px"><option value="aberto">🔴 Em aberto</option><option value="resolvido">🟢 Resolvido</option></select>
+    <select style="width:120px"><option value="aberto">🔴 Em aberto</option><option value="resolvido">Resolvido</option></select>
     <button class="btn btn-d btn-sm" onclick="document.getElementById('erro-${erroCnt}').remove()">✕</button>`;
   document.getElementById('erros-container').appendChild(div);
 }
@@ -3009,7 +2923,9 @@ function collectData() {
     },
     comercial: {
       consultor_usuario: gv('consultor_usuario'),
-      consultor: gv('consultor_nome'),
+      consultor: gv('consultor_nome'), data: gv('data_diagnostico'),
+      lead_origem: gr('lead_origem'), lead_outros: gv('lead_outros'),
+      gtcon: gv('participantes_gtcon'),
     },
     dp: {
       clt: gv('dp_clt'), estagiarios: gv('dp_estagiarios'),
@@ -3024,15 +2940,9 @@ function collectData() {
       emissor: gv('emissor_sistema'), vol_saida: gv('vol_saida'),
       vol_entrada: gv('vol_entrada'), estoque: gr('estoque'),
       sped: gr('sped'), obs: gv('obs_fiscal'),
-      vende_cf: gr('vende_cf'),
-      part_pis_cofins: gv('part_pis_cofins'),
-      part_irpj_csll:  gv('part_irpj_csll'),
-      part_iss:        gv('part_iss'),
-      part_icms:       gv('part_icms'),
-      part_ipi:        gv('part_ipi'),
-      part_das:        gv('part_das'),
     },
     contabil: {
+      erp: gr('erp'), erp_outro: gv('erp_outro'),
       balancete: gr('balancete'), imobilizado: gr('imobilizado'),
       contab_anterior: gv('contab_anterior'),
       r_cadastral: gv('risco_cadastral'), r_tributario: gv('risco_tributario'),
@@ -3056,8 +2966,6 @@ function collectData() {
       outros_relatorios: gv('outros_relatorios'),
     },
     particularidades: {
-      erp: gr('erp'), erp_outro: gv('erp_outro'), erp_integ: gr('erp_integ'),
-      depts: Array.from(document.querySelectorAll('[name="depts"]:checked')).map(el => el.value),
       instrucoes: gv('part_instrucoes'), avisos: gv('part_avisos'),
       obs_gerais: gv('obs_gerais'), diagnostico: gv('diagnostico_final'),
       resumo: gv('resumo_reuniao'),
@@ -3086,7 +2994,13 @@ async function saveAll() {
     }
   }
 
-  // Consultor: não pode ser alterado por não-admins (campo travado no UI)
+  // Comercial: atribuir consultor e usuário automaticamente, campo bloqueado para não-admin
+  if (currentUser && currentUser.dept === 'Comercial' && currentUser.perfil !== 'admin') {
+    d.comercial.consultor_usuario = currentUser.usuario;
+    d.comercial.consultor = currentUser.nome;
+    sv('consultor_usuario', currentUser.usuario);
+    sv('consultor_nome', currentUser.nome);
+  }
 
   // Registrar no log — buscar versão anterior para diff
   const chaveId = d.cadastro.cnpj?.replace(/\D/g,'') || d.cadastro.codigo_sci;
@@ -3103,12 +3017,10 @@ async function saveAll() {
   const btn = document.querySelector('[onclick="saveAll()"]');
   if (btn) { btn.disabled = true; btn.textContent = '⏳ Salvando...'; }
   const res = await api('POST', '/api/cliente', d);
-  if (btn) { btn.disabled = false; btn.innerHTML = '💾 Salvar'; }
+  if (btn) { btn.disabled = false; btn.innerHTML = 'Salvar'; }
   if (res?.ok) {
-    toast(`✅ ${res.mensagem} — ${res.total} cliente(s) no banco.`, 'ok');
+    toast(`${res.mensagem} — ${res.total} cliente(s) no banco.`, 'ok');
     updateClientCountBadge();
-    // Liberar trava e voltar ao modo visualização
-    await sairModoEdicao();
   }
 }
 
@@ -3149,13 +3061,6 @@ function resetForm() {
   const pc = document.getElementById('prefeituras-container');
   if (pc) { pc.innerHTML = ''; prefCnt = 0; addPrefeitura(); }
   document.getElementById('cliente-ativo-chip').style.display = 'none';
-
-  // Esconder barra de edição e limpar estado
-  _currentCNPJ = null;
-  _modoEdicao = false;
-  if (_lockHeartbeat) { clearInterval(_lockHeartbeat); _lockHeartbeat = null; }
-  const bar = document.getElementById('edit-mode-bar');
-  if (bar) bar.classList.remove('show');
 }
 
 function clearAll() {
@@ -3373,24 +3278,7 @@ function loadClient(data) {
   setRadio('icms_st',       data.fiscal?.icms_st);
   setRadio('estoque',       data.fiscal?.estoque);
   setRadio('sped',          data.fiscal?.sped);
-  setRadio('vende_cf',       data.fiscal?.vende_cf);
-  sv('part_pis_cofins',     data.fiscal?.part_pis_cofins);
-  sv('part_irpj_csll',      data.fiscal?.part_irpj_csll);
-  sv('part_iss',            data.fiscal?.part_iss);
-  sv('part_icms',           data.fiscal?.part_icms);
-  sv('part_ipi',            data.fiscal?.part_ipi);
-  sv('part_das',            data.fiscal?.part_das);
-  // ERP agora em particularidades
-  setRadio('erp',           data.particularidades?.erp || data.contabil?.erp);
-  setRadio('erp_integ',     data.particularidades?.erp_integ || data.contabil?.erp_integ);
-  sv('erp_outro',           data.particularidades?.erp_outro || data.contabil?.erp_outro);
-  // Departamentos envolvidos
-  const _depts = data.particularidades?.depts || [];
-  document.querySelectorAll('[name="depts"]').forEach(el => {
-    el.checked = _depts.includes(el.value);
-    const lbl = el.closest('label');
-    if (lbl) lbl.classList.toggle('sel', el.checked);
-  });
+  setRadio('erp',           data.contabil?.erp);
   setRadio('balancete',     data.contabil?.balancete);
   setRadio('imobilizado',   data.contabil?.imobilizado);
   setRadio('lead_origem',   data.comercial?.lead_origem);
@@ -3419,7 +3307,7 @@ async function renderDBTable() {
   if (!all.length) {
     const msg = q ? `Nenhum resultado para "<strong>${q}</strong>".` : 'Nenhum cliente cadastrado ainda.';
     const sub = q ? 'Tente buscar por nome, CNPJ ou código SCI.' : 'Clique em "Nova Ficha" para começar.';
-    wrap.innerHTML = `<div class="db-empty"><div class="de-icon">${q ? '🔍' : '📂'}</div><p>${msg}</p><small>${sub}</small></div>`;
+    wrap.innerHTML = `<div class="db-empty"><div class="de-icon"></div><p>${msg}</p><small>${sub}</small></div>`;
     return;
   }
 
@@ -3454,20 +3342,10 @@ async function renderDBTable() {
 
 function abrirCliente(data) {
   _fichaExistente = true;
-  if (_currentCNPJ && _modoEdicao) sairModoEdicao();
   loadClient(data);
   aplicarBloqueioConsultor();
-  updateTribTabs();
   showTab('cadastro', document.querySelector('.tab-btn'));
-  const nome = data.cadastro?.razao_social || data.cadastro?.cnpj || 'Cliente';
-  const cnpj = (data.cadastro?.cnpj||'').replace(/\D/g,'');
-  _currentCNPJ = cnpj;
-  atualizarChipCliente(nome, data.comercial?.consultor || data.cadastro?.consultor_nome);
-  const bar = document.getElementById('edit-mode-bar');
-  if (bar) bar.classList.add('show');
-  aplicarModoVisualizacao();
-  if (cnpj) setTimeout(() => verificarTravaAtiva(cnpj), 400);
-  setTimeout(() => verificarDadosSPED(), 300);
+  atualizarChipCliente(data.cadastro?.razao_social || data.cadastro?.cnpj || 'Cliente');
 }
 
 // ══════════════════════════════════════
@@ -3496,7 +3374,7 @@ async function renderModalList() {
   const list = document.getElementById('modal-client-list');
   if (!list) return;
   if (!all.length) {
-    list.innerHTML = `<div class="modal-empty"><div class="me-icon">${q ? '🔍' : '📂'}</div>
+    list.innerHTML = `<div class="modal-empty"><div class="me-icon">${q ? '' : '📂'}</div>
       <div>${q ? 'Nenhum cliente encontrado.' : 'Nenhum cliente salvo ainda.'}</div></div>`;
     return;
   }
@@ -3584,88 +3462,66 @@ let usuariosDB = [];
 // Admin hardcoded — você
 const ADMIN_MASTER = { nome: 'Admin Master', usuario: 'admin', dept: 'Diretoria', perfil: 'admin', senha: 'gtcon@2025', master: true };
 
-// Usuários agora ficam no Supabase — loadUsuarios e saveUsuarios são async
-async function loadUsuarios() {
+function getUsuariosKey() { return 'gtcon_usuarios'; }
+
+function loadUsuarios() {
   try {
-    const rows = await sbFetch('GET', 'usuarios?order=created_at.asc');
-    usuariosDB = (rows || []).map(r => ({
-      id:            r.id,
-      nome:          r.nome,
-      usuario:       r.usuario,
-      senha:         r.senha,
-      dept:          r.dept,
-      perfil:        r.perfil,
-      master:        r.master,
-      primeiroAcesso: r.primeiro_acesso,
-    }));
-    // Garantir admin master em memória
-    if (!usuariosDB.find(u => u.master)) {
-      usuariosDB.unshift({ ...ADMIN_MASTER, id: 'master' });
+    const raw = localStorage.getItem(getUsuariosKey());
+    usuariosDB = raw ? JSON.parse(raw) : [];
+  } catch(e) { usuariosDB = []; }
+
+  // Migrar registros antigos que não têm campo 'usuario'
+  let precisaSalvar = false;
+  usuariosDB = usuariosDB.map(u => {
+    if (!u.usuario) {
+      precisaSalvar = true;
+      return { ...u, usuario: u.nome.toLowerCase().replace(/\s+/g, '.') };
     }
-  } catch(e) {
-    console.error('loadUsuarios:', e);
-    usuariosDB = [{ ...ADMIN_MASTER, id: 'master' }];
-  }
-}
-
-async function saveUsuario(u) {
-  // Upsert de um único usuário no Supabase
-  await sbFetch('DELETE', `usuarios?id=eq.${u.id}`);
-  await sbFetch('POST', 'usuarios', {
-    id:              u.id,
-    nome:            u.nome,
-    usuario:         u.usuario,
-    senha:           u.senha,
-    dept:            u.dept,
-    perfil:          u.perfil || 'usuario',
-    master:          u.master || false,
-    primeiro_acesso: u.primeiroAcesso !== false,
+    return u;
   });
-}
 
-async function deleteUsuario(id) {
-  await sbFetch('DELETE', `usuarios?id=eq.${id}`);
-}
-
-// Compatibilidade — salva todos (usado na migração localStorage→Supabase)
-async function saveUsuarios() {
-  for (const u of usuariosDB) {
-    if (!u.master) await saveUsuario(u);
+  // Garantir que o admin master sempre existe — preservando senha customizada
+  const masterIdx = usuariosDB.findIndex(u => u.master);
+  if (masterIdx === -1) {
+    usuariosDB.unshift({ ...ADMIN_MASTER, id: 'master' });
+    precisaSalvar = true;
+  } else {
+    // Preservar senha atual do master, atualizar outros campos
+    const senhaSalva = usuariosDB[masterIdx].senha || ADMIN_MASTER.senha;
+    usuariosDB[masterIdx] = { ...ADMIN_MASTER, id: 'master', senha: senhaSalva };
+    precisaSalvar = true;
   }
+
+  if (precisaSalvar) saveUsuarios();
 }
 
-async function resetarUsuarios() {
-  if (!confirm('Isso vai redefinir o acesso e restaurar apenas o admin master.\nUsuários não-master cadastrados serão removidos.\n\nContinuar?')) return;
-  try {
-    // Remove todos exceto master
-    await sbFetch('DELETE', 'usuarios?master=eq.false');
-    await loadUsuarios();
-  } catch(e) { console.error(e); }
+function saveUsuarios() {
+  localStorage.setItem(getUsuariosKey(), JSON.stringify(usuariosDB));
+}
+
+function resetarUsuarios() {
+  if (!confirm('Isso vai redefinir o acesso e restaurar apenas o admin master.\nUsuários cadastrados serão mantidos se possível.\n\nContinuar?')) return;
+  localStorage.removeItem(getUsuariosKey());
+  loadUsuarios();
   document.getElementById('login-usuario').value = 'admin';
   document.getElementById('login-senha').value = '';
-  document.getElementById('login-err').textContent = '✅ Acesso redefinido. Use: usuário "admin" e senha "gtcon@2025"';
+  document.getElementById('login-err').textContent = 'Acesso redefinido. Use: usuário "admin" e senha "gtcon@2025"';
   document.getElementById('login-err').classList.add('show');
   document.getElementById('login-senha').focus();
 }
 
-async function fazerLogin() {
+function fazerLogin() {
   const usuario = document.getElementById('login-usuario').value.trim().toLowerCase();
   const senha   = document.getElementById('login-senha').value;
   const err     = document.getElementById('login-err');
-  const btn     = document.getElementById('btn-login');
 
   if (!usuario || !senha) {
     err.textContent = 'Preencha usuário e senha.';
     err.classList.add('show'); return;
   }
 
-  if (btn) { btn.disabled = true; btn.textContent = '⏳ Entrando...'; }
-  err.classList.remove('show');
-
-  await loadUsuarios();
+  loadUsuarios();
   const match = usuariosDB.find(u => u.usuario.toLowerCase() === usuario);
-
-  if (btn) { btn.disabled = false; btn.textContent = 'Entrar'; }
 
   if (!match) {
     err.textContent = 'Usuário não encontrado. Solicite acesso ao administrador.';
@@ -3696,7 +3552,7 @@ async function fazerLogin() {
   aplicarSessao();
 }
 
-async function confirmarRedefinicaoSenha() {
+function confirmarRedefinicaoSenha() {
   const nova     = document.getElementById('redef-nova').value;
   const confirma = document.getElementById('redef-confirma').value;
   const errEl    = document.getElementById('redef-err');
@@ -3738,7 +3594,7 @@ function fecharModalSenhaAdmin() {
   document.getElementById('modal-senha-admin').style.display = 'none';
 }
 
-async function confirmarSenhaAdmin() {
+function confirmarSenhaAdmin() {
   const codigo   = document.getElementById('admin-codigo-passe').value;
   const nova     = document.getElementById('admin-nova-senha').value;
   const confirma = document.getElementById('admin-confirma-senha').value;
@@ -3760,25 +3616,23 @@ async function confirmarSenhaAdmin() {
     errEl.style.display = 'block'; return;
   }
 
-  await loadUsuarios();
+  // Atualizar senha do admin master
+  loadUsuarios();
   const idx = usuariosDB.findIndex(u => u.master);
   if (idx >= 0) {
     usuariosDB[idx].senha = nova;
+    // Atualizar ADMIN_MASTER em memória também
     ADMIN_MASTER.senha = nova;
-    try { await saveUsuario(usuariosDB[idx]); } catch(e) { console.error(e); }
+    saveUsuarios();
   }
 
   fecharModalSenhaAdmin();
   registrarLog('usuario', 'Senha do admin master alterada via código passe');
-  toast('✅ Senha do admin atualizada com sucesso!', 'ok');
+  toast('Senha do admin atualizada com sucesso!', 'ok');
 }
 
 function fazerLogout() {
-  if (currentUser) {
-    registrarLog('login', 'Logout realizado');
-    if (_currentCNPJ && _modoEdicao) liberarTrava(_currentCNPJ);
-    if (_lockHeartbeat) { clearInterval(_lockHeartbeat); _lockHeartbeat = null; }
-  }
+  if (currentUser) registrarLog('login', 'Logout realizado');
   currentUser = null;
   resetForm();
   document.getElementById('user-chip').style.display = 'none';
@@ -3929,7 +3783,6 @@ function criarFicha() {
   fecharNovaFicha();
   resetForm();
   _fichaExistente = false;
-  _currentCNPJ = rawCapturado || null;
 
   if (dadosCapturados) {
     if (dadosCapturados.cnae_fiscal !== undefined) {
@@ -3942,11 +3795,14 @@ function criarFicha() {
   // Pré-Análise como status padrão
   selStatus(document.querySelector('#status-onboarding .status-chip'), 'status-onboarding', 'sel-blue');
 
+  // Preencher consultor se for Comercial
+  if (currentUser?.dept === 'Comercial' && currentUser?.perfil !== 'admin') {
+    sv('consultor_usuario', currentUser.usuario);
+    sv('consultor_nome', currentUser.nome);
+  }
+
   atualizarChipCliente(dadosCapturados?.razao_social || dadosCapturados?.nome || '');
   showTab('cadastro', document.querySelector('.tab-btn'));
-  const bar = document.getElementById('edit-mode-bar');
-  if (bar) bar.classList.add('show');
-  aplicarModoEdicao(); // ficha nova vai direto para edição
 }
 
 function criarFichaSemCNPJ() {
@@ -3956,6 +3812,12 @@ function criarFichaSemCNPJ() {
 
   // Pré-Análise como status padrão
   selStatus(document.querySelector('#status-onboarding .status-chip'), 'status-onboarding', 'sel-blue');
+
+  // Preencher consultor se for Comercial
+  if (currentUser?.dept === 'Comercial' && currentUser?.perfil !== 'admin') {
+    sv('consultor_usuario', currentUser.usuario);
+    sv('consultor_nome', currentUser.nome);
+  }
 
   showTab('cadastro', document.querySelector('.tab-btn'));
 }
@@ -3988,7 +3850,7 @@ function aplicarSessao() {
 }
 
 // ── GERENCIAMENTO DE USUÁRIOS (admin) ──
-async function adicionarUsuario() {
+function adicionarUsuario() {
   const nome    = document.getElementById('new-user-nome').value.trim();
   const usuario = document.getElementById('new-user-usuario').value.trim().toLowerCase();
   const dept    = document.getElementById('new-user-dept').value;
@@ -3998,62 +3860,49 @@ async function adicionarUsuario() {
     toast('Preencha todos os campos do usuário.', 'err'); return;
   }
 
-  await loadUsuarios();
+  loadUsuarios();
   if (usuariosDB.find(u => u.usuario.toLowerCase() === usuario)) {
     toast(`Usuário "@${usuario}" já existe.`, 'err'); return;
   }
 
-  const novoUsuario = { id: Date.now().toString(), nome, usuario, dept, perfil, senha: '123456', primeiroAcesso: true };
-  try {
-    await saveUsuario(novoUsuario);
-    usuariosDB.push(novoUsuario);
-  } catch(e) {
-    toast(`Erro ao salvar: ${e.message}`, 'err'); return;
-  }
-
+  // Senha padrão 123456 — usuário será obrigado a redefinir no primeiro login
+  usuariosDB.push({ id: Date.now().toString(), nome, usuario, dept, perfil, senha: '123456', primeiroAcesso: true });
+  saveUsuarios();
   document.getElementById('new-user-nome').value = '';
   document.getElementById('new-user-usuario').value = '';
   document.getElementById('new-user-dept').value = '';
   document.getElementById('new-user-perfil').value = 'usuario';
   renderAdminUserList();
   registrarLog('usuario', `Usuário criado: ${nome} (@${usuario}) — ${dept} [${perfil}]`);
-  toast(`✅ "${nome}" (@${usuario}) adicionado! Senha padrão: 123456`, 'ok');
+  toast(`"${nome}" (@${usuario}) adicionado! Senha padrão: 123456`, 'ok');
 }
 
-async function alterarSenha(id) {
+function alterarSenha(id) {
   const u = usuariosDB.find(u => u.id === id);
   if (!u) return;
   if (u.master) { toast('Use o botão "Alterar senha do Admin" para o admin master.', 'err'); return; }
   if (!confirm(`Resetar senha de "${u.nome}" (@${u.usuario}) para o padrão 123456?\n\nO usuário será solicitado a criar uma nova senha no próximo login.`)) return;
   u.senha = '123456';
   u.primeiroAcesso = true;
-  try {
-    await saveUsuario(u);
-  } catch(e) {
-    toast(`Erro ao alterar senha: ${e.message}`, 'err'); return;
-  }
+  saveUsuarios();
   renderAdminUserList();
-  toast(`🔑 Senha de "@${u.usuario}" resetada para 123456.`, 'ok');
+  toast(`Senha de "@${u.usuario}" resetada para 123456.`, 'ok');
 }
 
-async function removerUsuario(id) {
+function removerUsuario(id) {
   const u = usuariosDB.find(u => u.id === id);
   if (!u) return;
   if (u.master) { toast('O admin master não pode ser removido.', 'err'); return; }
   if (!confirm(`Remover "${u.nome}" (@${u.usuario})?`)) return;
-  try {
-    await deleteUsuario(id);
-    usuariosDB = usuariosDB.filter(u => u.id !== id);
-  } catch(e) {
-    toast(`Erro ao remover: ${e.message}`, 'err'); return;
-  }
+  usuariosDB = usuariosDB.filter(u => u.id !== id);
+  saveUsuarios();
   renderAdminUserList();
   registrarLog('usuario', `Usuário removido: ${u.nome} (@${u.usuario})`);
   toast(`"${u.nome}" removido.`, 'inf');
 }
 
-async function renderAdminUserList() {
-  await loadUsuarios();
+function renderAdminUserList() {
+  loadUsuarios();
   const list = document.getElementById('admin-user-list');
   if (!list) return;
   if (!usuariosDB.length) {
@@ -4073,7 +3922,7 @@ async function renderAdminUserList() {
         </div>
       </div>
       <span class="admin-badge ${u.perfil === 'admin' ? 'adm' : 'usr'}">${u.perfil === 'admin' ? 'Admin' : 'Usuário'}</span>
-      <button class="btn btn-s btn-sm" onclick="alterarSenha('${u.id}')">🔑 Alterar senha</button>
+      <button class="btn btn-s btn-sm" onclick="alterarSenha('${u.id}')">Alterar senha</button>
       ${!u.master ? `<button class="btn btn-d btn-sm" onclick="removerUsuario('${u.id}')">✕ Remover</button>` : ''}
     </div>
   `).join('');
@@ -4088,775 +3937,14 @@ function toast(msg, type='inf') {
   setTimeout(() => { t.style.transition='.25s'; t.style.opacity='0'; setTimeout(()=>t.remove(),250); }, 3200);
 }
 
-// ── MIGRAÇÃO USUÁRIOS localStorage → Supabase ──
-async function migrarUsuariosLocalStorage() {
-  const KEY = 'gtcon_usuarios';
-  const raw = localStorage.getItem(KEY);
-  if (!raw) return; // nada para migrar
-  try {
-    const local = JSON.parse(raw);
-    if (!local || !local.length) { localStorage.removeItem(KEY); return; }
-    // Buscar quem já existe no Supabase
-    const existentes = await sbFetch('GET', 'usuarios?select=usuario');
-    const jaExistem = new Set((existentes||[]).map(u => u.usuario));
-    let migrados = 0;
-    for (const u of local) {
-      if (u.master) continue; // admin master já foi criado pelo SQL
-      if (jaExistem.has(u.usuario)) continue; // já existe
-      try {
-        await sbFetch('POST', 'usuarios', {
-          id:              u.id || Date.now().toString(),
-          nome:            u.nome,
-          usuario:         u.usuario,
-          senha:           u.senha || '123456',
-          dept:            u.dept || 'Geral',
-          perfil:          u.perfil || 'usuario',
-          master:          false,
-          primeiro_acesso: u.primeiroAcesso !== false,
-        });
-        migrados++;
-      } catch(e) { console.warn('Migração skip:', u.usuario, e.message); }
-    }
-    if (migrados > 0) {
-      console.log(`✅ Migração: ${migrados} usuário(s) movidos para Supabase`);
-      toast(`✅ ${migrados} usuário(s) migrados para o banco centralizado.`, 'ok');
-    }
-    localStorage.removeItem(KEY); // limpar localStorage após migração
-    // Migrar logs antigos do localStorage para Supabase
-    await migrarLogsLocalStorage();
-  } catch(e) { console.error('migrarUsuariosLocalStorage:', e); }
-}
-
-async function migrarLogsLocalStorage() {
-  const raw = localStorage.getItem('gtcon_log');
-  if (!raw) return;
-  try {
-    const logs = JSON.parse(raw);
-    if (!logs || !logs.length) { localStorage.removeItem('gtcon_log'); return; }
-    for (const l of logs.slice(-200)) { // migrar só os 200 mais recentes
-      await sbFetch('POST', 'logs', {
-        ts:       l.ts || new Date().toISOString(),
-        tipo:     l.tipo || 'sistema',
-        acao:     l.acao || '',
-        usuario:  l.usuario || '',
-        login:    l.login || '',
-        dept:     l.dept || '',
-        detalhes: l.detalhes || {},
-      }).catch(() => {});
-    }
-    localStorage.removeItem('gtcon_log');
-    console.log('✅ Logs migrados para Supabase');
-  } catch(e) { console.error('migrarLogsLocalStorage:', e); }
-}
-
-// ── SPED INTEGRATION ──
-function abrirSPED() {
-  const cnpj = document.getElementById('cnpj_principal')?.value?.replace(/\D/g,'') || '';
-  const nome = document.getElementById('razao_social')?.value || '';
-  if (!cnpj && !nome) {
-    toast('Salve o cadastro do cliente antes de abrir o SPED.', 'err'); return;
-  }
-  if (!currentUser) { toast('Faça login primeiro.', 'err'); return; }
-
-  // Token simples: btoa(JSON) — identifica o usuário no módulo SPED
-  const token = btoa(unescape(encodeURIComponent(JSON.stringify({
-    usuario: currentUser.usuario,
-    nome: currentUser.nome,
-    dept: currentUser.dept,
-    perfil: currentUser.perfil
-  }))));
-
-  const params = new URLSearchParams({ cnpj, nome, token });
-  window.open(`sped-cruzamento.html?${params}`, '_blank');
-}
-
-async function verificarDadosSPED() {
-  const cnpj = document.getElementById('cnpj_principal')?.value?.replace(/\D/g,'') || '';
-  if (!cnpj) return;
-  try {
-    const rows = await sbFetch('GET', `sped_dados?cnpj=eq.${cnpj}&select=exercicio,tipo,updated_at&order=updated_at.desc&limit=5`);
-    if (rows && rows.length) {
-      const exers = [...new Set(rows.map(r => r.exercicio))].sort().reverse();
-      const badge = document.getElementById('sped-status-badge');
-      if (badge) {
-        badge.style.display = 'inline-block';
-        badge.textContent = `✓ Dados: ${exers.join(', ')}`;
-      }
-    }
-  } catch(e) {}
-}
-
 // ── INIT ──
-
-// ── TRIBUTO TABS ──
-function switchTribTab(tab, btn) {
-  document.querySelectorAll('.trib-panel').forEach(p => p.style.display = 'none');
-  document.querySelectorAll('.trib-tab').forEach(b => b.classList.remove('active'));
-  const panel = document.getElementById('trib-' + tab);
-  if (panel) panel.style.display = '';
-  if (btn) btn.classList.add('active');
-}
-function updateTribTabs() {
-  const map = {pis_cofins:'part_pis_cofins',irpj_csll:'part_irpj_csll',iss:'part_iss',icms:'part_icms',ipi:'part_ipi',das:'part_das'};
-  document.querySelectorAll('.trib-tab').forEach(btn => {
-    const m = btn.getAttribute('onclick')?.match(/switchTribTab\('(\w+)'/);
-    if (!m) return;
-    const val = document.getElementById(map[m[1]])?.value?.trim();
-    btn.classList.toggle('filled', !!val);
-  });
-}
-
-
-// ══════════════════════════════════════════════════════════
-// MODO VISUALIZAÇÃO / EDIÇÃO COM TRAVA NO SUPABASE
-// ══════════════════════════════════════════════════════════
-let _modoEdicao = false;
-let _currentCNPJ = null;
-let _lockHeartbeat = null;
-const LOCK_TTL = 10; // minutos
-
-// Aplicar modo visualização — bloqueia todos os campos editáveis
-function aplicarModoVisualizacao() {
-  _modoEdicao = false;
-  const paineis = ['cadastro','comercial','dp','fiscal','contabil','parametros','particularidades'];
-  paineis.forEach(tab => {
-    const panel = document.getElementById('panel-' + tab);
-    if (!panel) return;
-    panel.querySelectorAll('input:not(.api-filled), select, textarea, button.btn-s, button.btn-sm').forEach(el => {
-      if (el.id === 'btn-entrar-edicao' || el.id === 'btn-sair-edicao' || el.id === 'btn-salvar-header') return;
-      el.setAttribute('data-was-disabled', el.disabled ? '1' : '0');
-      el.disabled = true;
-      el.style.pointerEvents = 'none';
-    });
-    panel.querySelectorAll('label.co, label.ro, .status-chip').forEach(el => {
-      el.style.pointerEvents = 'none';
-    });
-  });
-  // Atualizar UI
-  const badge = document.getElementById('edit-mode-badge');
-  if (badge) { badge.className = 'view-badge'; badge.textContent = '👁 Visualização'; }
-  const btnEdit = document.getElementById('btn-entrar-edicao');
-  const btnSair = document.getElementById('btn-sair-edicao');
-  const btnSalvar = document.getElementById('btn-salvar-header');
-  const actbar = document.getElementById('actbar-salvar');
-  if (btnEdit) btnEdit.style.display = '';
-  if (btnSair) btnSair.style.display = 'none';
-  if (btnSalvar) btnSalvar.style.display = 'none';
-  if (actbar) actbar.style.display = 'none';
-}
-
-// Aplicar modo edição — libera campos conforme permissões do usuário
-function aplicarModoEdicao() {
-  _modoEdicao = true;
-  applyTabPermissions();   // respeita permissões de departamento
-  aplicarBloqueioConsultor(); // mantém consultor travado para não-admin
-  // Atualizar UI
-  const badge = document.getElementById('edit-mode-badge');
-  if (badge) { badge.className = 'edit-badge'; badge.textContent = '✏️ Editando'; }
-  const btnEdit = document.getElementById('btn-entrar-edicao');
-  const btnSair = document.getElementById('btn-sair-edicao');
-  const btnSalvar = document.getElementById('btn-salvar-header');
-  const actbar = document.getElementById('actbar-salvar');
-  if (btnEdit) btnEdit.style.display = 'none';
-  if (btnSair) btnSair.style.display = '';
-  if (btnSalvar) btnSalvar.style.display = '';
-  if (actbar) actbar.style.display = '';
-}
-
-// Tentar adquirir a trava
-async function adquirirTrava(cnpj) {
-  if (!cnpj || !currentUser) return { ok: false, msg: 'Sem cliente ou usuário.' };
-  try {
-    // Limpar travas expiradas primeiro
-    await sbFetch('DELETE', `edit_locks?expires_at=lt.${new Date().toISOString()}`);
-    // Verificar se existe trava ativa
-    const rows = await sbFetch('GET', `edit_locks?cnpj=eq.${cnpj}&select=usuario,nome,locked_at`);
-    if (rows && rows.length) {
-      const lock = rows[0];
-      const desde = new Date(lock.locked_at).toLocaleTimeString('pt-BR', {hour:'2-digit',minute:'2-digit'});
-      return { ok: false, msg: `${lock.nome} (@${lock.usuario}) desde ${desde}` };
-    }
-    // Gravar trava
-    const expires = new Date(Date.now() + LOCK_TTL * 60000).toISOString();
-    await sbFetch('POST', 'edit_locks', {
-      cnpj,
-      usuario: currentUser.usuario,
-      nome:    currentUser.nome,
-      locked_at: new Date().toISOString(),
-      expires_at: expires,
-    });
-    return { ok: true };
-  } catch(e) {
-    console.warn('adquirirTrava:', e);
-    return { ok: true }; // falha silenciosa — não bloquear por erro de rede
-  }
-}
-
-// Renovar trava (heartbeat a cada 3 min)
-async function renovarTrava(cnpj) {
-  if (!cnpj || !currentUser) return;
-  try {
-    const expires = new Date(Date.now() + LOCK_TTL * 60000).toISOString();
-    await sbFetch('PATCH', `edit_locks?cnpj=eq.${cnpj}&usuario=eq.${currentUser.usuario}`, {
-      expires_at: expires,
-      locked_at:  new Date().toISOString(),
-    });
-  } catch(e) { console.warn('renovarTrava:', e); }
-}
-
-// Liberar trava
-async function liberarTrava(cnpj) {
-  if (!cnpj || !currentUser) return;
-  try {
-    await sbFetch('DELETE', `edit_locks?cnpj=eq.${cnpj}&usuario=eq.${currentUser.usuario}`);
-  } catch(e) { console.warn('liberarTrava:', e); }
-}
-
-// Botão Editar — verifica trava e entra no modo edição
-async function entrarModoEdicao() {
-  if (!_fichaExistente && !document.getElementById('cnpj_principal')?.value) {
-    // Ficha nova — pode editar direto
-    aplicarModoEdicao();
-    return;
-  }
-  const cnpj = document.getElementById('cnpj_principal')?.value?.replace(/\D/g,'') || _currentCNPJ || '';
-  const btn = document.getElementById('btn-entrar-edicao');
-  if (btn) { btn.disabled = true; btn.textContent = '⏳'; }
-  const result = await adquirirTrava(cnpj);
-  if (btn) { btn.disabled = false; btn.textContent = '✏️ Editar'; }
-  if (!result.ok) {
-    const info = document.getElementById('edit-lock-info');
-    if (info) {
-      info.innerHTML = `<span class="lock-badge">🔒 ${result.msg}</span>`;
-    }
-    toast(`🔒 ${result.msg}`, 'err');
-    return;
-  }
-  _currentCNPJ = cnpj;
-  const info = document.getElementById('edit-lock-info');
-  if (info) info.innerHTML = '';
-  // Iniciar heartbeat
-  if (_lockHeartbeat) clearInterval(_lockHeartbeat);
-  _lockHeartbeat = setInterval(() => renovarTrava(_currentCNPJ), 3 * 60 * 1000);
-  aplicarModoEdicao();
-}
-
-// Botão Sair da edição — libera trava
-async function sairModoEdicao(salvar) {
-  if (_lockHeartbeat) { clearInterval(_lockHeartbeat); _lockHeartbeat = null; }
-  if (_currentCNPJ) await liberarTrava(_currentCNPJ);
-  aplicarModoVisualizacao();
-}
-
-// Verificar se há alguém editando (para exibir no modo visualização)
-async function verificarTravaAtiva(cnpj) {
-  if (!cnpj) return;
-  try {
-    await sbFetch('DELETE', `edit_locks?expires_at=lt.${new Date().toISOString()}`);
-    const rows = await sbFetch('GET', `edit_locks?cnpj=eq.${cnpj}&select=usuario,nome,locked_at`);
-    const info = document.getElementById('edit-lock-info');
-    const btnEdit = document.getElementById('btn-entrar-edicao');
-    if (rows && rows.length) {
-      const lock = rows[0];
-      // Se sou eu editando em outra aba — liberar a trava anterior
-      if (lock.usuario === currentUser?.usuario) {
-        await sbFetch('DELETE', `edit_locks?cnpj=eq.${cnpj}`);
-        if (info) info.innerHTML = '';
-        if (btnEdit) { btnEdit.disabled = false; btnEdit.style.opacity = '1'; }
-        return;
-      }
-      const desde = new Date(lock.locked_at).toLocaleTimeString('pt-BR', {hour:'2-digit',minute:'2-digit'});
-      if (info) info.innerHTML = `<span class="lock-badge">🔒 ${lock.nome} editando desde ${desde}</span>`;
-      if (btnEdit) { btnEdit.disabled = true; btnEdit.style.opacity = '.4'; btnEdit.title = `${lock.nome} está editando`; }
-    } else {
-      if (info) info.innerHTML = '';
-      if (btnEdit) { btnEdit.disabled = false; btnEdit.style.opacity = '1'; btnEdit.title = ''; }
-    }
-  } catch(e) { console.warn('verificarTravaAtiva:', e); }
-}
-
 document.addEventListener('DOMContentLoaded', async () => {
   updateSidebar('cadastro');
-  migrarUsuariosLocalStorage(); // migração silenciosa, não bloqueia o UI
   document.getElementById('data_diagnostico').valueAsDate = new Date();
   loadUsuarios();
   addPrefeitura(); // linha inicial vazia de prefeitura
   setTimeout(() => document.getElementById('login-usuario')?.focus(), 100);
 });
 </script>
-
-<div id="modal-changelog" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.5);align-items:center;justify-content:center;" onclick="if(event.target===this)this.style.display='none'">
-  <div style="background:var(--surface);border-radius:var(--r);width:min(700px,96vw);max-height:88vh;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,.3);">
-    <div style="padding:18px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;background:var(--navy);border-radius:var(--r) var(--r) 0 0;">
-      <div>
-        <div style="font-size:15px;font-weight:700;letter-spacing:-.3px;color:#f0f4ff">📋 Changelog — GTCON Fichas Técnicas</div>
-        <div style="font-size:11px;color:#8a9ab8;margin-top:2px">Histórico de versões e atualizações do sistema</div>
-      </div>
-      <button onclick="document.getElementById('modal-changelog').style.display='none'" style="background:rgba(255,255,255,.1);border:none;font-size:16px;cursor:pointer;color:#c8d8f0;line-height:1;padding:6px 10px;border-radius:6px;">✕</button>
-    </div>
-    <div style="overflow-y:auto;padding:20px 24px;flex:1">
-
-      <!-- HELPERS -->
-      <style>
-        .cl-ver{display:flex;align-items:center;gap:10px;margin-bottom:10px}
-        .cl-ver code{font-size:13px;font-weight:700;font-family:var(--mono);color:var(--navy)}
-        .cl-ver time{font-size:11px;color:var(--muted)}
-        .cl-badge{padding:2px 9px;border-radius:10px;font-size:10px;font-weight:700}
-        .cl-badge.new{background:rgba(4,120,87,.12);color:#047857}
-        .cl-badge.fix{background:rgba(185,28,28,.10);color:#b91c1c}
-        .cl-badge.major{background:rgba(109,40,217,.10);color:#6d28d9}
-        .cl-badge.imp{background:rgba(1,25,87,.1);color:var(--navy)}
-        .cl-section{font-size:11.5px;font-weight:700;color:var(--label);margin:10px 0 5px}
-        .cl-list{font-size:12px;color:var(--muted);line-height:1.8;padding-left:16px;margin:0 0 4px}
-        .cl-list li{margin-bottom:1px}
-        .cl-divider{border:none;border-top:1px solid var(--border);margin:18px 0}
-      
-/* ── SIDEBAR DESIGN C ── */
-.sidebar-logo {
-  padding: 20px 18px 16px;
-  border-bottom: 1px solid rgba(255,255,255,.08);
-  display: flex; align-items: flex-end; justify-content: space-between;
-  flex-shrink: 0;
-}
-.sidebar-changelog-btn {
-  background: rgba(255,255,255,.1); border: none; cursor: pointer;
-  font-size: 9.5px; color: #adb2da; font-weight: 700;
-  padding: 2px 7px; border-radius: 20px; font-family: var(--mono);
-  transition: background .15s;
-}
-.sidebar-changelog-btn:hover { background: rgba(255,255,255,.18); }
-.sidebar-section { padding: 14px 0 4px; }
-.sidebar-label {
-  font-size: 9px; font-weight: 700; letter-spacing: .12em;
-  text-transform: uppercase; color: rgba(255,255,255,.25);
-  padding: 0 18px; margin-bottom: 3px;
-}
-/* Nav items da sidebar */
-.side-nav {
-  display: flex; align-items: center; gap: 9px;
-  width: 100%; padding: 8px 18px;
-  background: none; border: none;
-  font-family: var(--sans); font-size: 12.5px; font-weight: 500;
-  color: rgba(255,255,255,.5); cursor: pointer;
-  transition: all .15s; text-align: left;
-  border-left: 2px solid transparent;
-  white-space: nowrap;
-}
-.side-nav:hover { background: rgba(255,255,255,.07); color: rgba(255,255,255,.85); }
-.side-nav.active {
-  background: rgba(255,255,255,.1); color: #fff; font-weight: 600;
-  border-left-color: #adb2da;
-}
-.side-nav-icon { width: 16px; flex-shrink: 0; color: currentColor; display:flex;align-items:center; }
-.side-nav .tab-dot {
-  width: 5px; height: 5px; border-radius: 50%;
-  margin-left: auto; flex-shrink: 0; display: none;
-  background: rgba(173,178,218,.7);
-}
-.side-nav.has-data .tab-dot { display: block; }
-
-/* Bottom da sidebar */
-.sidebar-bottom {
-  margin-top: auto; padding: 12px 0;
-  border-top: 1px solid rgba(255,255,255,.08);
-}
-.side-client-chip {
-  display: flex; align-items: center; gap: 8px;
-  padding: 8px 14px; margin-bottom: 4px;
-  background: rgba(255,255,255,.07); border-radius: 0;
-}
-.side-client-icon { font-size: 14px; flex-shrink: 0; }
-.side-client-info { flex: 1; overflow: hidden; min-width: 0; }
-.side-client-info span:first-child {
-  display: block; font-size: 11.5px; font-weight: 600; color: #f0f4ff;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-}
-.side-client-info span:last-child {
-  display: block; font-size: 10px; color: #8a9ab8;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-}
-.side-client-close {
-  background: none; border: none; color: rgba(255,255,255,.3);
-  cursor: pointer; font-size: 11px; padding: 2px; flex-shrink: 0;
-  transition: color .15s;
-}
-.side-client-close:hover { color: rgba(255,255,255,.7); }
-.side-user-chip {
-  display: flex; align-items: center; gap: 8px;
-  padding: 8px 14px;
-}
-.side-user-avatar {
-  width: 28px; height: 28px; border-radius: 6px;
-  background: rgba(255,255,255,.15);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 11px; font-weight: 700; color: #e8edf8;
-  flex-shrink: 0;
-}
-.side-user-info { flex: 1; overflow: hidden; }
-.side-user-info .user-name {
-  font-size: 11.5px; font-weight: 600; color: #e8edf8;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-  display: block;
-}
-.side-user-info .user-dept {
-  font-size: 10px; color: #8a9ab8;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-  display: block;
-}
-.user-logout {
-  background: none; border: none; color: rgba(255,255,255,.35);
-  cursor: pointer; font-size: 14px; padding: 2px; flex-shrink: 0;
-  transition: color .15s;
-}
-.user-logout:hover { color: rgba(255,255,255,.8); }
-
-/* edit-mode-bar abaixo do header, respeitando sidebar */
-.edit-mode-bar {
-  margin-left: 220px;
-}
-
-/* Panel title mais limpo */
-.panel-title { color: var(--navy); }
-
-/* ── LOGIN REFINADO ── */
-#login-overlay {
-  position: fixed; inset: 0; z-index: 9000;
-  background: #000d36;
-  display: flex; align-items: center; justify-content: center;
-}
-#login-overlay::before {
-  content: '';
-  position: absolute; inset: 0;
-  background:
-    radial-gradient(ellipse 80% 60% at 20% 30%, rgba(26,77,184,.35) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 80% at 80% 70%, rgba(1,25,87,.5) 0%, transparent 60%);
-  pointer-events: none;
-}
-.login-box {
-  position: relative; z-index: 1;
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 20px;
-  padding: 48px 52px;
-  width: 420px; max-width: 95vw;
-  box-shadow:
-    0 0 0 1px rgba(173,178,218,.08),
-    0 32px 64px rgba(0,0,0,.5),
-    0 8px 24px rgba(0,0,0,.3),
-    inset 0 1px 0 rgba(255,255,255,.1);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-}
-.login-logo {
-  text-align: center; margin-bottom: 8px;
-  display: flex; justify-content: center;
-}
-.login-logo-divider {
-  width: 32px; height: 2px;
-  background: linear-gradient(to right, transparent, rgba(173,178,218,.4), transparent);
-  margin: 0 auto 20px;
-}
-.login-title {
-  font-size: 16px; font-weight: 600; text-align: center;
-  color: rgba(255,255,255,.75); margin-bottom: 3px;
-  letter-spacing: .01em;
-}
-.login-sub {
-  font-size: 12px; color: rgba(173,178,218,.6);
-  text-align: center; margin-bottom: 32px;
-}
-.login-field { text-align: left; margin-bottom: 14px; }
-.login-field label {
-  font-size: 10.5px; font-weight: 600; color: rgba(173,178,218,.6);
-  text-transform: uppercase; letter-spacing: .08em;
-  display: block; margin-bottom: 7px;
-}
-#login-overlay .login-field input {
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.12);
-  border-radius: 10px;
-  color: #f0f4ff; font-size: 13.5px;
-  padding: 11px 14px; width: 100%;
-  outline: none; font-family: var(--sans);
-  transition: border-color .15s, box-shadow .15s;
-}
-#login-overlay .login-field input::placeholder { color: rgba(255,255,255,.2); }
-#login-overlay .login-field input:focus {
-  border-color: rgba(173,178,218,.45);
-  box-shadow: 0 0 0 3px rgba(173,178,218,.1);
-  background: rgba(255,255,255,.09);
-}
-.login-err {
-  font-size: 11.5px; color: #f87171; margin-bottom: 14px;
-  min-height: 16px; text-align: center;
-}
-.login-btn {
-  width: 100%; padding: 12px;
-  background: #011957; color: #f0f4ff;
-  border: 1px solid rgba(173,178,218,.25);
-  border-radius: 10px;
-  font-family: var(--sans); font-size: 13.5px; font-weight: 600;
-  cursor: pointer; transition: all .18s;
-  box-shadow: 0 2px 8px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.08);
-  letter-spacing: .02em;
-}
-.login-btn:hover {
-  background: #0a2d7a;
-  box-shadow: 0 4px 16px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.1);
-  transform: translateY(-1px);
-}
-.login-btn:active { transform: translateY(0); }
-</style>
-
-      <!-- v2.6.0 -->
-      <div style="margin-bottom:20px">
-        <div class="cl-ver">
-          <code>v2.6.0</code>
-          <time>17/03/2026</time>
-          <span class="cl-badge imp">● Refinamentos</span>
-        </div>
-        <div class="cl-section">🚫 Emojis removidos</div>
-        <ul class="cl-list">
-          <li>Todos os emojis removidos da interface — botões, títulos de card, panel titles, checkboxes, status chips e banners</li>
-          <li>Visual mais sóbrio e profissional; ícones SVG inline onde necessário</li>
-        </ul>
-        <div class="cl-section">🔐 Login redesenhado</div>
-        <ul class="cl-list">
-          <li>Fundo navy escuro com gradiente radial sutil de profundidade</li>
-          <li>Card com glass morphism refinado — sombra em camadas, borda interna luminosa, backdrop-blur</li>
-          <li>Logo com efeito glow no SVG (feGaussianBlur)</li>
-          <li>Linha decorativa fina sob o logo</li>
-          <li>Inputs e botão com border-radius 10px, sombras e transições suaves</li>
-        </ul>
-      </div>
-      <hr class="cl-divider">
-
-      <!-- v2.5.0 -->
-      <div style="margin-bottom:20px">
-        <div class="cl-ver">
-          <code>v2.5.0</code>
-          <time>17/03/2026</time>
-          <span class="cl-badge imp">● Repaginação Visual</span>
-        </div>
-        <div class="cl-section">🖥️ Design C — Sidebar Navy Fixa</div>
-        <ul class="cl-list">
-          <li>Sidebar fixa à esquerda (220px) com fundo navy — logo, navegação e dados do usuário em um só painel</li>
-          <li>Tabs horizontais removidas — navegação migrada para a sidebar com ícones SVG e indicador de dados</li>
-          <li>Header reduzido a barra de ferramentas fina (48px) com botões de ação</li>
-          <li>Cliente ativo e usuário logado exibidos no rodapé da sidebar</li>
-          <li>Conteúdo principal com fundo branco, sem sobreposição visual com a navegação</li>
-        </ul>
-      </div>
-      <hr class="cl-divider">
-
-      <!-- v2.4.0 -->
-      <div style="margin-bottom:20px">
-        <div class="cl-ver">
-          <code>v2.4.0</code>
-          <time>17/03/2026</time>
-          <span class="cl-badge imp">● Repaginação Visual</span>
-        </div>
-        <div class="cl-section">🎨 Identidade Visual da Marca</div>
-        <ul class="cl-list">
-          <li>Logo SVG vetorial fiel à marca — "Gtcon" branco <code>#f4f8ff</code>, "BRASIL" azul-lavanda <code>#adb2da</code>, extraído da logo original pixel a pixel</li>
-          <li>Fonte trocada de <em>Sora</em> → <strong>Plus Jakarta Sans</strong> — mais corporativa e legível; mono de DM Mono → JetBrains Mono</li>
-          <li>Sistema de cores derivado da logo: navy <code>#011957</code> como cor primária em toda a UI</li>
-        </ul>
-        <div class="cl-section">🖥️ Interface</div>
-        <ul class="cl-list">
-          <li>Header: fundo navy com sombra suave; logo SVG nos headers da app e da tela de login</li>
-          <li>Sidebar: fundo navy escuro <code>#000d36</code>; item ativo com borda esquerda <code>#adb2da</code> e texto branco</li>
-          <li>Tabs: aba ativa sublinhada em navy, hover com fundo suave azulado</li>
-          <li>Botões primários (Salvar, Editar): navy em vez de verde/azul genérico</li>
-          <li>Focus ring de inputs: navy em vez de azul elétrico</li>
-          <li>Títulos de card: navy uppercase com peso 700</li>
-          <li>Tela de login: fundo gradiente navy escuro + card glass morphism (fundo translúcido, borda branca 12%, backdrop-filter blur)</li>
-        </ul>
-      </div>
-      <hr class="cl-divider">
-
-      <!-- v2.3.0 -->
-      <div style="margin-bottom:20px">
-        <div class="cl-ver">
-          <code>v2.3.0</code>
-          <time>16/03/2026</time>
-          <span class="cl-badge new">● Novas Funcionalidades</span>
-        </div>
-        <div class="cl-section">🔒 Trava de Edição Colaborativa</div>
-        <ul class="cl-list">
-          <li>Fichas sempre abrem em <strong>modo visualização</strong> — campos desabilitados por padrão</li>
-          <li>Botão <strong>✏️ Editar</strong> para entrar no modo edição com verificação de disponibilidade no Supabase</li>
-          <li>Se outro usuário já estiver editando: <em>🔒 João Silva editando desde 14h32</em> — botão bloqueado</li>
-          <li>Heartbeat automático a cada 3 min; trava expira em 10 min se o browser fechar sem salvar</li>
-          <li>Trava liberada ao salvar, ao clicar ✕ Sair da edição ou ao fazer logout</li>
-          <li>Nova tabela Supabase: <code>edit_locks</code></li>
-        </ul>
-        <div class="cl-section">🧾 Particularidades por Tributo</div>
-        <ul class="cl-list">
-          <li>Card com 6 abas: PIS/COFINS · IRPJ/CSLL · ISS · ICMS · IPI · DAS</li>
-          <li>Ponto verde na aba quando há conteúdo preenchido</li>
-        </ul>
-        <div class="cl-section">Ajustes de Interface</div>
-        <ul class="cl-list">
-          <li>Botões Próximo/Anterior entre abas removidos — navegação pelas tabs do topo</li>
-          <li>"Vende para cliente final (B2C)?" adicionado em Tributário — Engenharia Fiscal</li>
-          <li>Aba Comercial removida do menu; dados mantidos no banco para compatibilidade</li>
-          <li>Bloco Responsável Comercial movido para Cadastro Geral; bloqueado para todos exceto admin</li>
-          <li>Nome do consultor exibido no chip do cliente ativo no topo</li>
-          <li>Comercial: somente leitura em todas as abas</li>
-          <li>Changelog embutido no código, acessível pelo badge <code>v2.x.x</code> no header</li>
-        </ul>
-      </div>
-      <hr class="cl-divider">
-
-      <!-- v2.2.0 -->
-      <div style="margin-bottom:20px">
-        <div class="cl-ver">
-          <code>v2.2.0</code>
-          <time>16/03/2026</time>
-          <span class="cl-badge imp">● Melhorias</span>
-        </div>
-        <div class="cl-section">💻 ERP e Departamentos</div>
-        <ul class="cl-list">
-          <li>Card ERP movido da aba Contábil para <strong>Particularidades</strong> — campo transversal a todos os departamentos</li>
-          <li>Novo campo <strong>Departamentos Envolvidos</strong> (checkboxes: Contábil, Fiscal, DP, Societário, Financeiro)</li>
-          <li>Migração automática dos dados existentes via SQL UPDATE</li>
-        </ul>
-      </div>
-      <hr class="cl-divider">
-
-      <!-- v2.1.0 -->
-      <div style="margin-bottom:20px">
-        <div class="cl-ver">
-          <code>v2.1.0</code>
-          <time>16/03/2026</time>
-          <span class="cl-badge imp">● Melhorias</span>
-        </div>
-        <div class="cl-section">🗄️ Zero localStorage</div>
-        <ul class="cl-list">
-          <li>Usuários migrados para Supabase (<code>usuarios</code>) — login funciona em qualquer máquina</li>
-          <li>Log de atividades migrado para Supabase (<code>logs</code>) — histórico centralizado</li>
-          <li>Migração automática na primeira abertura — dados antigos movidos sem perda</li>
-        </ul>
-        <div class="cl-section">🔐 Ofuscação de Código</div>
-        <ul class="cl-list">
-          <li>48 símbolos internos ofuscados; comentários removidos; DevTools trap ativo</li>
-        </ul>
-        <div class="cl-section">🔗 Integração SPED</div>
-        <ul class="cl-list">
-          <li>Botão 📂 Abrir Módulo SPED na aba Fiscal — abre vinculado ao cliente com token de sessão</li>
-          <li>Badge mostra exercícios já importados; dados salvos em <code>sped_dados</code></li>
-        </ul>
-      </div>
-      <hr class="cl-divider">
-
-      <!-- v2.0.0 -->
-      <div style="margin-bottom:20px">
-        <div class="cl-ver">
-          <code>v2.0.0</code>
-          <time>16/03/2026</time>
-          <span class="cl-badge major">● Major Release</span>
-        </div>
-        <ul class="cl-list">
-          <li>Tabelas Supabase: <code>usuarios</code> · <code>logs</code> · <code>sped_dados</code> · <code>edit_locks</code></li>
-          <li>Módulo SPED · Cruzamento de Declarações integrado como módulo independente</li>
-        </ul>
-      </div>
-      <hr class="cl-divider">
-
-      <!-- v1.5.x -->
-      <div style="margin-bottom:20px">
-        <div class="cl-ver">
-          <code>v1.5.4</code>
-          <time>13/03/2026</time>
-          <span class="cl-badge fix">● Correção Crítica</span>
-        </div>
-        <ul class="cl-list">
-          <li>Deadlock de grupos corrigido — flag <code>_gruposCarregando</code> nunca mais fica presa</li>
-          <li>Timeout de segurança de 3s + <code>Promise.all</code> para carregamento em paralelo</li>
-        </ul>
-      </div>
-      <div style="margin-bottom:20px">
-        <div class="cl-ver">
-          <code>v1.5.3</code>
-          <time>13/03/2026</time>
-          <span class="cl-badge fix">● Correção Crítica</span>
-        </div>
-        <ul class="cl-list">
-          <li>Lista de clientes quebrava quando <code>grupos_economicos</code> não existia no Supabase</li>
-          <li>Bug de índice no onclick das linhas corrigido via <code>abrirClientePorIdx()</code></li>
-        </ul>
-      </div>
-      <div style="margin-bottom:20px">
-        <div class="cl-ver">
-          <code>v1.5.2</code>
-          <time>12/03/2026</time>
-          <span class="cl-badge fix">● Correção Crítica</span>
-        </div>
-        <ul class="cl-list">
-          <li><code>getGrupos()</code> chamada sem <code>await</code> — retornava Promise em vez do array</li>
-          <li>Onclick com <code>JSON.stringify()</code> inline quebrava com apóstrofos — corrigido</li>
-        </ul>
-      </div>
-      <hr class="cl-divider">
-
-      <!-- v1.5.1 / v1.5.0 -->
-      <div style="margin-bottom:20px">
-        <div class="cl-ver">
-          <code>v1.5.1</code>
-          <time>12/03/2026</time>
-          <span class="cl-badge new">● Novas Funcionalidades</span>
-        </div>
-        <ul class="cl-list">
-          <li>Particularidades por Tributo com abas coloridas: PIS/COFINS · IRPJ/CSLL · ISS · ICMS · IPI</li>
-          <li>"Compra com nota fiscal?" e "Vende com nota fiscal?" adicionados em Emissão</li>
-        </ul>
-      </div>
-      <div style="margin-bottom:20px">
-        <div class="cl-ver">
-          <code>v1.5.0</code>
-          <time>12/03/2026</time>
-          <span class="cl-badge new">● Novas Funcionalidades</span>
-        </div>
-        <ul class="cl-list">
-          <li>Grupos econômicos no Supabase com autocomplete inteligente e contador de clientes</li>
-          <li>Exportação Excel .xlsx real via SheetJS — 65 colunas, 2 abas, cabeçalho congelado</li>
-          <li>SQL <code>setup_gtcon_supabase.sql</code> consolidado e idempotente</li>
-        </ul>
-      </div>
-      <hr class="cl-divider">
-
-      <!-- v1.4.0 / v1.3.0 -->
-      <div style="margin-bottom:20px">
-        <div class="cl-ver">
-          <code>v1.4.0</code>
-          <time>12/03/2026</time>
-          <span class="cl-badge new">● Novas Funcionalidades</span>
-        </div>
-        <ul class="cl-list">
-          <li>Botão Excel e PDF no header — exporta ficha ativa</li>
-          <li>Modal 📥 Importar — importação em massa via JSON/CSV</li>
-          <li>Correção de duplicidade falsa ao salvar ficha já aberta</li>
-        </ul>
-      </div>
-      <div style="margin-bottom:0">
-        <div class="cl-ver">
-          <code>v1.3.0</code>
-          <time>11/03/2026</time>
-          <span class="cl-badge major">● Release Inicial</span>
-        </div>
-        <ul class="cl-list">
-          <li>Migração completa localStorage → Supabase (PostgreSQL) + publicação no GitHub Pages</li>
-          <li>Modal de redefinição de senha obrigatório no primeiro login</li>
-          <li>Campos monitorados pelo log expandidos de 13 para 38</li>
-        </ul>
-      </div>
-
-    </div>
-  </div>
-</div>
-
-</div>
-
 </body>
 </html>
