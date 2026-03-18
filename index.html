@@ -208,38 +208,37 @@ body {
 .edit-mode-bar {
   display: none;
   align-items: center;
-  gap: 10px;
-  padding: 8px 28px;
-  background: var(--surface);
+  gap: 8px;
+  padding: 0 28px;
+  height: 44px;
+  background: var(--surface2);
   border-bottom: 1px solid var(--border);
-  font-size: 12px;
   position: sticky;
   top: 58px;
   z-index: 185;
-  box-shadow: 0 1px 4px rgba(1,25,87,.06);
+  box-shadow: 0 1px 0 var(--border);
 }
-.edit-mode-bar #btn-salvar-flutuante {
-  margin-left: auto;
+.edit-mode-bar.show { display: flex; }
+.edit-lock-info { font-size: 11.5px; color: var(--muted); }
+.btn-save {
+  padding: 7px 22px;
+  font-size: 13px;
+  font-weight: 700;
   background: var(--navy) !important;
   color: #fff !important;
   border-color: var(--navy) !important;
-  padding: 9px 32px !important;
-  font-size: 13.5px !important;
-  font-weight: 700 !important;
-  letter-spacing: .02em;
-  box-shadow: 0 2px 0 rgba(0,0,0,.15), 0 4px 16px rgba(1,25,87,.35) !important;
-  border-radius: 8px !important;
-  transition: all .15s !important;
+  box-shadow: 0 1px 3px rgba(1,25,87,.25) !important;
+  letter-spacing: .01em;
 }
-.edit-mode-bar #btn-salvar-flutuante:hover {
+.btn-save:hover {
   background: var(--navy-md) !important;
-  box-shadow: 0 4px 20px rgba(1,25,87,.45) !important;
+  box-shadow: 0 3px 12px rgba(1,25,87,.3) !important;
   transform: translateY(-1px);
 }
-.edit-mode-bar #btn-salvar-flutuante:active {
-  transform: translateY(0);
-  box-shadow: 0 2px 8px rgba(1,25,87,.3) !important;
-}
+.btn-save:active { transform: none; }
+
+
+
 .edit-mode-bar.show { display: flex; }
 .view-badge {
   display: inline-flex; align-items: center; gap: 5px;
@@ -1445,11 +1444,11 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.55; }
   <!-- Barra modo visualização/edição -->
   <div class="edit-mode-bar" id="edit-mode-bar">
     <span id="edit-mode-badge" class="view-badge">Visualização</span>
-    <span id="edit-lock-info" style="font-size:11.5px;color:var(--muted)"></span>
+    <span id="edit-lock-info" class="edit-lock-info"></span>
     <span style="flex:1"></span>
-    <button id="btn-entrar-edicao" class="btn btn-ok btn-sm" onclick="entrarModoEdicao()" style="font-size:11px">Editar</button>
-    <button id="btn-sair-edicao" class="btn btn-s btn-sm" onclick="sairModoEdicao()" style="font-size:11px;display:none">Sair da edição</button>
-    <button id="btn-salvar-flutuante" class="btn btn-ok" onclick="saveAll()" style="display:none;font-size:13px;padding:8px 28px;font-weight:700;box-shadow:0 4px 16px rgba(1,25,87,.3)">Salvar Ficha</button>
+    <button id="btn-sair-edicao" class="btn btn-s btn-sm" onclick="sairModoEdicao()" style="display:none">Cancelar</button>
+    <button id="btn-salvar-flutuante" class="btn btn-ok btn-save" onclick="saveAll()" style="display:none">Salvar</button>
+    <button id="btn-entrar-edicao" class="btn btn-ok btn-sm" onclick="entrarModoEdicao()">Editar</button>
   </div>
 
   <div class="header-right">
@@ -1463,7 +1462,6 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.55; }
     </div>
     <button class="btn btn-s btn-sm" onclick="clearAll()">Limpar</button>
     <button class="btn btn-s btn-sm" onclick="exportJSON()">JSON</button>
-    <button class="btn btn-ok btn-sm" id="btn-salvar-header" onclick="saveAll()" style="display:none">Salvar</button>
     <div class="user-chip" id="user-chip" style="display:none;">
       <div class="user-avatar" id="user-avatar"></div>
       <div>
@@ -4984,12 +4982,10 @@ function aplicarModoVisualizacao() {
   if (badge) { badge.className = 'view-badge'; badge.textContent = '👁 Visualização'; }
   const btnEdit = document.getElementById('btn-entrar-edicao');
   const btnSair = document.getElementById('btn-sair-edicao');
-  const btnSalvar = document.getElementById('btn-salvar-header');
-  const btnFlutuante = document.getElementById('btn-salvar-flutuante');
+  const btnSalvar = document.getElementById('btn-salvar-flutuante');
   if (btnEdit) btnEdit.style.display = '';
   if (btnSair) btnSair.style.display = 'none';
   if (btnSalvar) btnSalvar.style.display = 'none';
-  if (btnFlutuante) btnFlutuante.style.display = 'none';
 }
 
 // Aplicar modo edição — libera campos conforme permissões do usuário
@@ -5002,12 +4998,10 @@ function aplicarModoEdicao() {
   if (badge) { badge.className = 'edit-badge'; badge.textContent = '✏️ Editando'; }
   const btnEdit = document.getElementById('btn-entrar-edicao');
   const btnSair = document.getElementById('btn-sair-edicao');
-  const btnSalvar = document.getElementById('btn-salvar-header');
-  const btnFlutuante = document.getElementById('btn-salvar-flutuante');
+  const btnSalvar = document.getElementById('btn-salvar-flutuante');
   if (btnEdit) btnEdit.style.display = 'none';
   if (btnSair) btnSair.style.display = '';
   if (btnSalvar) btnSalvar.style.display = '';
-  if (btnFlutuante) btnFlutuante.style.display = '';
 }
 
 // Tentar adquirir a trava
