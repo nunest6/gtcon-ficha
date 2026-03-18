@@ -1615,10 +1615,24 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.55; }
   <!-- COMPETÊNCIA -->
   <div class="card">
     <div class="card-title"><span class="ct-icon"></span> Competência Contábil</div>
-    <div class="fg" style="max-width:160px">
-      <label>Competência</label>
-      <input type="text" id="competencia_inicio" placeholder="MM/AAAA" maxlength="7"
-        oninput="this.value=this.value.replace(/[^0-9/]/g,'').replace(/^(\d{2})(\d)/,'$1/$2')">
+    <div class="g g2" style="align-items:flex-start">
+      <div class="fg" style="max-width:160px">
+        <label>Competência</label>
+        <input type="text" id="competencia_inicio" placeholder="MM/AAAA" maxlength="7"
+          oninput="this.value=this.value.replace(/[^0-9/]/g,'').replace(/^(\d{2})(\d)/,'$1/$2')">
+      </div>
+      <div class="fg">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+          <label style="margin:0">Grupo Econômico</label>
+          <button class="btn btn-s btn-sm" onclick="abrirModalGrupos()" type="button" style="font-size:10.5px">Gerenciar</button>
+        </div>
+        <div style="position:relative">
+          <input type="text" id="grupo_empresas" placeholder="Digite para buscar ou criar grupo..."
+            autocomplete="off" oninput="filtrarGruposInput(this.value)" onfocus="filtrarGruposInput(this.value)">
+          <div id="grupos-dropdown" style="display:none;position:absolute;top:100%;left:0;right:0;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-sm);box-shadow:var(--shadow-lg);z-index:200;max-height:200px;overflow-y:auto;margin-top:3px"></div>
+        </div>
+        <div id="grupo-selecionado-badge" style="margin-top:6px;display:flex;align-items:center;gap:6px;flex-wrap:wrap"></div>
+      </div>
     </div>
   </div>
 
@@ -1712,18 +1726,7 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.55; }
         <label>Faturamento Anual</label>
         <input type="text" id="fat_anual" placeholder="R$ 0,00" oninput="fmtCur(this)">
       </div>
-      <div class="fg s2">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
-          <label style="margin:0">Grupo Econômico</label>
-          <button class="btn btn-s btn-sm" onclick="abrirModalGrupos()" type="button" style="font-size:10.5px">Gerenciar grupos</button>
-        </div>
-        <div style="position:relative">
-          <input type="text" id="grupo_empresas" placeholder="Digite para buscar ou criar grupo..."
-            autocomplete="off" oninput="filtrarGruposInput(this.value)" onfocus="filtrarGruposInput(this.value)">
-          <div id="grupos-dropdown" style="display:none;position:absolute;top:100%;left:0;right:0;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-sm);box-shadow:var(--shadow-lg);z-index:200;max-height:200px;overflow-y:auto;margin-top:3px"></div>
-        </div>
-        <div id="grupo-selecionado-badge" style="display:none;margin-top:6px;display:flex;align-items:center;gap:6px;flex-wrap:wrap"></div>
-      </div>
+
     </div>
 
     <div class="sec-div">Acessos — Prefeitura / Portais Governamentais</div>
@@ -1832,13 +1835,7 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.55; }
 
     <div class="sec-div">Outros</div>
     <div class="g g2">
-      <div class="fg">
-        <label>Participa de Licitações?</label>
-        <div class="radio-row">
-          <label class="ro" onclick="selR(this,'licitacoes')"><input type="radio" name="licitacoes" value="sim">Sim (exige CNDs mensais)</label>
-          <label class="ro" onclick="selR(this,'licitacoes')"><input type="radio" name="licitacoes" value="nao">Não</label>
-        </div>
-      </div>
+
       <div class="fg">
         <label>Parcelamentos Ativos?</label>
         <div class="radio-row">
@@ -1850,17 +1847,7 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.55; }
         <label>Quais parcelamentos?</label>
         <input type="text" id="parcelamentos_det" placeholder="PERT, REFIS, etc.">
       </div>
-      <div class="fg">
-        <label>Possui e-Commerce?</label>
-        <div class="radio-row">
-          <label class="ro" onclick="selR(this,'ecommerce')"><input type="radio" name="ecommerce" value="nao">Não</label>
-          <label class="ro" onclick="selR(this,'ecommerce')"><input type="radio" name="ecommerce" value="sim">Sim</label>
-        </div>
-      </div>
-      <div class="fg">
-        <label>Plataforma e-Commerce</label>
-        <input type="text" id="ecommerce_plat" placeholder="Shopify, Mercado Livre, WooCommerce...">
-      </div>
+
       <div class="fg">
         <label>Certificado Digital</label>
         <div class="radio-row">
@@ -2040,6 +2027,21 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.55; }
       <div class="fg">
         <label>Transcrição / Ata</label>
         <textarea id="reuniao_transcricao" rows="3" placeholder="Pontos decididos, ações combinadas, observações importantes..."></textarea>
+        <div style="margin-top:8px">
+          <label style="font-size:11px;color:var(--muted);font-weight:500;margin-bottom:6px;display:block">Anexar arquivo (PDF, DOCX, TXT — máx. 20MB)</label>
+          <div id="reuniao-upload-area" class="upload-area" onclick="document.getElementById('reuniao_arquivo').click()">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style="color:var(--dim)"><path d="M10 13V4M10 4L7 7M10 4l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 14v1a2 2 0 002 2h10a2 2 0 002-2v-1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            <span id="reuniao-upload-label" style="font-size:12px;color:var(--muted)">Clique para selecionar ou arraste o arquivo aqui</span>
+          </div>
+          <input type="file" id="reuniao_arquivo" style="display:none" accept=".pdf,.doc,.docx,.txt,.xlsx,.xls,.pptx,.mp3,.mp4,.wav"
+            onchange="previewArquivoReuniao(this)">
+          <div id="reuniao-arquivo-preview" style="display:none;margin-top:6px;padding:8px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-sm);display:none;align-items:center;gap:8px">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="color:var(--navy);flex-shrink:0"><rect x="2" y="1" width="12" height="14" rx="2" stroke="currentColor" stroke-width="1.3"/><path d="M5 5h6M5 8h6M5 11h4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity=".6"/></svg>
+            <span id="reuniao-arquivo-nome" style="font-size:12px;color:var(--text-2);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></span>
+            <span id="reuniao-arquivo-size" style="font-size:11px;color:var(--dim);flex-shrink:0"></span>
+            <button onclick="limparArquivoReuniao()" style="background:none;border:none;cursor:pointer;color:var(--dim);font-size:13px;padding:2px 4px;transition:color .15s" title="Remover">✕</button>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -2276,6 +2278,42 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.55; }
           <label class="ro" onclick="selR(this,'vende_cf')"><input type="radio" name="vende_cf" value="ambos">Ambos (B2B e B2C)</label>
         </div>
       </div>
+      <div class="fg">
+        <label>Perfil Comercial</label>
+        <div class="radio-row">
+          <label class="ro" onclick="selR(this,'perfil_comercial')"><input type="radio" name="perfil_comercial" value="varejista">Varejista</label>
+          <label class="ro" onclick="selR(this,'perfil_comercial')"><input type="radio" name="perfil_comercial" value="atacadista">Atacadista</label>
+          <label class="ro" onclick="selR(this,'perfil_comercial')"><input type="radio" name="perfil_comercial" value="ambos">Ambos</label>
+          <label class="ro" onclick="selR(this,'perfil_comercial')"><input type="radio" name="perfil_comercial" value="na">N/A</label>
+        </div>
+      </div>
+      <div class="fg">
+        <label>e-Commerce?</label>
+        <div class="radio-row">
+          <label class="ro" onclick="selR(this,'ecommerce')"><input type="radio" name="ecommerce" value="nao">Não</label>
+          <label class="ro" onclick="selR(this,'ecommerce')"><input type="radio" name="ecommerce" value="sim">Sim</label>
+        </div>
+      </div>
+      <div class="fg">
+        <label>Plataforma e-Commerce</label>
+        <input type="text" id="ecommerce_plat" placeholder="Ex: VTEX, Shopify, WooCommerce...">
+      </div>
+      <div class="fg">
+        <label>Emite 100% das notas de entrada?</label>
+        <div class="radio-row">
+          <label class="ro" onclick="selR(this,'notas_entrada_100')"><input type="radio" name="notas_entrada_100" value="sim">Sim</label>
+          <label class="ro" onclick="selR(this,'notas_entrada_100')"><input type="radio" name="notas_entrada_100" value="nao">Não</label>
+          <label class="ro" onclick="selR(this,'notas_entrada_100')"><input type="radio" name="notas_entrada_100" value="parcial">Parcial</label>
+        </div>
+      </div>
+      <div class="fg">
+        <label>Emite 100% das notas de saída?</label>
+        <div class="radio-row">
+          <label class="ro" onclick="selR(this,'notas_saida_100')"><input type="radio" name="notas_saida_100" value="sim">Sim</label>
+          <label class="ro" onclick="selR(this,'notas_saida_100')"><input type="radio" name="notas_saida_100" value="nao">Não</label>
+          <label class="ro" onclick="selR(this,'notas_saida_100')"><input type="radio" name="notas_saida_100" value="parcial">Parcial</label>
+        </div>
+      </div>
     </div>
     <div class="sec-div">Riscos Identificados</div>
     <div class="check-row">
@@ -2286,36 +2324,14 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.55; }
   </div>
 
   <div class="card">
-    <div class="card-title"><span class="ct-icon"></span> Emissor de Notas Fiscais</div>
-    <div class="g g2">
-      <div class="fg">
-        <label>Sistema de Emissão (NFe/NFCe/NFSe)</label>
-        <input type="text" id="emissor_sistema" placeholder="Nome do sistema">
-      </div>
-      <div class="fg">
-        <label>Login do Sistema</label>
-        <input type="text" id="emissor_login" placeholder="Usuário de acesso">
-      </div>
-      <div class="fg">
-        <label>Senha do Sistema</label>
-        <input type="password" id="emissor_senha" placeholder="••••••••">
-      </div>
-      <div class="fg">
-        <label>Emite em Contingência?</label>
-        <div class="radio-row">
-          <label class="ro" onclick="selR(this,'contingencia')"><input type="radio" name="contingencia" value="nao">Não</label>
-          <label class="ro" onclick="selR(this,'contingencia')"><input type="radio" name="contingencia" value="sim">Sim</label>
-        </div>
-      </div>
-    </div>
-    <div class="sec-div">Volume Médio Mensal</div>
+    <div class="card-title"><span class="ct-icon"></span> Emissão de Notas Fiscais</div>
     <div class="g g3">
       <div class="fg">
-        <label>Notas de Saída</label>
+        <label>Volume médio — Saída</label>
         <input type="number" id="vol_saida" placeholder="0" min="0">
       </div>
       <div class="fg">
-        <label>Notas de Entrada</label>
+        <label>Volume médio — Entrada</label>
         <input type="number" id="vol_entrada" placeholder="0" min="0">
       </div>
       <div class="fg">
@@ -2480,8 +2496,55 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.55; }
         </div>
       </div>
       <div class="fg">
+        <label>Licitações?</label>
+        <div class="radio-row">
+          <label class="ro" onclick="selR(this,'licitacoes')"><input type="radio" name="licitacoes" value="sim">Sim — exige CNDs mensais</label>
+          <label class="ro" onclick="selR(this,'licitacoes')"><input type="radio" name="licitacoes" value="nao">Não</label>
+        </div>
+      </div>
+      <div class="fg">
         <label>Nome do Contador/Escritório Anterior</label>
         <input type="text" id="contab_anterior" placeholder="Nome do escritório anterior">
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="ct-icon"></span> Imobilizado</div>
+    <div class="g g2">
+      <div class="fg">
+        <label>Possui bens imobilizados relevantes?</label>
+        <div class="radio-row">
+          <label class="ro" onclick="selR(this,'tem_imobilizado')"><input type="radio" name="tem_imobilizado" value="sim">Sim</label>
+          <label class="ro" onclick="selR(this,'tem_imobilizado')"><input type="radio" name="tem_imobilizado" value="nao">Não</label>
+        </div>
+      </div>
+      <div class="fg">
+        <label>Laudo de Avaliação Patrimonial?</label>
+        <div class="radio-row">
+          <label class="ro" onclick="selR(this,'laudo_avaliacao')"><input type="radio" name="laudo_avaliacao" value="sim">Sim</label>
+          <label class="ro" onclick="selR(this,'laudo_avaliacao')"><input type="radio" name="laudo_avaliacao" value="nao">Não</label>
+        </div>
+      </div>
+      <div class="fg">
+        <label>Método de Depreciação</label>
+        <div class="radio-row">
+          <label class="ro" onclick="selR(this,'metodo_depreciacao')"><input type="radio" name="metodo_depreciacao" value="linear">Linear (quotas constantes)</label>
+          <label class="ro" onclick="selR(this,'metodo_depreciacao')"><input type="radio" name="metodo_depreciacao" value="acelerado">Acelerado</label>
+          <label class="ro" onclick="selR(this,'metodo_depreciacao')"><input type="radio" name="metodo_depreciacao" value="nao_aplica">Não aplica</label>
+        </div>
+      </div>
+      <div class="fg">
+        <label>Controle via Sistema?</label>
+        <div class="radio-row">
+          <label class="ro" onclick="selR(this,'imob_sistema')"><input type="radio" name="imob_sistema" value="sim">Sim</label>
+          <label class="ro" onclick="selR(this,'imob_sistema')"><input type="radio" name="imob_sistema" value="planilha">Planilha</label>
+          <label class="ro" onclick="selR(this,'imob_sistema')"><input type="radio" name="imob_sistema" value="nao">Não controla</label>
+        </div>
+      </div>
+      <div class="fg s2">
+        <label>Observações sobre o Imobilizado</label>
+        <textarea id="imob_obs" rows="2" placeholder="Bens relevantes, imóveis, veículos, equipamentos, leasing, arrendamento..."></textarea>
       </div>
     </div>
   </div>
@@ -3454,7 +3517,7 @@ function addContato() {
       <label>Telefone / WhatsApp</label>
       <input type="tel" placeholder="(00) 00000-0000">
     </div>
-    <button class="btn btn-d btn-sm" onclick="document.getElementById('${id}').remove()" style="margin-bottom:1px;">✕</button>`;
+    <button class="btn btn-d btn-sm" onclick="this.closest('.contato-extra').remove()" style="margin-bottom:1px;">✕</button>`;
   document.getElementById('contatos-extras').appendChild(div);
 }
 
@@ -3553,8 +3616,8 @@ function addErro() {
   div.innerHTML = `
     <input type="text" placeholder="Descreva o erro encontrado..." style="flex:1">
     <input type="date" style="width:150px">
-    <select style="width:120px"><option value="aberto">🔴 Em aberto</option><option value="resolvido">🟢 Resolvido</option></select>
-    <button class="btn btn-d btn-sm" onclick="document.getElementById('erro-${erroCnt}').remove()">✕</button>`;
+    <select style="width:120px"><option value="aberto">Em aberto</option><option value="resolvido">Resolvido</option></select>
+    <button class="btn btn-d btn-sm" onclick="this.closest('div').remove()">✕</button>`;
   document.getElementById('erros-container').appendChild(div);
 }
 
@@ -3723,6 +3786,11 @@ function collectData() {
       vol_entrada: gv('vol_entrada'), estoque: gr('estoque'),
       sped: gr('sped'), obs: gv('obs_fiscal'),
       vende_cf: gr('vende_cf'),
+      perfil_comercial: gr('perfil_comercial'),
+      ecommerce: gr('ecommerce'),
+      ecommerce_plat: gv('ecommerce_plat'),
+      notas_entrada_100: gr('notas_entrada_100'),
+      notas_saida_100: gr('notas_saida_100'),
       part_pis_cofins: gv('part_pis_cofins'),
       part_irpj_csll:  gv('part_irpj_csll'),
       part_iss:        gv('part_iss'),
@@ -3732,6 +3800,12 @@ function collectData() {
     },
     contabil: {
       balancete: gr('balancete'), imobilizado: gr('imobilizado'),
+      licitacoes: gr('licitacoes'),
+      tem_imobilizado: gr('tem_imobilizado'),
+      laudo_avaliacao: gr('laudo_avaliacao'),
+      metodo_depreciacao: gr('metodo_depreciacao'),
+      imob_sistema: gr('imob_sistema'),
+      imob_obs: gv('imob_obs'),
       contab_anterior: gv('contab_anterior'),
       r_cadastral: gv('risco_cadastral'), r_tributario: gv('risco_tributario'),
       r_trabalhista: gv('risco_trabalhista'), r_tecnologico: gv('risco_tecnologico'),
@@ -4091,7 +4165,12 @@ function loadClient(data) {
   setRadio('icms_st',       data.fiscal?.icms_st);
   setRadio('estoque',       data.fiscal?.estoque);
   setRadio('sped',          data.fiscal?.sped);
-  setRadio('vende_cf',       data.fiscal?.vende_cf);
+  setRadio('vende_cf',          data.fiscal?.vende_cf);
+  setRadio('perfil_comercial',  data.fiscal?.perfil_comercial);
+  setRadio('ecommerce',         data.fiscal?.ecommerce);
+  sv('ecommerce_plat',          data.fiscal?.ecommerce_plat);
+  setRadio('notas_entrada_100', data.fiscal?.notas_entrada_100);
+  setRadio('notas_saida_100',   data.fiscal?.notas_saida_100);
   sv('part_pis_cofins',     data.fiscal?.part_pis_cofins);
   sv('part_irpj_csll',      data.fiscal?.part_irpj_csll);
   sv('part_iss',            data.fiscal?.part_iss);
@@ -4109,8 +4188,15 @@ function loadClient(data) {
     const lbl = el.closest('label');
     if (lbl) lbl.classList.toggle('sel', el.checked);
   });
-  setRadio('balancete',     data.contabil?.balancete);
-  setRadio('imobilizado',   data.contabil?.imobilizado);
+  setRadio('balancete',          data.contabil?.balancete);
+  setRadio('imobilizado',        data.contabil?.imobilizado);
+  setRadio('licitacoes',         data.contabil?.licitacoes);
+  setRadio('tem_imobilizado',    data.contabil?.tem_imobilizado);
+  setRadio('laudo_avaliacao',    data.contabil?.laudo_avaliacao);
+  setRadio('metodo_depreciacao', data.contabil?.metodo_depreciacao);
+  setRadio('imob_sistema',       data.contabil?.imob_sistema);
+  sv('imob_obs',                  data.contabil?.imob_obs);
+  sv('imob_obs',                 data.contabil?.imob_obs);
   setRadio('lead_origem',   data.comercial?.lead_origem);
 
   // Reuniões
@@ -4283,7 +4369,7 @@ function addPrefeitura(dados) {
       </div>
     </div>
     <div>
-      <button class="btn btn-d btn-sm" onclick="document.getElementById('${id}').remove()">✕</button>
+      <button class="btn btn-d btn-sm" onclick="this.closest('.prefeitura-item').remove()">✕</button>
     </div>`;
   document.getElementById('prefeituras-container').appendChild(div);
 }
@@ -5267,7 +5353,7 @@ function limparParticipantes() {
 // ── REUNIÕES ──
 
 
-function adicionarReuniao() {
+async function adicionarReuniao() {
   const topico = document.getElementById('reuniao_topico')?.value?.trim();
   const data   = document.getElementById('reuniao_data')?.value;
   const hora   = document.getElementById('reuniao_hora')?.value;
@@ -5278,8 +5364,9 @@ function adicionarReuniao() {
   if (!topico) { toast('Informe o tópico da reunião.', 'err'); return; }
   if (!data)   { toast('Informe a data da reunião.', 'err');   return; }
 
+  const reuniaoId = Date.now();
   const reuniao = {
-    id: Date.now(),
+    id: reuniaoId,
     topico,
     data,
     hora: hora || '',
@@ -5287,13 +5374,26 @@ function adicionarReuniao() {
     depts,
     link,
     transcricao,
+    arquivo_nome: _arquivoReuniao?.name || '',
+    arquivo_url:  '',
     criadoEm: new Date().toISOString(),
     criadoPor: currentUser?.nome || '',
   };
 
+  // Upload do arquivo se houver
+  if (_arquivoReuniao) {
+    try {
+      const url = await uploadArquivoReuniao(_arquivoReuniao, reuniaoId);
+      reuniao.arquivo_url  = url;
+    } catch(e) {
+      toast(`Arquivo não enviado: ${e.message}`, 'err');
+    }
+  }
+
   _reunioes.unshift(reuniao);
   renderReunioes();
   limparFormReuniao();
+  limparArquivoReuniao();
   toast('Reunião registrada.', 'ok');
 }
 
@@ -5358,6 +5458,12 @@ function renderReunioes() {
       ${deptBadges ? `<div class="reuniao-depts">${deptBadges}</div>` : ''}
       ${r.link ? `<div style="margin-top:8px"><a href="${r.link}" target="_blank" style="font-size:11.5px;color:var(--accent);text-decoration:none;font-weight:500">Acessar gravação/reunião →</a></div>` : ''}
       ${r.transcricao ? `<div style="margin-top:8px;padding:10px 12px;background:var(--surface2);border-radius:var(--r-sm);font-size:12px;color:var(--text-2);line-height:1.6;white-space:pre-wrap;border-left:3px solid var(--border)">${r.transcricao}</div>` : ''}
+      ${r.arquivo_url ? `
+        <div style="margin-top:8px;display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-sm)">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style="color:var(--navy);flex-shrink:0"><rect x="2" y="1" width="12" height="14" rx="2" stroke="currentColor" stroke-width="1.3"/><path d="M5 5h6M5 8h6M5 11h4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity=".6"/></svg>
+          <span style="font-size:12px;color:var(--text-2);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${r.arquivo_nome || 'Anexo'}</span>
+          <a href="${r.arquivo_url}" target="_blank" style="font-size:11.5px;font-weight:600;color:var(--accent);text-decoration:none;flex-shrink:0">Baixar →</a>
+        </div>` : ''}
       ${r.criadoPor ? `<div style="font-size:10.5px;color:var(--dim);margin-top:8px">Registrado por ${r.criadoPor}</div>` : ''}
     </div>`;
   }).join('');
@@ -5530,6 +5636,92 @@ async function excluirGrupo(id) {
     toast('Grupo excluído.', 'ok');
   } catch(e) { toast('Erro: ' + e.message, 'err'); }
 }
+
+
+// ── UPLOAD DE ARQUIVOS — REUNIÃO ──
+let _arquivoReuniao = null; // File object
+
+function previewArquivoReuniao(input) {
+  const file = input.files?.[0];
+  if (!file) return;
+  if (file.size > 20 * 1024 * 1024) {
+    toast('Arquivo muito grande. Máximo 20MB.', 'err');
+    input.value = '';
+    return;
+  }
+  _arquivoReuniao = file;
+  const preview = document.getElementById('reuniao-arquivo-preview');
+  const nome    = document.getElementById('reuniao-arquivo-nome');
+  const size    = document.getElementById('reuniao-arquivo-size');
+  const label   = document.getElementById('reuniao-upload-label');
+  if (nome)  nome.textContent  = file.name;
+  if (size)  size.textContent  = formatFileSize(file.size);
+  if (label) label.textContent = file.name;
+  if (preview) preview.style.display = 'flex';
+}
+
+function limparArquivoReuniao() {
+  _arquivoReuniao = null;
+  const input   = document.getElementById('reuniao_arquivo');
+  const preview = document.getElementById('reuniao-arquivo-preview');
+  const label   = document.getElementById('reuniao-upload-label');
+  if (input)   input.value = '';
+  if (preview) preview.style.display = 'none';
+  if (label)   label.textContent = 'Clique para selecionar ou arraste o arquivo aqui';
+}
+
+function formatFileSize(bytes) {
+  if (bytes < 1024)        return bytes + ' B';
+  if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+  return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+}
+
+async function uploadArquivoReuniao(file, reuniaoId) {
+  const cnpj = document.getElementById('cnpj_principal')?.value?.replace(/\D/g,'') || 'sem-cnpj';
+  const ext  = file.name.split('.').pop();
+  const path = `${cnpj}/${reuniaoId}.${ext}`;
+
+  const res = await fetch(`${SB_URL}/storage/v1/object/reunioes-arquivos/${path}`, {
+    method: 'POST',
+    headers: {
+      'apikey':        SB_KEY,
+      'Authorization': `Bearer ${SB_KEY}`,
+      'Content-Type':  file.type || 'application/octet-stream',
+      'x-upsert':      'true',
+    },
+    body: file,
+  });
+
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.message || err.error || `HTTP ${res.status}`);
+  }
+
+  // URL pública
+  return `${SB_URL}/storage/v1/object/public/reunioes-arquivos/${path}`;
+}
+
+// Drag and drop na área de upload
+document.addEventListener('DOMContentLoaded', () => {
+  const area = document.getElementById('reuniao-upload-area');
+  if (!area) return;
+  area.addEventListener('dragover', e => { e.preventDefault(); area.classList.add('drag-over'); });
+  area.addEventListener('dragleave', ()  => area.classList.remove('drag-over'));
+  area.addEventListener('drop', e => {
+    e.preventDefault();
+    area.classList.remove('drag-over');
+    const file = e.dataTransfer?.files?.[0];
+    if (!file) return;
+    const input = document.getElementById('reuniao_arquivo');
+    if (input) {
+      // Simular seleção de arquivo
+      const dt = new DataTransfer();
+      dt.items.add(file);
+      input.files = dt.files;
+      previewArquivoReuniao(input);
+    }
+  });
+});
 
 document.addEventListener('DOMContentLoaded', async () => {
   carregarGrupos();
@@ -5889,6 +6081,27 @@ document.addEventListener('DOMContentLoaded', async () => {
 .grupos-dd-item:hover { background: var(--surface2); }
 .grupos-dd-sel { background: rgba(1,25,87,.05); }
 .grupos-dd-criar { color: var(--navy); }
+
+/* ── UPLOAD ÁREA (REUNIÃO) ── */
+.upload-area {
+  border: 1.5px dashed var(--border);
+  border-radius: var(--r-sm);
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: border-color var(--tr), background var(--tr);
+  background: var(--surface2);
+}
+.upload-area:hover {
+  border-color: var(--navy);
+  background: rgba(1,25,87,.04);
+}
+.upload-area.drag-over {
+  border-color: var(--navy);
+  background: rgba(1,25,87,.07);
+}
 </style>
 
       <!-- v2.8.0 -->
@@ -5908,6 +6121,37 @@ document.addEventListener('DOMContentLoaded', async () => {
           <li>Link da reunião vira link clicável nos cards registrados</li>
           <li>Transcrição/ata exibida em bloco destacado com formatação preservada</li>
           <li>Reuniões salvas junto à ficha no Supabase via <code>collectData()</code></li>
+        </ul>
+      </div>
+      <hr class="cl-divider">
+
+      <!-- v2.9.0 -->
+      <div style="margin-bottom:20px">
+        <div class="cl-ver">
+          <code>v2.9.0</code>
+          <time>18/03/2026</time>
+          <span class="cl-badge new">● Novas Funcionalidades</span>
+        </div>
+        <div class="cl-section">Fiscal</div>
+        <ul class="cl-list">
+          <li>Perfil Comercial adicionado — Varejista / Atacadista / Ambos / N/A</li>
+          <li>e-Commerce (com campo de plataforma) movido do Cadastro Geral para a aba Fiscal</li>
+          <li>Perguntas sobre emissão de notas: 100% das entradas e 100% das saídas (Sim / Não / Parcial)</li>
+          <li>Card Emissor de Notas simplificado — removidos login, senha e contingência; mantidos apenas volumes médios</li>
+        </ul>
+        <div class="cl-section">Contábil</div>
+        <ul class="cl-list">
+          <li>Licitações removido do Cadastro Geral e movido para o Contábil, junto ao Imobilizado</li>
+          <li>Card Imobilizado detalhado: possui bens, laudo de avaliação patrimonial, método de depreciação (Linear / Acelerado / N/A), controle via sistema/planilha e observações</li>
+        </ul>
+        <div class="cl-section">Cadastro Geral</div>
+        <ul class="cl-list">
+          <li>Competência e Grupo Econômico lado a lado no mesmo card, no topo do Cadastro</li>
+        </ul>
+        <div class="cl-section">Correções</div>
+        <ul class="cl-list">
+          <li>Botões de remoção nas linhas dinâmicas corrigidos — <code>addContato</code>, <code>addPrefeitura</code> e <code>addErro</code> usavam <code>getElementById('$&#123;id&#125;')</code> dentro de <code>onclick</code> HTML, o que não funciona em runtime; substituídos por <code>this.closest('.classe').remove()</code></li>
+          <li>CSS corrigido — tags <code>&lt;style&gt;</code> duplicadas removidas</li>
         </ul>
       </div>
       <hr class="cl-divider">
