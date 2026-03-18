@@ -4,55 +4,68 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ficha Técnica — GTCON</title>
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #f0f2f7;
-  --surface: #ffffff;
-  --surface2: #f5f7fb;
-  --surface3: #eaecf4;
-  --border: #d4d9e8;
-  --border-h: #a0aec8;
-  --accent: #2563eb;
-  --accent2: #1d4ed8;
-  --success: #059669;
-  --warning: #d97706;
-  --danger: #dc2626;
-  --purple: #7c3aed;
-  --teal: #0d9488;
-  --orange: #ea580c;
-  --text: #1a2035;
-  --muted: #5a6a85;
-  --dim: #9aa5ba;
-  --label: #4a5568;
+  /* ── Marca GTCON Brasil ── */
+  --navy:     #011957;
+  --navy-dk:  #000d36;
+  --navy-md:  #0a2d7a;
+  --navy-lt:  #1a4db8;
+
+  /* ── UI ── */
+  --bg:       #eef2fb;
+  --surface:  #ffffff;
+  --surface2: #f7f9fd;
+  --surface3: #edf1f9;
+  --border:   #d1d9ee;
+  --border-h: #a8b8d8;
+
+  /* ── Semânticas ── */
+  --accent:   #1a4db8;
+  --accent2:  #0a2d7a;
+  --blue:     #1a4db8;
+  --success:  #047857;
+  --warning:  #b45309;
+  --danger:   #b91c1c;
+  --purple:   #6d28d9;
+  --teal:     #0f766e;
+  --orange:   #c2410c;
+
+  /* ── Tipografia ── */
+  --text:     #0d1836;
+  --muted:    #5a6a8a;
+  --dim:      #8a9ab8;
+  --label:    #3d4d6e;
+
+  /* ── Raios e outros ── */
   --r: 10px; --rsm: 6px;
   --tr: 0.18s ease;
-  --sans: 'Sora', sans-serif;
-  --mono: 'DM Mono', monospace;
+  --sans: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --mono: 'JetBrains Mono', monospace;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: var(--sans); background: var(--bg); color: var(--text); min-height: 100vh; }
 
 /* ── HEADER ── */
 .app-header {
-  background: #ffffff;
-  border-bottom: 1px solid var(--border);
-  padding: 0 28px;
-  height: 60px;
+  background: var(--navy);
+  border-bottom: none;
+  padding: 0 24px;
+  height: 58px;
   display: flex; align-items: center; justify-content: space-between;
   position: sticky; top: 0; z-index: 200;
+  box-shadow: 0 2px 12px rgba(1,25,87,.25);
 }
-.brand { display: flex; align-items: center; gap: 10px; }
-.brand-logo {
-  width: 34px; height: 34px;
-  background: linear-gradient(135deg, #2563eb, #7c3aed);
-  border-radius: 8px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 16px; flex-shrink: 0;
-}
-.brand-name { font-size: 15px; font-weight: 700; letter-spacing: -.3px; }
-.brand-sub { font-size: 11px; color: var(--muted); font-weight: 400; }
+.brand { display: flex; align-items: center; gap: 12px; }
+.brand-logo { display: flex; align-items: center; flex-shrink: 0; }
+.brand-name { font-size: 14px; font-weight: 700; letter-spacing: -.2px; color: #e8edf8; }
+.brand-sub { font-size: 10.5px; color: #8a9ab8; font-weight: 400; display:flex;align-items:center;gap:6px }
 .header-right { display: flex; align-items: center; gap: 8px; }
+.header-right .btn { border-color: rgba(255,255,255,0.2); color: #c8d8f0; }
+.header-right .btn:hover { background: rgba(255,255,255,0.1); color: #fff; border-color:rgba(255,255,255,0.35); }
+.header-right .btn.btn-ok { background: rgba(255,255,255,0.15); color: #fff; border-color:rgba(255,255,255,0.3); }
+.header-right .btn.btn-ok:hover { background: rgba(255,255,255,0.25); }
 
 /* ── CNPJ BANNER ── */
 .client-bar {
@@ -96,30 +109,32 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
   background: var(--surface);
   border-bottom: 1px solid var(--border);
   display: flex; align-items: flex-end;
-  padding: 0 28px;
-  gap: 2px;
+  padding: 0 24px;
+  gap: 0;
   overflow-x: auto;
   scrollbar-width: none;
+  box-shadow: 0 1px 0 var(--border);
 }
 .tabs-bar::-webkit-scrollbar { display: none; }
 .tab-btn {
-  display: flex; align-items: center; gap: 7px;
-  padding: 12px 18px;
+  display: flex; align-items: center; gap: 6px;
+  padding: 12px 16px;
   border: none; background: none;
-  font-family: var(--sans); font-size: 12.5px; font-weight: 500;
+  font-family: var(--sans); font-size: 12px; font-weight: 600;
   color: var(--muted);
   cursor: pointer;
   border-bottom: 2px solid transparent;
   transition: all var(--tr);
   white-space: nowrap;
   position: relative;
+  letter-spacing: .01em;
 }
-.tab-btn:hover { color: var(--text); }
-.tab-btn.active { color: var(--text); border-bottom-color: var(--accent); }
-.tab-icon { font-size: 14px; }
+.tab-btn:hover { color: var(--text); background: var(--surface3); }
+.tab-btn.active { color: var(--navy); border-bottom-color: var(--navy); background: none; }
+.tab-icon { font-size: 13px; }
 .tab-dot {
-  width: 6px; height: 6px; border-radius: 50%;
-  position: absolute; top: 10px; right: 10px;
+  width: 5px; height: 5px; border-radius: 50%;
+  position: absolute; top: 9px; right: 8px;
   display: none;
 }
 .tab-btn.has-data .tab-dot { display: block; background: var(--success); }
@@ -129,31 +144,31 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
 
 /* ── SIDEBAR ── */
 .sidebar {
-  width: 200px; flex-shrink: 0;
-  background: var(--surface);
-  border-right: 1px solid var(--border);
-  padding: 20px 0;
+  width: 196px; flex-shrink: 0;
+  background: var(--navy-dk);
+  border-right: none;
+  padding: 16px 0;
   position: sticky; top: 164px;
   height: calc(100vh - 164px);
   overflow-y: auto;
 }
 .sidebar-group { margin-bottom: 20px; }
 .sidebar-label {
-  font-size: 10px; font-weight: 600;
-  letter-spacing: 1px; text-transform: uppercase;
-  color: var(--dim); padding: 0 16px; margin-bottom: 4px;
+  font-size: 9px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase;
+  color: rgba(255,255,255,0.3); padding: 0 16px; margin-bottom: 3px;
 }
 .side-btn {
   display: flex; align-items: center; gap: 8px;
   width: 100%; padding: 8px 16px;
   background: none; border: none;
-  font-family: var(--sans); font-size: 12.5px;
-  color: var(--muted); cursor: pointer;
+  font-family: var(--sans); font-size: 12px;
+  color: rgba(255,255,255,0.55); cursor: pointer;
   transition: all var(--tr); text-align: left;
-  border-radius: 0;
+  border-radius: 0; font-weight: 500;
 }
-.side-btn:hover { background: var(--surface2); color: var(--text); }
-.side-btn.active { background: rgba(37,99,235,.08); color: var(--accent2); font-weight: 600; }
+.side-btn:hover { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.9); }
+.side-btn.active { background: rgba(255,255,255,0.1); color: #fff; font-weight: 700; border-left: 2px solid #7ea8f8; padding-left: 14px; }
 .side-icon { font-size: 13px; width: 18px; text-align: center; }
 
 /* ── MAIN ── */
@@ -164,7 +179,7 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
 .panel.active { display: block; }
 
 .panel-head { margin-bottom: 24px; }
-.panel-title { font-size: 20px; font-weight: 700; letter-spacing: -.4px; margin-bottom: 3px; }
+.panel-title { font-size: 20px; font-weight: 700; letter-spacing: -.4px; margin-bottom: 3px; color: var(--navy); }
 .panel-desc { font-size: 12.5px; color: var(--muted); }
 
 /* ── CARDS ── */
@@ -173,18 +188,18 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
   border: 1px solid var(--border);
   border-radius: var(--r);
   padding: 20px;
-  margin-bottom: 16px;
-  transition: border-color var(--tr);
+  margin-bottom: 14px;
+  transition: border-color var(--tr), box-shadow var(--tr);
 }
-.card:hover { border-color: var(--border-h); }
+.card:hover { border-color: var(--border-h); box-shadow: 0 2px 8px rgba(1,25,87,.06); }
 .card-title {
-  font-size: 11.5px; font-weight: 600;
-  color: var(--label); letter-spacing: .5px; text-transform: uppercase;
+  font-size: 11px; font-weight: 700;
+  color: var(--navy); letter-spacing: .06em; text-transform: uppercase;
   display: flex; align-items: center; gap: 7px;
-  padding-bottom: 14px; margin-bottom: 16px;
+  padding-bottom: 13px; margin-bottom: 15px;
   border-bottom: 1px solid var(--border);
 }
-.card-title .ct-icon { font-size: 14px; }
+.card-title .ct-icon { font-size: 13px; }
 
 /* ── GRIDS ── */
 .g { display: grid; gap: 14px; }
@@ -212,9 +227,9 @@ input[type=date], input[type=time], input[type=password], select, textarea {
   appearance: none;
 }
 input:focus, select:focus, textarea:focus {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(37,99,235,.1);
-  background: #f8faff;
+  border-color: var(--navy);
+  box-shadow: 0 0 0 3px rgba(1,25,87,.1);
+  background: #f7f9fd;
 }
 input::placeholder, textarea::placeholder { color: var(--dim); font-size: 12.5px; }
 textarea { resize: vertical; min-height: 80px; }
@@ -262,8 +277,8 @@ input[type=number]::-webkit-inner-spin-button { display: none; }
 .btn-p:hover { background: #2563eb; transform: translateY(-1px); box-shadow: 0 4px 14px rgba(59,130,246,.35); }
 .btn-s { background: var(--surface2); color: var(--muted); border: 1px solid var(--border); }
 .btn-s:hover { border-color: var(--accent); color: var(--accent2); }
-.btn-ok { background: var(--success); color: #fff; }
-.btn-ok:hover { background: #059669; transform: translateY(-1px); }
+.btn-ok { background: var(--navy); color: #fff; }
+.btn-ok:hover { background: var(--navy-md); transform: translateY(-1px); }
 .btn-d { background: transparent; color: var(--danger); border: 1px solid rgba(239,68,68,.3); }
 .btn-d:hover { background: rgba(239,68,68,.1); }
 .btn-sm { padding: 5px 11px; font-size: 11.5px; }
@@ -599,19 +614,20 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
 ══════════════════════════════════════ */
 #login-overlay {
   position: fixed; inset: 0; z-index: 9000;
-  background: #f0f2f7;
+  background: var(--navy-dk);
   display: flex; align-items: center; justify-content: center;
   font-family: var(--sans);
 }
 #login-overlay.hidden { display: none; }
 
 .login-box {
-  background: #fff;
-  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.12);
   border-radius: 16px;
   padding: 40px 44px;
   width: 420px; max-width: 95vw;
-  box-shadow: 0 8px 40px rgba(26,32,53,.1);
+  box-shadow: 0 20px 60px rgba(0,0,0,.4);
+  backdrop-filter: blur(12px);
   text-align: center;
 }
 .login-logo {
@@ -621,10 +637,10 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
   display: flex; align-items: center; justify-content: center;
   font-size: 24px; margin: 0 auto 20px;
 }
-.login-title { font-size: 20px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
-.login-sub { font-size: 13px; color: var(--muted); margin-bottom: 28px; }
+.login-title { font-size: 18px; font-weight: 700; color: #e8edf8; margin-bottom: 4px; }
+.login-sub { font-size: 13px; color: #8a9ab8; margin-bottom: 28px; }
 .login-field { text-align: left; margin-bottom: 16px; }
-.login-field label { font-size: 11px; font-weight: 600; color: var(--label); text-transform: uppercase; letter-spacing: .5px; display: block; margin-bottom: 6px; }
+.login-field label { font-size: 11px; font-weight: 600; color: #8a9ab8; text-transform: uppercase; letter-spacing: .5px; display: block; margin-bottom: 6px; }
 .login-field input, .login-field select {
   width: 100%; padding: 10px 13px;
   background: var(--surface2); border: 1px solid var(--border);
@@ -633,16 +649,23 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
   transition: border-color var(--tr);
   appearance: none;
 }
-.login-field input:focus, .login-field select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(37,99,235,.1); }
+.login-field input:focus, .login-field select:focus { border-color: #adb2da; box-shadow: 0 0 0 3px rgba(173,178,218,.15); }
 .login-field input::placeholder { color: var(--dim); }
 .login-btn {
   width: 100%; padding: 11px;
-  background: var(--accent); color: #fff;
+  background: var(--navy); color: #fff;
   border: none; border-radius: var(--rsm);
   font-family: var(--sans); font-size: 14px; font-weight: 600;
   cursor: pointer; transition: all var(--tr); margin-top: 8px;
 }
 .login-btn:hover { background: #1d4ed8; transform: translateY(-1px); box-shadow: 0 4px 14px rgba(37,99,235,.3); }
+#login-overlay .login-field input, #login-overlay .login-field select {
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(255,255,255,0.15);
+  color: #f0f4ff;
+}
+#login-overlay .login-field input::placeholder { color: rgba(255,255,255,0.3); }
+#login-overlay .login-field input:focus { background: rgba(255,255,255,0.12); border-color: #adb2da; box-shadow: 0 0 0 3px rgba(173,178,218,.12); }
 .login-btn:disabled { opacity: .5; cursor: not-allowed; transform: none; }
 .login-err { font-size: 12px; color: var(--danger); margin-top: 10px; display: none; }
 .login-err.show { display: block; }
@@ -730,7 +753,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
 .trib-tab:hover{color:var(--text);}
 .trib-tab.active{color:var(--accent2);border-bottom-color:var(--accent);}
 .trib-tab.filled::after{content:'●';font-size:7px;color:var(--success);vertical-align:super;margin-left:3px;}
-.edit-mode-bar{display:none;align-items:center;gap:10px;padding:6px 20px;background:rgba(37,99,235,.06);border-bottom:1px solid rgba(37,99,235,.15);font-size:12px;}
+.edit-mode-bar{display:none;align-items:center;gap:10px;padding:6px 20px;background:rgba(1,25,87,.05);border-bottom:1px solid rgba(1,25,87,.12);font-size:12px;}
 .edit-mode-bar.show{display:flex;}
 .view-mode-overlay{pointer-events:none;opacity:.85;user-select:none;}
 .view-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;background:rgba(100,116,139,.12);color:var(--muted);}
@@ -743,8 +766,13 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
 <!-- ══════ LOGIN OVERLAY ══════ -->
 <div id="login-overlay">
   <div class="login-box">
-    <div class="login-logo">📋</div>
-    <div class="login-title">Ficha Técnica GTCON</div>
+    <div class="login-logo">
+      <svg width="140" height="52" viewBox="0 0 140 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <text x="2" y="32" font-family="Plus Jakarta Sans, sans-serif" font-size="28" font-weight="800" fill="#f4f8ff" letter-spacing="-1">Gtcon</text>
+        <text x="2" y="47" font-family="Plus Jakarta Sans, sans-serif" font-size="14" font-weight="700" fill="#adb2da" letter-spacing="3">BRASIL</text>
+      </svg>
+    </div>
+    <div class="login-title">Fichas Técnicas</div>
     <div class="login-sub">Digite suas credenciais de acesso</div>
     <div class="login-field">
       <label>Usuário</label>
@@ -863,10 +891,22 @@ hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
 <!-- HEADER -->
 <header class="app-header">
   <div class="brand">
-    <div class="brand-logo">📋</div>
-    <div>
-      <div class="brand-name">Ficha Técnica</div>
-      <div class="brand-sub">GTCON — Diagnóstico &amp; Onboarding</div>
+    <!-- Logo SVG vetorial GTCON Brasil -->
+    <div class="brand-logo">
+      <svg width="130" height="44" viewBox="0 0 130 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <text x="2" y="26" font-family="Plus Jakarta Sans, sans-serif" font-size="24" font-weight="800" fill="#f4f8ff" letter-spacing="-0.8">Gtcon</text>
+        <text x="2" y="40" font-family="Plus Jakarta Sans, sans-serif" font-size="12.5" font-weight="700" fill="#adb2da" letter-spacing="2.5">BRASIL</text>
+        <rect x="84" y="6" width="1.2" height="32" rx="0.6" fill="rgba(255,255,255,0.12)"/>
+        <text x="90" y="21" font-family="Plus Jakarta Sans, sans-serif" font-size="8.5" font-weight="500" fill="rgba(200,215,255,0.55)" letter-spacing="0.2">Fichas</text>
+        <text x="90" y="33" font-family="Plus Jakarta Sans, sans-serif" font-size="8.5" font-weight="500" fill="rgba(200,215,255,0.55)" letter-spacing="0.2">Técnicas</text>
+      </svg>
+    </div>
+    <div style="margin-left:2px">
+      <div class="brand-sub">
+        <button onclick="document.getElementById('modal-changelog').style.display='flex'"
+          style="background:rgba(255,255,255,0.1);border:none;cursor:pointer;font-size:10px;color:#7ea8f8;font-weight:700;padding:2px 8px;border-radius:20px;line-height:1.5;transition:.15s"
+          title="Ver changelog" onmouseover="this.style.background='rgba(255,255,255,0.18)'" onmouseout="this.style.background='rgba(255,255,255,0.1)'">v2.4.0</button>
+      </div>
     </div>
   </div>
   <!-- Barra modo visualização/edição -->
@@ -4316,5 +4356,242 @@ document.addEventListener('DOMContentLoaded', async () => {
   setTimeout(() => document.getElementById('login-usuario')?.focus(), 100);
 });
 </script>
+
+<div id="modal-changelog" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.5);align-items:center;justify-content:center;" onclick="if(event.target===this)this.style.display='none'">
+  <div style="background:var(--surface);border-radius:var(--r);width:min(700px,96vw);max-height:88vh;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,.3);">
+    <div style="padding:18px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;background:var(--navy);border-radius:var(--r) var(--r) 0 0;">
+      <div>
+        <div style="font-size:15px;font-weight:700;letter-spacing:-.3px;color:#f0f4ff">📋 Changelog — GTCON Fichas Técnicas</div>
+        <div style="font-size:11px;color:#8a9ab8;margin-top:2px">Histórico de versões e atualizações do sistema</div>
+      </div>
+      <button onclick="document.getElementById('modal-changelog').style.display='none'" style="background:rgba(255,255,255,.1);border:none;font-size:16px;cursor:pointer;color:#c8d8f0;line-height:1;padding:6px 10px;border-radius:6px;">✕</button>
+    </div>
+    <div style="overflow-y:auto;padding:20px 24px;flex:1">
+
+      <!-- HELPERS -->
+      <style>
+        .cl-ver{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+        .cl-ver code{font-size:13px;font-weight:700;font-family:var(--mono);color:var(--navy)}
+        .cl-ver time{font-size:11px;color:var(--muted)}
+        .cl-badge{padding:2px 9px;border-radius:10px;font-size:10px;font-weight:700}
+        .cl-badge.new{background:rgba(4,120,87,.12);color:#047857}
+        .cl-badge.fix{background:rgba(185,28,28,.10);color:#b91c1c}
+        .cl-badge.major{background:rgba(109,40,217,.10);color:#6d28d9}
+        .cl-badge.imp{background:rgba(1,25,87,.1);color:var(--navy)}
+        .cl-section{font-size:11.5px;font-weight:700;color:var(--label);margin:10px 0 5px}
+        .cl-list{font-size:12px;color:var(--muted);line-height:1.8;padding-left:16px;margin:0 0 4px}
+        .cl-list li{margin-bottom:1px}
+        .cl-divider{border:none;border-top:1px solid var(--border);margin:18px 0}
+      </style>
+
+      <!-- v2.4.0 -->
+      <div style="margin-bottom:20px">
+        <div class="cl-ver">
+          <code>v2.4.0</code>
+          <time>17/03/2026</time>
+          <span class="cl-badge imp">● Repaginação Visual</span>
+        </div>
+        <div class="cl-section">🎨 Identidade Visual da Marca</div>
+        <ul class="cl-list">
+          <li>Logo SVG vetorial fiel à marca — "Gtcon" branco <code>#f4f8ff</code>, "BRASIL" azul-lavanda <code>#adb2da</code>, extraído da logo original pixel a pixel</li>
+          <li>Fonte trocada de <em>Sora</em> → <strong>Plus Jakarta Sans</strong> — mais corporativa e legível; mono de DM Mono → JetBrains Mono</li>
+          <li>Sistema de cores derivado da logo: navy <code>#011957</code> como cor primária em toda a UI</li>
+        </ul>
+        <div class="cl-section">🖥️ Interface</div>
+        <ul class="cl-list">
+          <li>Header: fundo navy com sombra suave; logo SVG nos headers da app e da tela de login</li>
+          <li>Sidebar: fundo navy escuro <code>#000d36</code>; item ativo com borda esquerda <code>#adb2da</code> e texto branco</li>
+          <li>Tabs: aba ativa sublinhada em navy, hover com fundo suave azulado</li>
+          <li>Botões primários (Salvar, Editar): navy em vez de verde/azul genérico</li>
+          <li>Focus ring de inputs: navy em vez de azul elétrico</li>
+          <li>Títulos de card: navy uppercase com peso 700</li>
+          <li>Tela de login: fundo gradiente navy escuro + card glass morphism (fundo translúcido, borda branca 12%, backdrop-filter blur)</li>
+        </ul>
+      </div>
+      <hr class="cl-divider">
+
+      <!-- v2.3.0 -->
+      <div style="margin-bottom:20px">
+        <div class="cl-ver">
+          <code>v2.3.0</code>
+          <time>16/03/2026</time>
+          <span class="cl-badge new">● Novas Funcionalidades</span>
+        </div>
+        <div class="cl-section">🔒 Trava de Edição Colaborativa</div>
+        <ul class="cl-list">
+          <li>Fichas sempre abrem em <strong>modo visualização</strong> — campos desabilitados por padrão</li>
+          <li>Botão <strong>✏️ Editar</strong> para entrar no modo edição com verificação de disponibilidade no Supabase</li>
+          <li>Se outro usuário já estiver editando: <em>🔒 João Silva editando desde 14h32</em> — botão bloqueado</li>
+          <li>Heartbeat automático a cada 3 min; trava expira em 10 min se o browser fechar sem salvar</li>
+          <li>Trava liberada ao salvar, ao clicar ✕ Sair da edição ou ao fazer logout</li>
+          <li>Nova tabela Supabase: <code>edit_locks</code></li>
+        </ul>
+        <div class="cl-section">🧾 Particularidades por Tributo</div>
+        <ul class="cl-list">
+          <li>Card com 6 abas: PIS/COFINS · IRPJ/CSLL · ISS · ICMS · IPI · DAS</li>
+          <li>Ponto verde na aba quando há conteúdo preenchido</li>
+        </ul>
+        <div class="cl-section">🔧 Ajustes de Interface</div>
+        <ul class="cl-list">
+          <li>Botões Próximo/Anterior entre abas removidos — navegação pelas tabs do topo</li>
+          <li>"Vende para cliente final (B2C)?" adicionado em Tributário — Engenharia Fiscal</li>
+          <li>Aba Comercial removida do menu; dados mantidos no banco para compatibilidade</li>
+          <li>Bloco Responsável Comercial movido para Cadastro Geral; bloqueado para todos exceto admin</li>
+          <li>Nome do consultor exibido no chip do cliente ativo no topo</li>
+          <li>Comercial: somente leitura em todas as abas</li>
+          <li>Changelog embutido no código, acessível pelo badge <code>v2.x.x</code> no header</li>
+        </ul>
+      </div>
+      <hr class="cl-divider">
+
+      <!-- v2.2.0 -->
+      <div style="margin-bottom:20px">
+        <div class="cl-ver">
+          <code>v2.2.0</code>
+          <time>16/03/2026</time>
+          <span class="cl-badge imp">● Melhorias</span>
+        </div>
+        <div class="cl-section">💻 ERP e Departamentos</div>
+        <ul class="cl-list">
+          <li>Card ERP movido da aba Contábil para <strong>Particularidades</strong> — campo transversal a todos os departamentos</li>
+          <li>Novo campo <strong>Departamentos Envolvidos</strong> (checkboxes: Contábil, Fiscal, DP, Societário, Financeiro)</li>
+          <li>Migração automática dos dados existentes via SQL UPDATE</li>
+        </ul>
+      </div>
+      <hr class="cl-divider">
+
+      <!-- v2.1.0 -->
+      <div style="margin-bottom:20px">
+        <div class="cl-ver">
+          <code>v2.1.0</code>
+          <time>16/03/2026</time>
+          <span class="cl-badge imp">● Melhorias</span>
+        </div>
+        <div class="cl-section">🗄️ Zero localStorage</div>
+        <ul class="cl-list">
+          <li>Usuários migrados para Supabase (<code>usuarios</code>) — login funciona em qualquer máquina</li>
+          <li>Log de atividades migrado para Supabase (<code>logs</code>) — histórico centralizado</li>
+          <li>Migração automática na primeira abertura — dados antigos movidos sem perda</li>
+        </ul>
+        <div class="cl-section">🔐 Ofuscação de Código</div>
+        <ul class="cl-list">
+          <li>48 símbolos internos ofuscados; comentários removidos; DevTools trap ativo</li>
+        </ul>
+        <div class="cl-section">🔗 Integração SPED</div>
+        <ul class="cl-list">
+          <li>Botão 📂 Abrir Módulo SPED na aba Fiscal — abre vinculado ao cliente com token de sessão</li>
+          <li>Badge mostra exercícios já importados; dados salvos em <code>sped_dados</code></li>
+        </ul>
+      </div>
+      <hr class="cl-divider">
+
+      <!-- v2.0.0 -->
+      <div style="margin-bottom:20px">
+        <div class="cl-ver">
+          <code>v2.0.0</code>
+          <time>16/03/2026</time>
+          <span class="cl-badge major">● Major Release</span>
+        </div>
+        <ul class="cl-list">
+          <li>Tabelas Supabase: <code>usuarios</code> · <code>logs</code> · <code>sped_dados</code> · <code>edit_locks</code></li>
+          <li>Módulo SPED · Cruzamento de Declarações integrado como módulo independente</li>
+        </ul>
+      </div>
+      <hr class="cl-divider">
+
+      <!-- v1.5.x -->
+      <div style="margin-bottom:20px">
+        <div class="cl-ver">
+          <code>v1.5.4</code>
+          <time>13/03/2026</time>
+          <span class="cl-badge fix">● Correção Crítica</span>
+        </div>
+        <ul class="cl-list">
+          <li>Deadlock de grupos corrigido — flag <code>_gruposCarregando</code> nunca mais fica presa</li>
+          <li>Timeout de segurança de 3s + <code>Promise.all</code> para carregamento em paralelo</li>
+        </ul>
+      </div>
+      <div style="margin-bottom:20px">
+        <div class="cl-ver">
+          <code>v1.5.3</code>
+          <time>13/03/2026</time>
+          <span class="cl-badge fix">● Correção Crítica</span>
+        </div>
+        <ul class="cl-list">
+          <li>Lista de clientes quebrava quando <code>grupos_economicos</code> não existia no Supabase</li>
+          <li>Bug de índice no onclick das linhas corrigido via <code>abrirClientePorIdx()</code></li>
+        </ul>
+      </div>
+      <div style="margin-bottom:20px">
+        <div class="cl-ver">
+          <code>v1.5.2</code>
+          <time>12/03/2026</time>
+          <span class="cl-badge fix">● Correção Crítica</span>
+        </div>
+        <ul class="cl-list">
+          <li><code>getGrupos()</code> chamada sem <code>await</code> — retornava Promise em vez do array</li>
+          <li>Onclick com <code>JSON.stringify()</code> inline quebrava com apóstrofos — corrigido</li>
+        </ul>
+      </div>
+      <hr class="cl-divider">
+
+      <!-- v1.5.1 / v1.5.0 -->
+      <div style="margin-bottom:20px">
+        <div class="cl-ver">
+          <code>v1.5.1</code>
+          <time>12/03/2026</time>
+          <span class="cl-badge new">● Novas Funcionalidades</span>
+        </div>
+        <ul class="cl-list">
+          <li>Particularidades por Tributo com abas coloridas: PIS/COFINS · IRPJ/CSLL · ISS · ICMS · IPI</li>
+          <li>"Compra com nota fiscal?" e "Vende com nota fiscal?" adicionados em Emissão</li>
+        </ul>
+      </div>
+      <div style="margin-bottom:20px">
+        <div class="cl-ver">
+          <code>v1.5.0</code>
+          <time>12/03/2026</time>
+          <span class="cl-badge new">● Novas Funcionalidades</span>
+        </div>
+        <ul class="cl-list">
+          <li>Grupos econômicos no Supabase com autocomplete inteligente e contador de clientes</li>
+          <li>Exportação Excel .xlsx real via SheetJS — 65 colunas, 2 abas, cabeçalho congelado</li>
+          <li>SQL <code>setup_gtcon_supabase.sql</code> consolidado e idempotente</li>
+        </ul>
+      </div>
+      <hr class="cl-divider">
+
+      <!-- v1.4.0 / v1.3.0 -->
+      <div style="margin-bottom:20px">
+        <div class="cl-ver">
+          <code>v1.4.0</code>
+          <time>12/03/2026</time>
+          <span class="cl-badge new">● Novas Funcionalidades</span>
+        </div>
+        <ul class="cl-list">
+          <li>Botão 📊 Excel e 📄 PDF no header — exporta ficha ativa</li>
+          <li>Modal 📥 Importar — importação em massa via JSON/CSV</li>
+          <li>Correção de duplicidade falsa ao salvar ficha já aberta</li>
+        </ul>
+      </div>
+      <div style="margin-bottom:0">
+        <div class="cl-ver">
+          <code>v1.3.0</code>
+          <time>11/03/2026</time>
+          <span class="cl-badge major">● Release Inicial</span>
+        </div>
+        <ul class="cl-list">
+          <li>Migração completa localStorage → Supabase (PostgreSQL) + publicação no GitHub Pages</li>
+          <li>Modal de redefinição de senha obrigatório no primeiro login</li>
+          <li>Campos monitorados pelo log expandidos de 13 para 38</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+</div>
+
 </body>
 </html>
