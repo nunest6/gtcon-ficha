@@ -1597,19 +1597,10 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.55; }
   <!-- COMPETÊNCIA -->
   <div class="card">
     <div class="card-title"><span class="ct-icon"></span> Competência Contábil</div>
-    <div class="g g2">
-      <div class="fg">
-        <label>Início da Competência <span class="req">*</span></label>
-        <input type="month" id="competencia_inicio" placeholder="MM/AAAA">
-      </div>
-      <div class="fg">
-        <label>Mês de Referência Atual</label>
-        <input type="month" id="competencia_referencia">
-      </div>
-      <div class="fg s2">
-        <label>Observação sobre a Competência</label>
-        <input type="text" id="competencia_obs" placeholder="Ex: Cliente iniciou em meio ao exercício, saldo de abertura pendente...">
-      </div>
+    <div class="fg" style="max-width:160px">
+      <label>Competência</label>
+      <input type="text" id="competencia_inicio" placeholder="MM/AAAA" maxlength="7"
+        oninput="this.value=this.value.replace(/[^0-9/]/g,'').replace(/^(\d{2})(\d)/,'$1/$2')">
     </div>
   </div>
 
@@ -3691,8 +3682,6 @@ function collectData() {
       escrit_anterior_tel: gv('escrit_anterior_tel'),
       escrit_anterior_email: gv('escrit_anterior_email'),
       competencia_inicio: gv('competencia_inicio'),
-      competencia_referencia: gv('competencia_referencia'),
-      competencia_obs: gv('competencia_obs'),
       licitacoes: gr('licitacoes'), ecommerce: gr('ecommerce'),
       ecommerce_plat: gv('ecommerce_plat'), cert: gr('cert_digital'),
       cert_venc: gv('cert_vencimento'),
@@ -3995,8 +3984,6 @@ function loadClient(data) {
   sv('escrit_anterior_tel',   data.cadastro?.escrit_anterior_tel);
   sv('escrit_anterior_email', data.cadastro?.escrit_anterior_email);
   sv('competencia_inicio',     data.cadastro?.competencia_inicio);
-  sv('competencia_referencia', data.cadastro?.competencia_referencia);
-  sv('competencia_obs',        data.cadastro?.competencia_obs);
 
   sv('dp_clt', data.dp?.clt);
   sv('dp_estagiarios', data.dp?.estagiarios);
