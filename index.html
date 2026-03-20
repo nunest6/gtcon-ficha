@@ -1437,7 +1437,7 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.55; }
       <div class="brand-sub" style="display:flex;align-items:center;gap:6px">
         <button onclick="document.getElementById('modal-changelog').style.display='flex'"
           style="background:rgba(255,255,255,.1);border:none;cursor:pointer;font-size:9.5px;color:#adb2da;font-weight:700;padding:2px 8px;border-radius:20px;font-family:var(--mono)"
-          title="Changelog">v2.8.0</button>
+          title="Changelog">v3.0.1</button>
       </div>
     </div>
   </div>
@@ -1462,6 +1462,10 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.55; }
     </div>
     <button class="btn btn-s btn-sm" onclick="clearAll()">Limpar</button>
     <button class="btn btn-s btn-sm" onclick="exportJSON()">JSON</button>
+    <button class="btn btn-s btn-sm" onclick="gerarPDFDiagnostico()" title="Gerar diagnóstico PDF" id="btn-gerar-pdf" style="display:none">
+      <svg width="12" height="12" viewBox="0 0 16 16" fill="none" style="vertical-align:-1px"><rect x="2" y="1" width="12" height="14" rx="2" stroke="currentColor" stroke-width="1.3"/><path d="M5 5h6M5 8h6M5 11h4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity=".6"/></svg>
+      PDF
+    </button>
     <div class="user-chip" id="user-chip" style="display:none;">
       <div class="user-avatar" id="user-avatar"></div>
       <div>
@@ -1487,7 +1491,6 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.55; }
   <button class="tab-btn" onclick="showTab('contabil',this)">Contábil<span class="tab-dot"></span></button>
   <button class="tab-btn" onclick="showTab('parametros',this)">Parâmetros<span class="tab-dot"></span></button>
   <button class="tab-btn" onclick="showTab('particularidades',this)">Particularidades<span class="tab-dot"></span></button>
-  <button class="tab-btn" onclick="showTab('db',this)">Clientes<span class="tab-dot"></span></button>
   <button class="tab-btn tab-admin-only" onclick="showTab('admin',this)" style="display:none">Usuários<span class="tab-dot"></span></button>
   <button class="tab-btn tab-admin-only" onclick="showTab('log',this)" style="display:none">Log<span class="tab-dot"></span></button>
 </div>
@@ -1503,7 +1506,7 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.55; }
       <text x="2" y="24" font-family="Plus Jakarta Sans, sans-serif" font-size="21" font-weight="800" fill="#f4f8ff" letter-spacing="-0.6">Gtcon</text>
       <text x="2" y="36" font-family="Plus Jakarta Sans, sans-serif" font-size="10.5" font-weight="700" fill="#adb2da" letter-spacing="2.2">BRASIL</text>
     </svg>
-    <button class="sidebar-changelog-btn" onclick="document.getElementById('modal-changelog').style.display='flex'" title="Changelog">v2.8.0</button>
+    <button class="sidebar-changelog-btn" onclick="document.getElementById('modal-changelog').style.display='flex'" title="Changelog">v3.0.1</button>
   </div>
 
   <!-- Nav principal -->
@@ -1731,7 +1734,7 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.55; }
 
     <div class="sec-div">Acessos — Prefeitura / Portais Governamentais</div>
     <div id="prefeituras-container" style="display:flex;flex-direction:column;gap:8px;margin-bottom:10px;"></div>
-    <button class="btn btn-s btn-sm" onclick="addPrefeitura()">+ Adicionar portal</button>
+    <button class="btn btn-s btn-sm" onclick="addPrefeitura()"data-add="true" >+ Adicionar portal</button>
   </div>
 
   <!-- CONSULTOR / RESPONSÁVEL COMERCIAL -->
@@ -1775,7 +1778,7 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.55; }
 
     <div class="sec-div">Outros Contatos</div>
     <div id="contatos-extras" style="display:flex;flex-direction:column;gap:10px;"></div>
-    <button class="btn btn-s btn-sm" onclick="addContato()" style="margin-top:10px;">+ Adicionar contato</button>
+    <button class="btn btn-s btn-sm" onclick="addContato()" style="margin-top:10px;" data-add="true">+ Adicionar contato</button>
 
     <div class="sec-div" style="margin-top:18px;">Contabilidade Anterior</div>
     <div class="g g3">
@@ -1816,7 +1819,7 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.55; }
         </tbody>
       </table>
     </div>
-    <button class="btn btn-s btn-sm" onclick="addFilialRow()">+ Adicionar linha</button>
+    <button class="btn btn-s btn-sm" onclick="addFilialRow()"data-add="true" >+ Adicionar linha</button>
 
     <div class="sec-div">Quadro Societário (QSA)</div>
     <div id="socios-container">
@@ -1831,7 +1834,7 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.55; }
         </div>
       </div>
     </div>
-    <button class="btn btn-s btn-sm" onclick="addSocio()">+ Adicionar sócio</button>
+    <button class="btn btn-s btn-sm" onclick="addSocio()"data-add="true" >+ Adicionar sócio</button>
 
     <div class="sec-div">Outros</div>
     <div class="g g2">
@@ -2839,7 +2842,7 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.55; }
         </div>
       </div>
     </div>
-    <button class="btn btn-s btn-sm" onclick="addBanco()">+ Adicionar banco</button>
+    <button class="btn btn-s btn-sm" onclick="addBanco()" data-add="true"data-add="true" >+ Adicionar banco</button>
   </div>
 
   <div class="card">
@@ -3296,7 +3299,7 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.55; }
     </div>
     <div style="margin-top:10px;display:flex;gap:8px;align-items:center;">
       <input type="text" id="new_check" placeholder="Adicionar novo item ao checklist..." style="flex:1">
-      <button class="btn btn-s btn-sm" onclick="addCheckItem()">+ Adicionar</button>
+      <button class="btn btn-s btn-sm" onclick="addCheckItem()"data-add="true" >+ Adicionar</button>
     </div>
     <div class="fg" style="margin-top:14px;">
       <label>Data de Corte para Migração (Competência)</label>
@@ -3360,7 +3363,7 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.55; }
   <div class="card">
     <div class="card-title"><span class="ct-icon"></span> Erros Encontrados</div>
     <div id="erros-container"></div>
-    <button class="btn btn-s btn-sm" onclick="addErro()">+ Registrar erro</button>
+    <button class="btn btn-s btn-sm" onclick="addErro()"data-add="true" >+ Registrar erro</button>
   </div>
 
   <div class="card">
@@ -3843,10 +3846,16 @@ function selR(el, name) {
   el.classList.add('sel');
 }
 function togC(el, e) {
+  if (e && e.target && e.target.type === 'checkbox') {
+    // Clique direto no checkbox — sincronizar visual
+    el.classList.toggle('sel', e.target.checked);
+    return;
+  }
   if (e) e.preventDefault();
-  el.classList.toggle('sel');
   const cb = el.querySelector('input[type=checkbox]');
-  if (cb) cb.checked = el.classList.contains('sel');
+  const novoEstado = !el.classList.contains('sel');
+  el.classList.toggle('sel', novoEstado);
+  if (cb) cb.checked = novoEstado;
 }
 function selStatus(el, groupId, cls) {
   document.querySelectorAll(`#${groupId} .status-chip`).forEach(c => {
@@ -3966,6 +3975,14 @@ function fillCNPJ(d, raw) {
     d.cnaes_secundarios.forEach(c => cnaes.push({ codigo: c.codigo, descricao: c.descricao }));
   renderCNAEs(cnaes);
 
+  // QSA — Quadro Societário
+  if (d.qsa && d.qsa.length) preencherQSA(d.qsa.map(s => ({
+    nome:  s.nome_socio || '',
+    cpf:   s.cpf_cnpj_socio || '',
+    qual:  s.qualificacao_socio || '',
+    pais:  s.pais_socio || '',
+  })));
+
   const nm = d.razao_social || '';
   atualizarChipCliente(nm);
 }
@@ -3986,12 +4003,26 @@ function fillCNPJAlt(d, raw) {
     d.atividades_secundarias.forEach(c => cnaes.push({ codigo: c.code, descricao: c.text }));
   renderCNAEs(cnaes);
 
+  // QSA — Quadro Societário
+  if (d.qsa && d.qsa.length) preencherQSA(d.qsa.map(s => ({
+    nome:  s.nome || '',
+    cpf:   s.cpf || s.cpf_cnpj || '',
+    qual:  s.qual || s.qualificacao || '',
+    pais:  s.pais || '',
+  })));
+
   const nm = d.nome || '';
   atualizarChipCliente(nm);
 }
 
 function atualizarChipCliente(nome, consultor) {
-  if (!nome) { document.getElementById('cliente-ativo-chip').style.display = 'none'; return; }
+  const btnPdf = document.getElementById('btn-gerar-pdf');
+  if (!nome) {
+    document.getElementById('cliente-ativo-chip').style.display = 'none';
+    if (btnPdf) btnPdf.style.display = 'none';
+    return;
+  }
+  if (btnPdf) btnPdf.style.display = '';
   document.getElementById('cliente-ativo-nome').textContent = nome;
   const elCons = document.getElementById('cliente-ativo-consultor');
   if (elCons) {
@@ -4092,6 +4123,54 @@ function addParticipante() {
     <div class="fg s2"><label>Nome (Cliente)</label><input type="text" placeholder="Nome completo"></div>
     <div class="fg"><label>Cargo</label><input type="text" placeholder="Função"></div>`;
   document.getElementById('participantes-cliente').appendChild(div);
+}
+
+function preencherQSA(socios) {
+  if (!socios || !socios.length) return;
+  const container = document.getElementById('socios-container');
+  if (!container) return;
+
+  // Limpar sócios existentes (mantém só o primeiro div fixo se houver)
+  container.innerHTML = '';
+  socioCnt = 1;
+
+  socios.forEach((s, idx) => {
+    const n = socioCnt++;
+    const adm = (s.qual || '').toLowerCase().includes('administrador') ||
+                (s.qual || '').toLowerCase().includes('sócio-admin') ? 'sim' : 'nao';
+    const div = document.createElement('div');
+    div.className = 'g g3';
+    div.style.marginBottom = '8px';
+    div.id = 'socio-' + n;
+    div.innerHTML = `
+      <div class="fg s2">
+        <label>Sócio ${n} — Nome</label>
+        <input type="text" placeholder="Nome completo" value="${s.nome}" class="api-filled">
+      </div>
+      <div class="fg">
+        <label>Participação (%)</label>
+        <input type="number" placeholder="0" min="0" max="100">
+      </div>
+      <div class="fg">
+        <label>Administrador?</label>
+        <div class="radio-row">
+          <label class="ro${adm==='sim'?' sel':''}" onclick="selR(this,'socio${n}_adm')">
+            <input type="radio" name="socio${n}_adm" value="sim"${adm==='sim'?' checked':''}>Sim
+          </label>
+          <label class="ro${adm==='nao'?' sel':''}" onclick="selR(this,'socio${n}_adm')">
+            <input type="radio" name="socio${n}_adm" value="nao"${adm==='nao'?' checked':''}>Não
+          </label>
+        </div>
+      </div>
+      ${s.cpf ? `<div class="fg"><label>CPF/CNPJ</label><input type="text" value="${s.cpf}" class="api-filled"></div>` : ''}
+      ${s.qual ? `<div class="fg s2"><label>Qualificação</label><input type="text" value="${s.qual}" class="api-filled"></div>` : ''}
+      <div class="fg" style="align-self:end">
+        <button class="btn btn-d btn-sm" onclick="this.closest('.g').remove()">✕ Remover</button>
+      </div>`;
+    container.appendChild(div);
+  });
+
+  toast(`QSA preenchido — ${socios.length} sócio(s) importado(s) da RFB.`, 'ok');
 }
 
 function addSocio() {
@@ -4325,6 +4404,12 @@ function collectData() {
       escrit_anterior_nome: gv('escrit_anterior_nome'),
       escrit_anterior_tel: gv('escrit_anterior_tel'),
       escrit_anterior_email: gv('escrit_anterior_email'),
+      outros_contatos: Array.from(document.querySelectorAll('#contatos-extras .contato-extra')).map(el => ({
+        nome:     el.querySelectorAll('input')[0]?.value || '',
+        setor:    el.querySelector('select')?.value || '',
+        email:    el.querySelectorAll('input')[1]?.value || '',
+        telefone: el.querySelectorAll('input')[2]?.value || '',
+      })).filter(c => c.nome || c.email),
       competencia_inicio: gv('competencia_inicio'),
       licitacoes: gr('licitacoes'), ecommerce: gr('ecommerce'),
       ecommerce_plat: gv('ecommerce_plat'), cert: gr('cert_digital'),
@@ -4417,6 +4502,12 @@ function collectData() {
       das_limite:       gr('das_limite'),
     },
     contabil: {
+      bancos_pj: Array.from(document.querySelectorAll('#bancos-container .g')).map(el => ({
+        banco:   el.querySelectorAll('input')[0]?.value || '',
+        agencia: el.querySelectorAll('input')[1]?.value || '',
+        conta:   el.querySelectorAll('input')[2]?.value || '',
+        acesso:  el.querySelector('input[type=radio]:checked')?.value || '',
+      })).filter(b => b.banco || b.agencia || b.conta),
       balancete: gr('balancete'), imobilizado: gr('imobilizado'),
       licitacoes: gr('licitacoes'),
       tem_imobilizado: gr('tem_imobilizado'),
@@ -4711,6 +4802,24 @@ function loadClient(data) {
   sv('escrit_anterior_nome',  data.cadastro?.escrit_anterior_nome);
   sv('escrit_anterior_tel',   data.cadastro?.escrit_anterior_tel);
   sv('escrit_anterior_email', data.cadastro?.escrit_anterior_email);
+  // Outros contatos
+  const contEls = document.getElementById('contatos-extras');
+  if (contEls) {
+    contEls.innerHTML = '';
+    contatoCnt = 0;
+    (data.cadastro?.outros_contatos || []).forEach(c => {
+      addContato();
+      const items = contEls.querySelectorAll('.contato-extra');
+      const el = items[items.length - 1];
+      if (!el) return;
+      const inputs = el.querySelectorAll('input');
+      const sel = el.querySelector('select');
+      if (inputs[0]) inputs[0].value = c.nome     || '';
+      if (sel)       sel.value        = c.setor    || '';
+      if (inputs[1]) inputs[1].value  = c.email    || '';
+      if (inputs[2]) inputs[2].value  = c.telefone || '';
+    });
+  }
   sv('competencia_inicio',     data.cadastro?.competencia_inicio);
 
   sv('dp_clt', data.dp?.clt);
@@ -4728,6 +4837,35 @@ function loadClient(data) {
 
   sv('erp_outro', data.contabil?.erp_outro);
   sv('contab_anterior', data.contabil?.contab_anterior);
+  // Bancos PJ
+  const bancosEl = document.getElementById('bancos-container');
+  if (bancosEl) {
+    bancosEl.innerHTML = '';
+    bancoCnt = 1;
+    const bancos = data.contabil?.bancos_pj || [];
+    // Sempre ao menos 1 linha vazia
+    const lista = bancos.length ? bancos : [{ banco:'', agencia:'', conta:'', acesso:'' }];
+    lista.forEach((b, i) => {
+      const n = bancoCnt++;
+      const div = document.createElement('div');
+      div.className = 'g g4';
+      div.style.marginBottom = '8px';
+      div.id = 'banco-' + n;
+      const simSel = b.acesso === 'sim' ? ' sel' : '';
+      const naoSel = b.acesso === 'nao' ? ' sel' : '';
+      const simChk = b.acesso === 'sim' ? ' checked' : '';
+      const naoChk = b.acesso === 'nao' ? ' checked' : '';
+      div.innerHTML = '<div class="fg s2"><label>Banco ' + n + '</label><input type="text" placeholder="Nome do banco" value="' + (b.banco||'') + '"></div>'
+        + '<div class="fg"><label>Ag\u00eancia</label><input type="text" placeholder="0000" value="' + (b.agencia||'') + '"></div>'
+        + '<div class="fg"><label>Conta</label><input type="text" placeholder="00000-0" value="' + (b.conta||'') + '"></div>'
+        + '<div class="fg s2"><label>Acesso PJ?</label><div class="radio-row">'
+        + '<label class="ro' + simSel + '" onclick="selR(this,\'banco' + n + '_acesso\')"><input type="radio" name="banco' + n + '_acesso" value="sim"' + simChk + '>Sim</label>'
+        + '<label class="ro' + naoSel + '" onclick="selR(this,\'banco' + n + '_acesso\')"><input type="radio" name="banco' + n + '_acesso" value="nao"' + naoChk + '>N\u00e3o</label>'
+        + '</div></div>'
+        + (n > 1 ? '<div class="fg s2" style="align-self:end;"><button class="btn btn-d btn-sm" onclick="this.closest(\'.g\').remove()">\u2715 Remover</button></div>' : '');
+      bancosEl.appendChild(div);
+    });
+  }
   sv('risco_cadastral', data.contabil?.r_cadastral);
   sv('risco_tributario', data.contabil?.r_tributario);
   sv('risco_trabalhista', data.contabil?.r_trabalhista);
@@ -5721,40 +5859,60 @@ function aplicarModoVisualizacao() {
   paineis.forEach(tab => {
     const panel = document.getElementById('panel-' + tab);
     if (!panel) return;
-    panel.querySelectorAll('input:not(.api-filled), select, textarea, button.btn-s, button.btn-sm').forEach(el => {
-      if (el.id === 'btn-entrar-edicao' || el.id === 'btn-sair-edicao' || el.id === 'btn-salvar-header') return;
-      el.setAttribute('data-was-disabled', el.disabled ? '1' : '0');
-      el.disabled = true;
+    // Bloquear via CSS — não usa disabled para não quebrar collectData
+    panel.dataset.viewMode = '1';
+    panel.querySelectorAll('input:not(.api-filled), select, textarea').forEach(el => {
       el.style.pointerEvents = 'none';
+      el.style.userSelect    = 'none';
+    });
+    panel.querySelectorAll('button:not(#btn-entrar-edicao):not(#btn-sair-edicao):not(#btn-salvar-header):not(#btn-salvar-flutuante)').forEach(el => {
+      el.style.pointerEvents = 'none';
+      el.style.opacity       = '0.45';
     });
     panel.querySelectorAll('label.co, label.ro, .status-chip').forEach(el => {
       el.style.pointerEvents = 'none';
     });
   });
-  // Atualizar UI
   const badge = document.getElementById('edit-mode-badge');
   if (badge) { badge.className = 'view-badge'; badge.textContent = '👁 Visualização'; }
-  const btnEdit = document.getElementById('btn-entrar-edicao');
-  const btnSair = document.getElementById('btn-sair-edicao');
+  const btnEdit   = document.getElementById('btn-entrar-edicao');
+  const btnSair   = document.getElementById('btn-sair-edicao');
   const btnSalvar = document.getElementById('btn-salvar-flutuante');
-  if (btnEdit) btnEdit.style.display = '';
-  if (btnSair) btnSair.style.display = 'none';
+  if (btnEdit)   btnEdit.style.display   = '';
+  if (btnSair)   btnSair.style.display   = 'none';
   if (btnSalvar) btnSalvar.style.display = 'none';
 }
 
 // Aplicar modo edição — libera campos conforme permissões do usuário
 function aplicarModoEdicao() {
   _modoEdicao = true;
-  applyTabPermissions();   // respeita permissões de departamento
+  const paineis = ['cadastro','comercial','dp','fiscal','contabil','parametros','particularidades'];
+  // Remover todos os bloqueios CSS antes de aplicar permissões
+  paineis.forEach(tab => {
+    const panel = document.getElementById('panel-' + tab);
+    if (!panel) return;
+    delete panel.dataset.viewMode;
+    panel.querySelectorAll('input, select, textarea').forEach(el => {
+      el.style.pointerEvents = '';
+      el.style.userSelect    = '';
+    });
+    panel.querySelectorAll('button').forEach(el => {
+      el.style.pointerEvents = '';
+      el.style.opacity       = '';
+    });
+    panel.querySelectorAll('label.co, label.ro, .status-chip').forEach(el => {
+      el.style.pointerEvents = '';
+    });
+  });
+  applyTabPermissions();      // respeita permissões de departamento
   aplicarBloqueioConsultor(); // mantém consultor travado para não-admin
-  // Atualizar UI
   const badge = document.getElementById('edit-mode-badge');
   if (badge) { badge.className = 'edit-badge'; badge.textContent = '✏️ Editando'; }
-  const btnEdit = document.getElementById('btn-entrar-edicao');
-  const btnSair = document.getElementById('btn-sair-edicao');
+  const btnEdit   = document.getElementById('btn-entrar-edicao');
+  const btnSair   = document.getElementById('btn-sair-edicao');
   const btnSalvar = document.getElementById('btn-salvar-flutuante');
-  if (btnEdit) btnEdit.style.display = 'none';
-  if (btnSair) btnSair.style.display = '';
+  if (btnEdit)   btnEdit.style.display   = 'none';
+  if (btnSair)   btnSair.style.display   = '';
   if (btnSalvar) btnSalvar.style.display = '';
 }
 
@@ -6446,6 +6604,480 @@ function limparPlanoContas() {
   atualizarContadorPC();
 }
 
+
+// ── GERADOR DE PDF — DIAGNÓSTICO OPERACIONAL ──
+async function gerarPDFDiagnostico() {
+  // Carregar jsPDF sob demanda
+  if (!window.jspdf) {
+    try {
+      await new Promise((resolve, reject) => {
+        const s1 = document.createElement('script');
+        s1.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+        s1.onload = () => {
+          const s2 = document.createElement('script');
+          s2.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js';
+          s2.onload = resolve;
+          s2.onerror = reject;
+          document.head.appendChild(s2);
+        };
+        s1.onerror = reject;
+        document.head.appendChild(s1);
+      });
+    } catch(e) {
+      toast('Erro ao carregar biblioteca PDF. Verifique sua conexão.', 'err');
+      return;
+    }
+  }
+  const d = collectData();
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+
+  const navy  = [1, 25, 87];
+  const navyL = [26, 77, 184];
+  const gray1 = [240, 244, 250];
+  const gray2 = [220, 227, 240];
+  const white = [255, 255, 255];
+  const dark  = [13, 24, 54];
+  const muted = [90, 106, 138];
+  const W = 210, M = 14;
+  let y = 0;
+
+  // ── helpers ──
+  const safe = v => (v == null || v === '') ? '—' : String(v);
+  const chip = v => { try { const p = JSON.parse(v); return p.texto || '—'; } catch { return safe(v); } };
+  const yesno = v => v === 'sim' ? 'Sim' : v === 'nao' ? 'Não' : safe(v);
+  const pct = v => v ? v + '%' : '—';
+
+  function newPage() {
+    doc.addPage();
+    y = 14;
+    // Header faixa navy
+    doc.setFillColor(...navy);
+    doc.rect(0, 0, W, 10, 'F');
+    doc.setFontSize(8); doc.setTextColor(...white);
+    doc.text('GTCON BRASIL — Diagnóstico Operacional', M, 7);
+    const razao = safe(d.cadastro?.razao_social);
+    doc.text(razao, W - M, 7, { align: 'right' });
+    y = 18;
+  }
+
+  function checkPage(needed = 12) {
+    if (y + needed > 278) newPage();
+  }
+
+  function section(title) {
+    checkPage(18);
+    doc.setFillColor(...navy);
+    doc.rect(M, y, W - M * 2, 8, 'F');
+    doc.setFontSize(9.5); doc.setFont('helvetica', 'bold');
+    doc.setTextColor(...white);
+    doc.text(title.toUpperCase(), M + 4, y + 5.5);
+    y += 12;
+    doc.setTextColor(...dark);
+  }
+
+  function subsection(title) {
+    checkPage(10);
+    doc.setFontSize(8.5); doc.setFont('helvetica', 'bold');
+    doc.setTextColor(...navyL);
+    doc.text(title, M, y);
+    y += 5;
+    doc.setTextColor(...dark);
+  }
+
+  function row(label, value, highlight = false) {
+    checkPage(7);
+    const val = safe(value);
+    if (val === '—' && !highlight) return; // ocultar vazios
+    doc.autoTable({
+      startY: y,
+      margin: { left: M, right: M },
+      tableWidth: W - M * 2,
+      styles: { fontSize: 8, cellPadding: { top: 2, bottom: 2, left: 3, right: 3 }, lineColor: gray2, lineWidth: 0.2 },
+      headStyles: { fillColor: gray1, textColor: dark, fontStyle: 'bold', fontSize: 7.5 },
+      columnStyles: {
+        0: { cellWidth: 58, fillColor: gray1, textColor: muted, fontStyle: 'bold' },
+        1: { cellWidth: 'auto', textColor: dark },
+      },
+      body: [[label, val]],
+      showHead: false,
+    });
+    y = doc.lastAutoTable.finalY + 1;
+  }
+
+  function rows(pairs) {
+    const body = pairs
+      .map(([l, v]) => [l, safe(v)])
+      .filter(([, v]) => v !== '—');
+    if (!body.length) return;
+    checkPage(body.length * 7 + 4);
+    doc.autoTable({
+      startY: y,
+      margin: { left: M, right: M },
+      tableWidth: W - M * 2,
+      styles: { fontSize: 8, cellPadding: { top: 2, bottom: 2, left: 3, right: 3 }, lineColor: gray2, lineWidth: 0.2 },
+      columnStyles: {
+        0: { cellWidth: 58, fillColor: gray1, textColor: muted, fontStyle: 'bold' },
+        1: { cellWidth: 'auto', textColor: dark },
+      },
+      body,
+      showHead: false,
+    });
+    y = doc.lastAutoTable.finalY + 2;
+  }
+
+  function listRow(label, arr) {
+    if (!arr || !arr.length) return;
+    row(label, arr.join(', '));
+  }
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // CAPA
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  doc.setFillColor(...navy);
+  doc.rect(0, 0, W, 55, 'F');
+
+  // Logo texto
+  doc.setFontSize(28); doc.setFont('helvetica', 'bold');
+  doc.setTextColor(...white);
+  doc.text('Gtcon', M, 28);
+  doc.setFontSize(11); doc.setFont('helvetica', 'normal');
+  doc.setTextColor(173, 178, 218);
+  doc.text('BRASIL', M, 37);
+
+  // Linha divisória
+  doc.setDrawColor(255, 255, 255, 0.2);
+  doc.line(M, 42, W - M, 42);
+
+  doc.setFontSize(10); doc.setFont('helvetica', 'normal');
+  doc.setTextColor(200, 215, 240);
+  doc.text('Diagnóstico Operacional — Ficha Técnica', M, 50);
+
+  // Empresa em destaque
+  y = 65;
+  doc.setFontSize(16); doc.setFont('helvetica', 'bold');
+  doc.setTextColor(...dark);
+  doc.text(safe(d.cadastro?.razao_social), M, y); y += 8;
+
+  if (d.cadastro?.nome_fantasia) {
+    doc.setFontSize(10); doc.setFont('helvetica', 'normal');
+    doc.setTextColor(...muted);
+    doc.text(safe(d.cadastro.nome_fantasia), M, y); y += 6;
+  }
+
+  doc.setFontSize(9); doc.setTextColor(...muted);
+  const metaItems = [
+    d.cadastro?.cnpj && `CNPJ: ${d.cadastro.cnpj}`,
+    d.cadastro?.competencia_inicio && `Competência: ${d.cadastro.competencia_inicio}`,
+    d.cadastro?.situacao && `Situação: ${d.cadastro.situacao}`,
+    `Gerado em: ${new Date().toLocaleDateString('pt-BR')}`,
+  ].filter(Boolean);
+  doc.text(metaItems.join('   |   '), M, y); y += 8;
+
+  // Status chips
+  const statusOn = chip(d.cadastro?.status_onboarding);
+  const statusCx = chip(d.cadastro?.status_complexidade);
+  if (statusOn !== '—' || statusCx !== '—') {
+    doc.setFontSize(8); doc.setFont('helvetica', 'bold');
+    doc.setTextColor(...navyL);
+    if (statusOn !== '—') { doc.text(`Onboarding: ${statusOn}`, M, y); }
+    if (statusCx !== '—') { doc.text(`Complexidade: ${statusCx}`, M + 70, y); }
+    y += 8;
+  }
+
+  // Divisória
+  doc.setDrawColor(...gray2); doc.setLineWidth(0.5);
+  doc.line(M, y, W - M, y); y += 8;
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // 1. CADASTRO GERAL
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  section('1. Cadastro Geral');
+  const c = d.cadastro || {};
+  rows([
+    ['Razão Social',        c.razao_social],
+    ['Nome Fantasia',       c.nome_fantasia],
+    ['CNPJ',               c.cnpj],
+    ['Código SCI',         c.codigo_sci],
+    ['Data de Abertura',   c.data_abertura],
+    ['Porte',              c.porte],
+    ['Situação Cadastral', c.situacao],
+    ['Endereço',           c.endereco],
+    ['Regime Tributário',  c.regime],
+    ['Faturamento Mensal', c.fat_mensal],
+    ['Faturamento Anual',  c.fat_anual],
+    ['Grupo Econômico',    c.grupo_nome],
+    ['Competência Início', c.competencia_inicio],
+    ['Responsável Legal',  c.resp_legal],
+    ['CPF Responsável',    c.resp_cpf],
+    ['E-mail Assinatura',  c.email_assinatura],
+    ['Telefone',           c.telefone],
+    ['Certificado Digital',c.cert],
+    ['Venc. Certificado',  c.cert_venc],
+    ['Contador Anterior',  c.escrit_anterior_nome],
+    ['Tel. Ant.',          c.escrit_anterior_tel],
+    ['Email Ant.',         c.escrit_anterior_email],
+  ]);
+
+  if (c.ramos?.length)     row('Ramos de Atividade', c.ramos.join(', '));
+  if (c.cnaes?.length) {
+    const cnaeStr = c.cnaes.map(cn => typeof cn === 'object' ? `${cn.codigo} — ${cn.descricao}` : cn).join(' | ');
+    row('CNAEs', cnaeStr);
+  }
+
+  // Prefeituras
+  if (c.prefeituras?.length) {
+    subsection('Acessos — Prefeituras / Portais');
+    const body = c.prefeituras.map(p => [p.nome, p.login, p.senha ? '••••••' : '—']);
+    checkPage(body.length * 7 + 6);
+    doc.autoTable({
+      startY: y, margin: { left: M, right: M }, tableWidth: W - M * 2,
+      styles: { fontSize: 8, cellPadding: { top:2, bottom:2, left:3, right:3 }, lineColor: gray2, lineWidth: 0.2 },
+      head: [['Portal / Prefeitura', 'Login', 'Senha']],
+      headStyles: { fillColor: navy, textColor: white, fontStyle: 'bold', fontSize: 8 },
+      body,
+    });
+    y = doc.lastAutoTable.finalY + 3;
+  }
+
+  // Consultor
+  const com = d.comercial || {};
+  if (com.consultor) rows([['Responsável Comercial', com.consultor]]);
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // 2. DEP. PESSOAL
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  section('2. Departamento Pessoal');
+  const dp = d.dp || {};
+  rows([
+    ['CLT',               dp.clt],
+    ['Estagiários',       dp.estagiarios],
+    ['Pró-labore',        dp.prolabore],
+    ['Autônomos',         dp.autonomos],
+    ['Sind. Patronal',    dp.sind_patronal],
+    ['Sind. Laboral',     dp.sind_laboral],
+    ['Controle de Ponto', dp.ponto],
+    ['Insalubridade',     yesno(dp.insalub)],
+    ['Periculosidade',    yesno(dp.periculosidade)],
+    ['Docs SST',          dp.sst_docs],
+    ['Resp. SST',         dp.sst_resp],
+    ['Passivos / Obs.',   dp.passivos_obs],
+  ]);
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // 3. FISCAL
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  section('3. Fiscal');
+  const f = d.fiscal || {};
+  subsection('Engenharia Fiscal');
+  rows([
+    ['Regime de Apuração',      f.apuracao],
+    ['ICMS-ST',                 f.icms_st],
+    ['Perfil Comercial',        f.perfil_comercial],
+    ['Vende para B2C',          yesno(f.vende_cf)],
+    ['e-Commerce',              yesno(f.ecommerce)],
+    ['Plataforma',              f.ecommerce_plat],
+    ['Notas Entrada 100%',      f.notas_entrada_100],
+    ['Notas Saída 100%',        f.notas_saida_100],
+    ['Vol. Saída (mês)',        f.vol_saida],
+    ['Vol. Entrada (mês)',      f.vol_entrada],
+    ['Observações',             f.obs],
+  ]);
+
+  subsection('Tipos de Receita');
+  const recSim = [
+    f.rec_mercadorias==='sim' && 'Mercadorias',
+    f.rec_servicos==='sim'    && 'Serviços',
+    f.rec_industria==='sim'   && 'Industrialização',
+    f.rec_financeira==='sim'  && 'Financeira',
+    f.rec_aluguel==='sim'     && 'Aluguéis',
+    f.rec_exportacao==='sim'  && 'Exportação',
+    f.rec_isenta==='sim'      && 'Isentas/NT',
+  ].filter(Boolean);
+  if (recSim.length) row('Receitas', recSim.join(', '));
+  row('Segregação realizada', f.rec_segregacao);
+
+  subsection('Compras & Insumos');
+  rows([
+    ['Insumos produção',  yesno(f.compra_insumos)],
+    ['Mercadorias revenda', yesno(f.compra_revenda)],
+    ['Ativo imobilizado', yesno(f.compra_ativo)],
+    ['Serviços c/ PIS/COFINS', yesno(f.compra_servicos_pc)],
+    ['Fornec. Simples',   f.forn_simples],
+    ['Fornec. Exterior',  yesno(f.forn_exterior)],
+    ['Obs. Compras',      f.obs_compras],
+  ]);
+
+  subsection('Particularidades por Tributo');
+  const tribRows = [
+    ['PIS/COFINS — Regime',     f.pc_regime],
+    ['PIS/COFINS — Monofásico', yesno(f.pc_monofasico)],
+    ['PIS/COFINS — Exclusões',  yesno(f.pc_exclusoes)],
+    ['PIS/COFINS — Cred. Presumido', yesno(f.pc_cred_presumido)],
+    ['PIS/COFINS — Cred. Insumos', f.pc_cred_insumos],
+    ['PIS/COFINS — CIAP',       f.pc_ciap],
+    ['PIS/COFINS — Obs.',       f.part_pis_cofins],
+    ['IRPJ — Forma',            f.irpj_forma],
+    ['IRPJ — Periodicidade',    f.irpj_periodo],
+    ['IRPJ — Distribuição',     yesno(f.irpj_distribuicao)],
+    ['IRPJ — JSCP',             yesno(f.irpj_jscp)],
+    ['IRPJ — Prejuízo',         yesno(f.irpj_prejuizo)],
+    ['IRPJ — Obs.',             f.part_irpj_csll],
+    ['ISS — Obrigado',          yesno(f.iss_obrigado)],
+    ['ISS — Retido',            f.iss_retido],
+    ['ISS — Município',         f.iss_municipio],
+    ['ISS — Alíquota',          f.iss_aliquota ? f.iss_aliquota + '%' : null],
+    ['ISS — Obs.',              f.part_iss],
+    ['ICMS — Contribuinte',     f.icms_contrib],
+    ['ICMS — DIFAL',            yesno(f.icms_difal)],
+    ['ICMS — Apuração',         yesno(f.icms_apuracao)],
+    ['ICMS — Antecipação',      yesno(f.icms_antecipacao)],
+    ['ICMS — Saldo Credor',     yesno(f.icms_saldo_credor)],
+    ['ICMS — Multiestado',      yesno(f.icms_multiestado)],
+    ['ICMS — Obs.',             f.part_icms],
+    ['IPI — Contribuinte',      f.ipi_contrib],
+    ['IPI — Crédito',           f.ipi_credito],
+    ['IPI — NCMs',              f.ipi_ncm],
+    ['IPI — Obs.',              f.part_ipi],
+    ['DAS — Anexo',             f.das_anexo ? 'Anexo ' + f.das_anexo : null],
+    ['DAS — Sublimite',         yesno(f.das_sublimite)],
+    ['DAS — Risco Exclusão',    yesno(f.das_risco_exclusao)],
+    ['DAS — Parcelamento',      yesno(f.das_parcelamento)],
+    ['DAS — Obs.',              f.part_das],
+  ];
+  rows(tribRows);
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // 4. CONTÁBIL
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  section('4. Contábil');
+  const ct = d.contabil || {};
+  subsection('Contabilidade Anterior');
+  rows([
+    ['Balancete Exerc. Ant.',  yesno(ct.balancete)],
+    ['Controle Imobilizado',   yesno(ct.imobilizado)],
+    ['Nome Escritório Ant.',   ct.contab_anterior],
+    ['Licitações',             yesno(ct.licitacoes)],
+  ]);
+
+  subsection('Imobilizado');
+  rows([
+    ['Bens Imobilizados',      yesno(ct.tem_imobilizado)],
+    ['Laudo de Avaliação',     yesno(ct.laudo_avaliacao)],
+    ['Método Depreciação',     ct.metodo_depreciacao],
+    ['Controle Sistema',       ct.imob_sistema],
+    ['Observações',            ct.imob_obs],
+  ]);
+
+  subsection('Custos & Despesas');
+  rows([
+    ['CMV/CPV relevante',      yesno(ct.desp_cmv)],
+    ['Folha como custo',       yesno(ct.desp_folha)],
+    ['Pró-labore contabil.',   yesno(ct.desp_prolabore)],
+    ['Depreciação relevante',  yesno(ct.desp_depreciacao)],
+    ['Despesas financeiras',   yesno(ct.desp_financeiras)],
+    ['Leasing/Arrendamento',   yesno(ct.desp_leasing)],
+    ['Centro de Custos',       ct.desp_centro_custo],
+    ['Rateio entre unidades',  yesno(ct.desp_rateio)],
+    ['Dedutiveis mapeadas',    ct.desp_dedutiveis],
+    ['Desp. não dedutíveis',   yesno(ct.desp_nao_dedutiveis)],
+    ['Custo por Depto.',       yesno(ct.desp_custo_depto)],
+    ['Custo por Produto',      yesno(ct.desp_custo_produto)],
+    ['Retiradas Sócios',       ct.desp_retiradas],
+    ['Adiantamentos Sócios',   yesno(ct.desp_adiantamentos)],
+    ['Observações',            ct.desp_obs],
+  ]);
+
+  subsection('Mapa de Riscos');
+  rows([
+    ['Risco Cadastral',   ct.r_cadastral],
+    ['Risco Tributário',  ct.r_tributario],
+    ['Risco Trabalhista', ct.r_trabalhista],
+    ['Risco Tecnológico', ct.r_tecnologico],
+  ]);
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // 5. PARÂMETROS
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  section('5. Parâmetros Operacionais');
+  const p = d.parametros || {};
+  rows([
+    ['Dia Fechamento Ponto',    p.dia_ponto],
+    ['Dia Extratos',           p.dia_extratos],
+    ['Dia Venc. Guias',        p.dia_guias],
+    ['Envio de Guias',         p.envio_guias],
+    ['Data de Corte',          p.data_corte],
+    ['Resp. Técnico',          p.resp_tecnico],
+  ]);
+
+  // Key Users
+  if (p.resp_extras?.length) {
+    subsection('Key Users / Responsáveis');
+    const body = p.resp_extras.map(r => [r.nome, r.cargo, r.email]);
+    checkPage(body.length * 7 + 8);
+    doc.autoTable({
+      startY: y, margin: { left: M, right: M }, tableWidth: W - M * 2,
+      styles: { fontSize: 8, cellPadding: { top:2, bottom:2, left:3, right:3 }, lineColor: gray2, lineWidth: 0.2 },
+      head: [['Nome', 'Cargo / Área', 'E-mail']],
+      headStyles: { fillColor: navy, textColor: white, fontStyle: 'bold', fontSize: 8 },
+      body,
+    });
+    y = doc.lastAutoTable.finalY + 3;
+  }
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // 6. PARTICULARIDADES
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  section('6. Particularidades');
+  const pt = d.particularidades || {};
+  rows([
+    ['ERP',              pt.erp],
+    ['Outro ERP',        pt.erp_outro],
+    ['Integração ERP',   pt.erp_integ],
+    ['Depts. Envolvidos', pt.depts?.join(', ')],
+    ['Instruções',       pt.instrucoes],
+    ['Avisos',           pt.avisos],
+    ['Obs. Gerais',      pt.obs_gerais],
+    ['Diagnóstico Final',pt.diagnostico],
+  ]);
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // 7. REUNIÕES (resumo)
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  if (_reunioes?.length) {
+    section('7. Reuniões Registradas');
+    _reunioes.slice(0, 10).forEach((r, i) => {
+      const dataFmt = r.data ? new Date(r.data + 'T12:00').toLocaleDateString('pt-BR') : '';
+      subsection(`${i + 1}. ${r.topico || '—'} — ${dataFmt}${r.hora ? ' às ' + r.hora : ''}`);
+      const participantes = (r.participantes || []).map(p => `${p.nome} (@${p.usuario})`).join(', ');
+      rows([
+        ['Participantes', participantes || null],
+        ['Departamentos', r.depts?.join(', ') || null],
+        ['Link',          r.link || null],
+        ['Ata / Transcrição', r.transcricao || null],
+        ['Registrado por', r.criadoPor || null],
+      ]);
+    });
+  }
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // RODAPÉ com número de página
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  const total = doc.getNumberOfPages();
+  for (let i = 1; i <= total; i++) {
+    doc.setPage(i);
+    doc.setFontSize(7.5); doc.setFont('helvetica', 'normal');
+    doc.setTextColor(...muted);
+    doc.text(`Página ${i} de ${total}`, W - M, 293, { align: 'right' });
+    doc.text('Documento confidencial — uso interno GTCON Brasil', M, 293);
+  }
+
+  // Download
+  const nome = safe(d.cadastro?.razao_social).replace(/[^a-zA-Z0-9 ]/g, '').trim() || 'cliente';
+  doc.save(`Diagnostico_${nome.replace(/ /g,'_')}.pdf`);
+  toast('PDF gerado com sucesso!', 'ok');
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   const area = document.getElementById('reuniao-upload-area');
   if (!area) return;
@@ -6865,6 +7497,54 @@ document.addEventListener('DOMContentLoaded', async () => {
           <li>Link da reunião vira link clicável nos cards registrados</li>
           <li>Transcrição/ata exibida em bloco destacado com formatação preservada</li>
           <li>Reuniões salvas junto à ficha no Supabase via <code>collectData()</code></li>
+        </ul>
+      </div>
+      <hr class="cl-divider">
+
+      <!-- v3.0.1 -->
+      <div style="margin-bottom:20px">
+        <div class="cl-ver">
+          <code>v3.0.1</code>
+          <time>20/03/2026</time>
+          <span class="cl-badge fix">● Correções</span>
+        </div>
+        <div class="cl-section">Proteção do modo edição</div>
+        <ul class="cl-list">
+          <li>Reescrita completa de <code>aplicarModoVisualizacao</code> e <code>aplicarModoEdicao</code> — bloqueio agora é 100% via CSS (<code>pointer-events</code> + <code>opacity</code>), sem uso de <code>disabled</code></li>
+          <li>Corrigido bug onde botões "+ Adicionar" e outros <code>btn-sm</code> ficavam permanentemente bloqueados após entrar e sair do modo edição</li>
+          <li><code>aplicarModoEdicao</code> agora remove todos os bloqueios CSS antes de aplicar permissões de perfil — garante que nenhum campo sobra travado por engano</li>
+        </ul>
+        <div class="cl-section">Campos não persistidos corrigidos</div>
+        <ul class="cl-list">
+          <li><strong>Outros Contatos</strong> — campos nome, setor, e-mail e telefone agora salvos em <code>cadastro.outros_contatos[]</code> e restaurados ao abrir a ficha (SQL v3.0.1)</li>
+          <li><strong>Contas Bancárias PJ</strong> — banco, agência, conta e acesso PJ agora salvos em <code>contabil.bancos_pj[]</code> e restaurados corretamente com radio marcado (SQL v3.0.2)</li>
+        </ul>
+      </div>
+      <hr class="cl-divider">
+
+      <!-- v3.0.0 -->
+      <div style="margin-bottom:20px">
+        <div class="cl-ver">
+          <code>v3.0.0</code>
+          <time>20/03/2026</time>
+          <span class="cl-badge fix">● Correções</span>
+        </div>
+        <div class="cl-section">Correções críticas</div>
+        <ul class="cl-list">
+          <li>Login não entrava sem acusar erro — corrigido erro de sintaxe JS causado por <code>\n</code> literal dentro de string na função gerarPDF, que quebrava o parser silenciosamente</li>
+          <li>Scripts do jsPDF movidos do <code>&lt;head&gt;</code> para carregamento lazy — evita bloqueio de página por CDN externo</li>
+          <li>Botão "Gerar PDF" movido para o header (visível em qualquer aba) e aparece apenas quando um cliente está aberto</li>
+          <li>Aba Clientes duplicada removida da barra de navegação</li>
+          <li>Botões "+ Adicionar" (contato, sócio, banco, prefeitura, risco) não respondiam no modo edição — o <code>aplicarModoVisualizacao</code> desabilitava todos os <code>btn-sm</code> incluindo os de ação; corrigido com <code>data-add="true"</code></li>
+          <li>QSA preenchido automaticamente da RFB ao buscar CNPJ — sócios importados com nome, CPF, qualificação e administrador pré-marcado</li>
+          <li>Botões de departamento na aba Reunião corrigidos — double-fire no togC</li>
+        </ul>
+        <div class="cl-section">Gerar PDF — Diagnóstico Operacional</div>
+        <ul class="cl-list">
+          <li>Botão no header gera PDF completo com dados de todas as abas organizados por seção</li>
+          <li>Capa com logo, nome da empresa, CNPJ, competência e status</li>
+          <li>7 seções: Cadastro, DP, Fiscal (completo com tributos), Contábil, Parâmetros, Particularidades e Reuniões</li>
+          <li>Campos vazios omitidos automaticamente; key users e prefeituras em tabela</li>
         </ul>
       </div>
       <hr class="cl-divider">
