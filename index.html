@@ -2004,16 +2004,16 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.55; }
     <div class="fg" style="margin-bottom:18px">
       <label>Departamentos Envolvidos</label>
       <div class="radio-row" style="flex-wrap:wrap;gap:8px;margin-top:4px">
-        <label class="co" onclick="togC(this,'reuniao_depts')">
+        <label class="co" onclick="togC(this,event)">
           <input type="checkbox" name="reuniao_depts" value="contabil">Contábil
         </label>
-        <label class="co" onclick="togC(this,'reuniao_depts')">
+        <label class="co" onclick="togC(this,event)">
           <input type="checkbox" name="reuniao_depts" value="fiscal">Fiscal
         </label>
-        <label class="co" onclick="togC(this,'reuniao_depts')">
+        <label class="co" onclick="togC(this,event)">
           <input type="checkbox" name="reuniao_depts" value="tributario">Tributário
         </label>
-        <label class="co" onclick="togC(this,'reuniao_depts')">
+        <label class="co" onclick="togC(this,event)">
           <input type="checkbox" name="reuniao_depts" value="dp">DP
         </label>
       </div>
@@ -2342,47 +2342,132 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.55; }
   </div>
 
   <div class="card">
-    <div class="card-title"><span class="ct-icon"></span> Controle de Estoque e SPED</div>
+    <div class="card-title"><span class="ct-icon"></span> Tipos de Receita</div>
     <div class="g g2">
       <div class="fg">
-        <label>Controle de Estoque</label>
+        <label>Receita de venda de mercadorias?</label>
         <div class="radio-row">
-          <label class="ro" onclick="selR(this,'estoque')"><input type="radio" name="estoque" value="sistema">Sistema Integrado</label>
-          <label class="ro" onclick="selR(this,'estoque')"><input type="radio" name="estoque" value="planilha">Planilha</label>
-          <label class="ro" onclick="selR(this,'estoque')"><input type="radio" name="estoque" value="nao">Não controla</label>
+          <label class="ro" onclick="selR(this,'rec_mercadorias')"><input type="radio" name="rec_mercadorias" value="sim">Sim</label>
+          <label class="ro" onclick="selR(this,'rec_mercadorias')"><input type="radio" name="rec_mercadorias" value="nao">Não</label>
         </div>
       </div>
       <div class="fg">
-        <label>Obrigado ao Bloco K?</label>
+        <label>Receita de prestação de serviços?</label>
         <div class="radio-row">
-          <label class="ro" onclick="selR(this,'bloco_k')"><input type="radio" name="bloco_k" value="nao">Não</label>
-          <label class="ro" onclick="selR(this,'bloco_k')"><input type="radio" name="bloco_k" value="sim">Sim</label>
+          <label class="ro" onclick="selR(this,'rec_servicos')"><input type="radio" name="rec_servicos" value="sim">Sim</label>
+          <label class="ro" onclick="selR(this,'rec_servicos')"><input type="radio" name="rec_servicos" value="nao">Não</label>
         </div>
       </div>
       <div class="fg">
-        <label>SPED Fiscal Regular?</label>
+        <label>Receita de industrialização?</label>
         <div class="radio-row">
-          <label class="ro" onclick="selR(this,'sped')"><input type="radio" name="sped" value="sim">Sim — Regular</label>
-          <label class="ro" onclick="selR(this,'sped')"><input type="radio" name="sped" value="pendente">Pendente</label>
+          <label class="ro" onclick="selR(this,'rec_industria')"><input type="radio" name="rec_industria" value="sim">Sim</label>
+          <label class="ro" onclick="selR(this,'rec_industria')"><input type="radio" name="rec_industria" value="nao">Não</label>
         </div>
       </div>
       <div class="fg">
-        <label>Sistema de Estoque</label>
-        <input type="text" id="estoque_sistema" placeholder="Nome do sistema de estoque">
+        <label>Receita financeira relevante?</label>
+        <div class="radio-row">
+          <label class="ro" onclick="selR(this,'rec_financeira')"><input type="radio" name="rec_financeira" value="sim">Sim</label>
+          <label class="ro" onclick="selR(this,'rec_financeira')"><input type="radio" name="rec_financeira" value="nao">Não</label>
+        </div>
+      </div>
+      <div class="fg">
+        <label>Receita de aluguéis / locação?</label>
+        <div class="radio-row">
+          <label class="ro" onclick="selR(this,'rec_aluguel')"><input type="radio" name="rec_aluguel" value="sim">Sim</label>
+          <label class="ro" onclick="selR(this,'rec_aluguel')"><input type="radio" name="rec_aluguel" value="nao">Não</label>
+        </div>
+      </div>
+      <div class="fg">
+        <label>Receita de exportação?</label>
+        <div class="radio-row">
+          <label class="ro" onclick="selR(this,'rec_exportacao')"><input type="radio" name="rec_exportacao" value="sim">Sim</label>
+          <label class="ro" onclick="selR(this,'rec_exportacao')"><input type="radio" name="rec_exportacao" value="nao">Não</label>
+        </div>
+      </div>
+      <div class="fg">
+        <label>Receitas isentas ou não tributadas?</label>
+        <div class="radio-row">
+          <label class="ro" onclick="selR(this,'rec_isenta')"><input type="radio" name="rec_isenta" value="sim">Sim</label>
+          <label class="ro" onclick="selR(this,'rec_isenta')"><input type="radio" name="rec_isenta" value="nao">Não</label>
+        </div>
+      </div>
+      <div class="fg">
+        <label>Segregação de receitas realizada?</label>
+        <div class="radio-row">
+          <label class="ro" onclick="selR(this,'rec_segregacao')"><input type="radio" name="rec_segregacao" value="sim">Sim — corretamente</label>
+          <label class="ro" onclick="selR(this,'rec_segregacao')"><input type="radio" name="rec_segregacao" value="parcial">Parcial</label>
+          <label class="ro" onclick="selR(this,'rec_segregacao')"><input type="radio" name="rec_segregacao" value="nao">Não realizada</label>
+        </div>
       </div>
       <div class="fg s2">
-        <label>Observações Fiscais</label>
-        <textarea id="obs_fiscal" placeholder="Observações gerais sobre a área fiscal..."></textarea>
+        <label>Observações sobre receitas e segregação</label>
+        <textarea id="obs_fiscal" rows="2" placeholder="Detalhes sobre a composição do faturamento, segregações necessárias, riscos de classificação, etc..."></textarea>
       </div>
     </div>
   </div>
 
   <!-- Particularidades por Tributo -->
+  <!-- COMPRAS & INSUMOS -->
+  <div class="card">
+    <div class="card-title"><span class="ct-icon"></span> Compras & Insumos</div>
+    <div class="g g2">
+      <div class="fg">
+        <label>Compra de insumos para produção?</label>
+        <div class="radio-row">
+          <label class="ro" onclick="selR(this,'compra_insumos')"><input type="radio" name="compra_insumos" value="sim">Sim</label>
+          <label class="ro" onclick="selR(this,'compra_insumos')"><input type="radio" name="compra_insumos" value="nao">Não</label>
+        </div>
+      </div>
+      <div class="fg">
+        <label>Compra de mercadorias para revenda?</label>
+        <div class="radio-row">
+          <label class="ro" onclick="selR(this,'compra_revenda')"><input type="radio" name="compra_revenda" value="sim">Sim</label>
+          <label class="ro" onclick="selR(this,'compra_revenda')"><input type="radio" name="compra_revenda" value="nao">Não</label>
+        </div>
+      </div>
+      <div class="fg">
+        <label>Compra de ativo imobilizado?</label>
+        <div class="radio-row">
+          <label class="ro" onclick="selR(this,'compra_ativo')"><input type="radio" name="compra_ativo" value="sim">Sim</label>
+          <label class="ro" onclick="selR(this,'compra_ativo')"><input type="radio" name="compra_ativo" value="nao">Não</label>
+        </div>
+      </div>
+      <div class="fg">
+        <label>Compra de serviços sujeitos a PIS/COFINS?</label>
+        <div class="radio-row">
+          <label class="ro" onclick="selR(this,'compra_servicos_pc')"><input type="radio" name="compra_servicos_pc" value="sim">Sim</label>
+          <label class="ro" onclick="selR(this,'compra_servicos_pc')"><input type="radio" name="compra_servicos_pc" value="nao">Não</label>
+        </div>
+      </div>
+      <div class="fg">
+        <label>Possui fornecedores do Simples Nacional?</label>
+        <div class="radio-row">
+          <label class="ro" onclick="selR(this,'forn_simples')"><input type="radio" name="forn_simples" value="sim">Sim</label>
+          <label class="ro" onclick="selR(this,'forn_simples')"><input type="radio" name="forn_simples" value="nao">Não</label>
+          <label class="ro" onclick="selR(this,'forn_simples')"><input type="radio" name="forn_simples" value="misto">Misto</label>
+        </div>
+      </div>
+      <div class="fg">
+        <label>Possui fornecedores do exterior (importação)?</label>
+        <div class="radio-row">
+          <label class="ro" onclick="selR(this,'forn_exterior')"><input type="radio" name="forn_exterior" value="sim">Sim</label>
+          <label class="ro" onclick="selR(this,'forn_exterior')"><input type="radio" name="forn_exterior" value="nao">Não</label>
+        </div>
+      </div>
+      <div class="fg s2">
+        <label>Observações sobre compras e créditos</label>
+        <textarea id="obs_compras" rows="2" placeholder="Particularidades dos fornecedores, créditos especiais, restrições, etc..."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- PARTICULARIDADES POR TRIBUTO -->
   <div class="card">
     <div class="card-title"><span class="ct-icon"></span> Particularidades por Tributo</div>
 
-    <!-- Tabs dos tributos -->
-    <div style="display:flex;gap:0;border-bottom:2px solid var(--border);margin-bottom:14px;flex-wrap:wrap">
+    <div style="display:flex;gap:0;border-bottom:2px solid var(--border);margin-bottom:18px;flex-wrap:wrap">
       <button class="trib-tab active" onclick="switchTribTab('pis_cofins',this)" type="button">PIS/COFINS</button>
       <button class="trib-tab" onclick="switchTribTab('irpj_csll',this)" type="button">IRPJ/CSLL</button>
       <button class="trib-tab" onclick="switchTribTab('iss',this)" type="button">ISS</button>
@@ -2391,23 +2476,310 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.55; }
       <button class="trib-tab" onclick="switchTribTab('das',this)" type="button">DAS</button>
     </div>
 
+    <!-- PIS/COFINS -->
     <div id="trib-pis_cofins" class="trib-panel">
-      <div class="fg"><textarea id="part_pis_cofins" rows="5" placeholder="Regime, créditos especiais, exclusões, monofásicos, não cumulativo, etc..."></textarea></div>
+      <div class="g g2">
+        <div class="fg">
+          <label>Regime de apuração PIS/COFINS</label>
+          <div class="radio-row">
+            <label class="ro" onclick="selR(this,'pc_regime')"><input type="radio" name="pc_regime" value="cumulativo">Cumulativo</label>
+            <label class="ro" onclick="selR(this,'pc_regime')"><input type="radio" name="pc_regime" value="nao_cumulativo">Não Cumulativo</label>
+            <label class="ro" onclick="selR(this,'pc_regime')"><input type="radio" name="pc_regime" value="misto">Misto</label>
+          </div>
+        </div>
+        <div class="fg">
+          <label>Produtos monofásicos?</label>
+          <div class="radio-row">
+            <label class="ro" onclick="selR(this,'pc_monofasico')"><input type="radio" name="pc_monofasico" value="sim">Sim</label>
+            <label class="ro" onclick="selR(this,'pc_monofasico')"><input type="radio" name="pc_monofasico" value="nao">Não</label>
+          </div>
+        </div>
+        <div class="fg">
+          <label>Exclusões da base (receitas não tributadas)?</label>
+          <div class="radio-row">
+            <label class="ro" onclick="selR(this,'pc_exclusoes')"><input type="radio" name="pc_exclusoes" value="sim">Sim</label>
+            <label class="ro" onclick="selR(this,'pc_exclusoes')"><input type="radio" name="pc_exclusoes" value="nao">Não</label>
+          </div>
+        </div>
+        <div class="fg">
+          <label>Créditos presumidos?</label>
+          <div class="radio-row">
+            <label class="ro" onclick="selR(this,'pc_cred_presumido')"><input type="radio" name="pc_cred_presumido" value="sim">Sim</label>
+            <label class="ro" onclick="selR(this,'pc_cred_presumido')"><input type="radio" name="pc_cred_presumido" value="nao">Não</label>
+          </div>
+        </div>
+        <div class="fg">
+          <label>Crédito sobre insumos (IN 1911/2019)?</label>
+          <div class="radio-row">
+            <label class="ro" onclick="selR(this,'pc_cred_insumos')"><input type="radio" name="pc_cred_insumos" value="sim">Sim</label>
+            <label class="ro" onclick="selR(this,'pc_cred_insumos')"><input type="radio" name="pc_cred_insumos" value="nao">Não</label>
+            <label class="ro" onclick="selR(this,'pc_cred_insumos')"><input type="radio" name="pc_cred_insumos" value="na">N/A</label>
+          </div>
+        </div>
+        <div class="fg">
+          <label>Crédito sobre ativo imobilizado (CIAP)?</label>
+          <div class="radio-row">
+            <label class="ro" onclick="selR(this,'pc_ciap')"><input type="radio" name="pc_ciap" value="sim">Sim</label>
+            <label class="ro" onclick="selR(this,'pc_ciap')"><input type="radio" name="pc_ciap" value="nao">Não</label>
+            <label class="ro" onclick="selR(this,'pc_ciap')"><input type="radio" name="pc_ciap" value="na">N/A</label>
+          </div>
+        </div>
+        <div class="fg s2">
+          <label>Observações PIS/COFINS</label>
+          <textarea id="part_pis_cofins" rows="3" placeholder="Regime, créditos especiais, exclusões, monofásicos, não cumulativo, alíquotas diferenciadas, etc..."></textarea>
+        </div>
+      </div>
     </div>
+
+    <!-- IRPJ/CSLL -->
     <div id="trib-irpj_csll" class="trib-panel" style="display:none">
-      <div class="fg"><textarea id="part_irpj_csll" rows="5" placeholder="Estimativas mensais, balanço de redução/suspensão, distribuição de lucros, JSCP, etc..."></textarea></div>
+      <div class="g g2">
+        <div class="fg">
+          <label>Forma de tributação IRPJ</label>
+          <div class="radio-row">
+            <label class="ro" onclick="selR(this,'irpj_forma')"><input type="radio" name="irpj_forma" value="lucro_real">Lucro Real</label>
+            <label class="ro" onclick="selR(this,'irpj_forma')"><input type="radio" name="irpj_forma" value="lucro_presumido">Lucro Presumido</label>
+            <label class="ro" onclick="selR(this,'irpj_forma')"><input type="radio" name="irpj_forma" value="lucro_arbitrado">Lucro Arbitrado</label>
+            <label class="ro" onclick="selR(this,'irpj_forma')"><input type="radio" name="irpj_forma" value="simples">Simples Nacional</label>
+          </div>
+        </div>
+        <div class="fg">
+          <label>Periodicidade de apuração IRPJ</label>
+          <div class="radio-row">
+            <label class="ro" onclick="selR(this,'irpj_periodo')"><input type="radio" name="irpj_periodo" value="estimativa">Estimativa mensal</label>
+            <label class="ro" onclick="selR(this,'irpj_periodo')"><input type="radio" name="irpj_periodo" value="balancete">Balanço/Balancete</label>
+            <label class="ro" onclick="selR(this,'irpj_periodo')"><input type="radio" name="irpj_periodo" value="anual">Anual</label>
+          </div>
+        </div>
+        <div class="fg">
+          <label>Distribuição de lucros (pró-labore/dividendos)?</label>
+          <div class="radio-row">
+            <label class="ro" onclick="selR(this,'irpj_distribuicao')"><input type="radio" name="irpj_distribuicao" value="sim">Sim</label>
+            <label class="ro" onclick="selR(this,'irpj_distribuicao')"><input type="radio" name="irpj_distribuicao" value="nao">Não</label>
+          </div>
+        </div>
+        <div class="fg">
+          <label>JSCP (Juros sobre Capital Próprio)?</label>
+          <div class="radio-row">
+            <label class="ro" onclick="selR(this,'irpj_jscp')"><input type="radio" name="irpj_jscp" value="sim">Sim</label>
+            <label class="ro" onclick="selR(this,'irpj_jscp')"><input type="radio" name="irpj_jscp" value="nao">Não</label>
+          </div>
+        </div>
+        <div class="fg">
+          <label>Prejuízo fiscal acumulado?</label>
+          <div class="radio-row">
+            <label class="ro" onclick="selR(this,'irpj_prejuizo')"><input type="radio" name="irpj_prejuizo" value="sim">Sim</label>
+            <label class="ro" onclick="selR(this,'irpj_prejuizo')"><input type="radio" name="irpj_prejuizo" value="nao">Não</label>
+          </div>
+        </div>
+        <div class="fg">
+          <label>Adições/exclusões ao lucro líquido?</label>
+          <div class="radio-row">
+            <label class="ro" onclick="selR(this,'irpj_adicoes')"><input type="radio" name="irpj_adicoes" value="sim">Sim</label>
+            <label class="ro" onclick="selR(this,'irpj_adicoes')"><input type="radio" name="irpj_adicoes" value="nao">Não</label>
+          </div>
+        </div>
+        <div class="fg s2">
+          <label>Observações IRPJ/CSLL</label>
+          <textarea id="part_irpj_csll" rows="3" placeholder="Estimativas, balanços de redução/suspensão, distribuição de lucros, JSCP, incentivos fiscais, etc..."></textarea>
+        </div>
+      </div>
     </div>
+
+    <!-- ISS -->
     <div id="trib-iss" class="trib-panel" style="display:none">
-      <div class="fg"><textarea id="part_iss" rows="5" placeholder="Município de incidência, alíquota fixada, responsabilidade de recolhimento, ISS retido, etc..."></textarea></div>
+      <div class="g g2">
+        <div class="fg">
+          <label>Obrigado ao ISS?</label>
+          <div class="radio-row">
+            <label class="ro" onclick="selR(this,'iss_obrigado')"><input type="radio" name="iss_obrigado" value="sim">Sim</label>
+            <label class="ro" onclick="selR(this,'iss_obrigado')"><input type="radio" name="iss_obrigado" value="nao">Não</label>
+          </div>
+        </div>
+        <div class="fg">
+          <label>ISS retido na fonte pelo tomador?</label>
+          <div class="radio-row">
+            <label class="ro" onclick="selR(this,'iss_retido')"><input type="radio" name="iss_retido" value="sim">Sim</label>
+            <label class="ro" onclick="selR(this,'iss_retido')"><input type="radio" name="iss_retido" value="nao">Não</label>
+            <label class="ro" onclick="selR(this,'iss_retido')"><input type="radio" name="iss_retido" value="parcial">Parcial</label>
+          </div>
+        </div>
+        <div class="fg">
+          <label>Município de incidência</label>
+          <input type="text" id="iss_municipio" placeholder="Ex: São Paulo — SP">
+        </div>
+        <div class="fg">
+          <label>Alíquota ISS (%)</label>
+          <input type="text" id="iss_aliquota" placeholder="Ex: 2%, 3%, 5%">
+        </div>
+        <div class="fg">
+          <label>Serviço prestado para outro município?</label>
+          <div class="radio-row">
+            <label class="ro" onclick="selR(this,'iss_outro_mun')"><input type="radio" name="iss_outro_mun" value="sim">Sim</label>
+            <label class="ro" onclick="selR(this,'iss_outro_mun')"><input type="radio" name="iss_outro_mun" value="nao">Não</label>
+          </div>
+        </div>
+        <div class="fg">
+          <label>Nota de serviço tomado (ISS retenção)?</label>
+          <div class="radio-row">
+            <label class="ro" onclick="selR(this,'iss_tomado')"><input type="radio" name="iss_tomado" value="sim">Sim</label>
+            <label class="ro" onclick="selR(this,'iss_tomado')"><input type="radio" name="iss_tomado" value="nao">Não</label>
+          </div>
+        </div>
+        <div class="fg s2">
+          <label>Observações ISS</label>
+          <textarea id="part_iss" rows="3" placeholder="Município, alíquota, responsabilidade, ISS fixo, LC 116, retenções, etc..."></textarea>
+        </div>
+      </div>
     </div>
+
+    <!-- ICMS -->
     <div id="trib-icms" class="trib-panel" style="display:none">
-      <div class="fg"><textarea id="part_icms" rows="5" placeholder="ST, diferencial de alíquota, DIFAL, benefícios fiscais, partilha EC 87, etc..."></textarea></div>
+      <div class="g g2">
+        <div class="fg">
+          <label>Contribuinte de ICMS?</label>
+          <div class="radio-row">
+            <label class="ro" onclick="selR(this,'icms_contrib')"><input type="radio" name="icms_contrib" value="sim">Sim</label>
+            <label class="ro" onclick="selR(this,'icms_contrib')"><input type="radio" name="icms_contrib" value="nao">Não</label>
+            <label class="ro" onclick="selR(this,'icms_contrib')"><input type="radio" name="icms_contrib" value="isento">Isento</label>
+          </div>
+        </div>
+        <div class="fg">
+          <label>DIFAL — Diferencial de Alíquota?</label>
+          <div class="radio-row">
+            <label class="ro" onclick="selR(this,'icms_difal')"><input type="radio" name="icms_difal" value="sim">Sim</label>
+            <label class="ro" onclick="selR(this,'icms_difal')"><input type="radio" name="icms_difal" value="nao">Não</label>
+          </div>
+        </div>
+        <div class="fg">
+          <label>Apuração crédito/débito de ICMS?</label>
+          <div class="radio-row">
+            <label class="ro" onclick="selR(this,'icms_apuracao')"><input type="radio" name="icms_apuracao" value="sim">Sim</label>
+            <label class="ro" onclick="selR(this,'icms_apuracao')"><input type="radio" name="icms_apuracao" value="nao">Não</label>
+          </div>
+        </div>
+        <div class="fg">
+          <label>Antecipação tributária?</label>
+          <div class="radio-row">
+            <label class="ro" onclick="selR(this,'icms_antecipacao')"><input type="radio" name="icms_antecipacao" value="sim">Sim</label>
+            <label class="ro" onclick="selR(this,'icms_antecipacao')"><input type="radio" name="icms_antecipacao" value="nao">Não</label>
+          </div>
+        </div>
+        <div class="fg">
+          <label>Saldo credor acumulado?</label>
+          <div class="radio-row">
+            <label class="ro" onclick="selR(this,'icms_saldo_credor')"><input type="radio" name="icms_saldo_credor" value="sim">Sim</label>
+            <label class="ro" onclick="selR(this,'icms_saldo_credor')"><input type="radio" name="icms_saldo_credor" value="nao">Não</label>
+          </div>
+        </div>
+        <div class="fg">
+          <label>Opera em mais de um estado?</label>
+          <div class="radio-row">
+            <label class="ro" onclick="selR(this,'icms_multiestado')"><input type="radio" name="icms_multiestado" value="sim">Sim</label>
+            <label class="ro" onclick="selR(this,'icms_multiestado')"><input type="radio" name="icms_multiestado" value="nao">Não</label>
+          </div>
+        </div>
+        <div class="fg s2">
+          <label>Observações ICMS</label>
+          <textarea id="part_icms" rows="3" placeholder="ST, DIFAL, benefícios fiscais, CIAP, partilha EC 87, saldo credor, etc..."></textarea>
+        </div>
+      </div>
     </div>
+
+    <!-- IPI -->
     <div id="trib-ipi" class="trib-panel" style="display:none">
-      <div class="fg"><textarea id="part_ipi" rows="5" placeholder="Classificação fiscal, NT, suspensão, imunidade, IPI nas entradas para crédito, etc..."></textarea></div>
+      <div class="g g2">
+        <div class="fg">
+          <label>Contribuinte de IPI?</label>
+          <div class="radio-row">
+            <label class="ro" onclick="selR(this,'ipi_contrib')"><input type="radio" name="ipi_contrib" value="sim">Sim</label>
+            <label class="ro" onclick="selR(this,'ipi_contrib')"><input type="radio" name="ipi_contrib" value="nao">Não</label>
+            <label class="ro" onclick="selR(this,'ipi_contrib')"><input type="radio" name="ipi_contrib" value="isento">Isento/NT</label>
+          </div>
+        </div>
+        <div class="fg">
+          <label>Crédito de IPI nas entradas?</label>
+          <div class="radio-row">
+            <label class="ro" onclick="selR(this,'ipi_credito')"><input type="radio" name="ipi_credito" value="sim">Sim</label>
+            <label class="ro" onclick="selR(this,'ipi_credito')"><input type="radio" name="ipi_credito" value="nao">Não</label>
+            <label class="ro" onclick="selR(this,'ipi_credito')"><input type="radio" name="ipi_credito" value="na">N/A</label>
+          </div>
+        </div>
+        <div class="fg">
+          <label>NCMs mapeados e atualizados?</label>
+          <div class="radio-row">
+            <label class="ro" onclick="selR(this,'ipi_ncm')"><input type="radio" name="ipi_ncm" value="sim">Sim</label>
+            <label class="ro" onclick="selR(this,'ipi_ncm')"><input type="radio" name="ipi_ncm" value="nao">Não</label>
+            <label class="ro" onclick="selR(this,'ipi_ncm')"><input type="radio" name="ipi_ncm" value="parcial">Parcial</label>
+          </div>
+        </div>
+        <div class="fg">
+          <label>Suspensão ou imunidade de IPI?</label>
+          <div class="radio-row">
+            <label class="ro" onclick="selR(this,'ipi_suspensao')"><input type="radio" name="ipi_suspensao" value="sim">Sim</label>
+            <label class="ro" onclick="selR(this,'ipi_suspensao')"><input type="radio" name="ipi_suspensao" value="nao">Não</label>
+          </div>
+        </div>
+        <div class="fg s2">
+          <label>Observações IPI</label>
+          <textarea id="part_ipi" rows="3" placeholder="Classificação fiscal, NT, suspensão, imunidade, crédito nas entradas, IPI na base ICMS, etc..."></textarea>
+        </div>
+      </div>
     </div>
+
+    <!-- DAS -->
     <div id="trib-das" class="trib-panel" style="display:none">
-      <div class="fg"><textarea id="part_das" rows="5" placeholder="Anexo aplicável, sublimite estadual, atividades vedadas, risco de exclusão, parcelamentos, etc..."></textarea></div>
+      <div class="g g2">
+        <div class="fg">
+          <label>Anexo do Simples Nacional</label>
+          <div class="radio-row">
+            <label class="ro" onclick="selR(this,'das_anexo')"><input type="radio" name="das_anexo" value="1">Anexo I</label>
+            <label class="ro" onclick="selR(this,'das_anexo')"><input type="radio" name="das_anexo" value="2">Anexo II</label>
+            <label class="ro" onclick="selR(this,'das_anexo')"><input type="radio" name="das_anexo" value="3">Anexo III</label>
+            <label class="ro" onclick="selR(this,'das_anexo')"><input type="radio" name="das_anexo" value="4">Anexo IV</label>
+            <label class="ro" onclick="selR(this,'das_anexo')"><input type="radio" name="das_anexo" value="5">Anexo V</label>
+          </div>
+        </div>
+        <div class="fg">
+          <label>Sublimite estadual ICMS/ISS?</label>
+          <div class="radio-row">
+            <label class="ro" onclick="selR(this,'das_sublimite')"><input type="radio" name="das_sublimite" value="sim">Sim</label>
+            <label class="ro" onclick="selR(this,'das_sublimite')"><input type="radio" name="das_sublimite" value="nao">Não</label>
+          </div>
+        </div>
+        <div class="fg">
+          <label>Risco de exclusão do Simples?</label>
+          <div class="radio-row">
+            <label class="ro" onclick="selR(this,'das_risco_exclusao')"><input type="radio" name="das_risco_exclusao" value="sim">Sim</label>
+            <label class="ro" onclick="selR(this,'das_risco_exclusao')"><input type="radio" name="das_risco_exclusao" value="nao">Não</label>
+          </div>
+        </div>
+        <div class="fg">
+          <label>Parcelamento DAS em aberto?</label>
+          <div class="radio-row">
+            <label class="ro" onclick="selR(this,'das_parcelamento')"><input type="radio" name="das_parcelamento" value="sim">Sim</label>
+            <label class="ro" onclick="selR(this,'das_parcelamento')"><input type="radio" name="das_parcelamento" value="nao">Não</label>
+          </div>
+        </div>
+        <div class="fg">
+          <label>Atividades vedadas ao Simples?</label>
+          <div class="radio-row">
+            <label class="ro" onclick="selR(this,'das_vedadas')"><input type="radio" name="das_vedadas" value="nao">Não</label>
+            <label class="ro" onclick="selR(this,'das_vedadas')"><input type="radio" name="das_vedadas" value="risco">Risco identificado</label>
+          </div>
+        </div>
+        <div class="fg">
+          <label>Faturamento próximo do limite?</label>
+          <div class="radio-row">
+            <label class="ro" onclick="selR(this,'das_limite')"><input type="radio" name="das_limite" value="sim">Sim</label>
+            <label class="ro" onclick="selR(this,'das_limite')"><input type="radio" name="das_limite" value="nao">Não</label>
+          </div>
+        </div>
+        <div class="fg s2">
+          <label>Observações DAS / Simples Nacional</label>
+          <textarea id="part_das" rows="3" placeholder="Anexo, sublimite, atividades vedadas, risco de exclusão, parcelamentos, planejamento tributário, etc..."></textarea>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -2582,6 +2954,196 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.55; }
       </div>
     </div>
     <button class="btn btn-s btn-sm" onclick="addRisco()" style="margin-top:8px;">+ Adicionar risco</button>
+  </div>
+
+
+  <!-- CUSTOS & DESPESAS -->
+  <div class="card">
+    <div class="card-title"><span class="ct-icon"></span> Custos & Despesas</div>
+    <div class="g g2">
+      <div class="fg">
+        <label>Possui CMV / CPV relevante?</label>
+        <div class="radio-row">
+          <label class="ro" onclick="selR(this,'desp_cmv')"><input type="radio" name="desp_cmv" value="sim">Sim</label>
+          <label class="ro" onclick="selR(this,'desp_cmv')"><input type="radio" name="desp_cmv" value="nao">Não</label>
+        </div>
+      </div>
+      <div class="fg">
+        <label>Folha de pagamento como custo relevante?</label>
+        <div class="radio-row">
+          <label class="ro" onclick="selR(this,'desp_folha')"><input type="radio" name="desp_folha" value="sim">Sim</label>
+          <label class="ro" onclick="selR(this,'desp_folha')"><input type="radio" name="desp_folha" value="nao">Não</label>
+        </div>
+      </div>
+      <div class="fg">
+        <label>Pró-labore dos sócios lançado contabilmente?</label>
+        <div class="radio-row">
+          <label class="ro" onclick="selR(this,'desp_prolabore')"><input type="radio" name="desp_prolabore" value="sim">Sim</label>
+          <label class="ro" onclick="selR(this,'desp_prolabore')"><input type="radio" name="desp_prolabore" value="nao">Não</label>
+        </div>
+      </div>
+      <div class="fg">
+        <label>Depreciação e amortização relevante?</label>
+        <div class="radio-row">
+          <label class="ro" onclick="selR(this,'desp_depreciacao')"><input type="radio" name="desp_depreciacao" value="sim">Sim</label>
+          <label class="ro" onclick="selR(this,'desp_depreciacao')"><input type="radio" name="desp_depreciacao" value="nao">Não</label>
+        </div>
+      </div>
+      <div class="fg">
+        <label>Despesas financeiras relevantes (juros/IOF)?</label>
+        <div class="radio-row">
+          <label class="ro" onclick="selR(this,'desp_financeiras')"><input type="radio" name="desp_financeiras" value="sim">Sim</label>
+          <label class="ro" onclick="selR(this,'desp_financeiras')"><input type="radio" name="desp_financeiras" value="nao">Não</label>
+        </div>
+      </div>
+      <div class="fg">
+        <label>Possui contratos de leasing/arrendamento?</label>
+        <div class="radio-row">
+          <label class="ro" onclick="selR(this,'desp_leasing')"><input type="radio" name="desp_leasing" value="sim">Sim</label>
+          <label class="ro" onclick="selR(this,'desp_leasing')"><input type="radio" name="desp_leasing" value="nao">Não</label>
+        </div>
+      </div>
+      <div class="fg">
+        <label>Centro de custos definido?</label>
+        <div class="radio-row">
+          <label class="ro" onclick="selR(this,'desp_centro_custo')"><input type="radio" name="desp_centro_custo" value="sim">Sim</label>
+          <label class="ro" onclick="selR(this,'desp_centro_custo')"><input type="radio" name="desp_centro_custo" value="parcial">Parcial</label>
+          <label class="ro" onclick="selR(this,'desp_centro_custo')"><input type="radio" name="desp_centro_custo" value="nao">Não</label>
+        </div>
+      </div>
+      <div class="fg">
+        <label>Rateio de despesas entre unidades/filiais?</label>
+        <div class="radio-row">
+          <label class="ro" onclick="selR(this,'desp_rateio')"><input type="radio" name="desp_rateio" value="sim">Sim</label>
+          <label class="ro" onclick="selR(this,'desp_rateio')"><input type="radio" name="desp_rateio" value="nao">Não</label>
+        </div>
+      </div>
+      <div class="fg">
+        <label>Despesas dedutíveis mapeadas (IRPJ/CSLL)?</label>
+        <div class="radio-row">
+          <label class="ro" onclick="selR(this,'desp_dedutiveis')"><input type="radio" name="desp_dedutiveis" value="sim">Sim — mapeadas</label>
+          <label class="ro" onclick="selR(this,'desp_dedutiveis')"><input type="radio" name="desp_dedutiveis" value="parcial">Parcialmente</label>
+          <label class="ro" onclick="selR(this,'desp_dedutiveis')"><input type="radio" name="desp_dedutiveis" value="nao">Não mapeadas</label>
+        </div>
+      </div>
+      <div class="fg">
+        <label>Possui despesas não dedutíveis relevantes?</label>
+        <div class="radio-row">
+          <label class="ro" onclick="selR(this,'desp_nao_dedutiveis')"><input type="radio" name="desp_nao_dedutiveis" value="sim">Sim</label>
+          <label class="ro" onclick="selR(this,'desp_nao_dedutiveis')"><input type="radio" name="desp_nao_dedutiveis" value="nao">Não</label>
+        </div>
+      </div>
+      <div class="fg">
+        <label>Controle de custos por departamento?</label>
+        <div class="radio-row">
+          <label class="ro" onclick="selR(this,'desp_custo_depto')"><input type="radio" name="desp_custo_depto" value="sim">Sim</label>
+          <label class="ro" onclick="selR(this,'desp_custo_depto')"><input type="radio" name="desp_custo_depto" value="nao">Não</label>
+        </div>
+      </div>
+      <div class="fg">
+        <label>Controle de custo por produto/serviço?</label>
+        <div class="radio-row">
+          <label class="ro" onclick="selR(this,'desp_custo_produto')"><input type="radio" name="desp_custo_produto" value="sim">Sim</label>
+          <label class="ro" onclick="selR(this,'desp_custo_produto')"><input type="radio" name="desp_custo_produto" value="nao">Não</label>
+        </div>
+      </div>
+      <div class="fg">
+        <label>Retiradas de sócios contabilizadas?</label>
+        <div class="radio-row">
+          <label class="ro" onclick="selR(this,'desp_retiradas')"><input type="radio" name="desp_retiradas" value="sim">Sim — corretamente</label>
+          <label class="ro" onclick="selR(this,'desp_retiradas')"><input type="radio" name="desp_retiradas" value="parcial">Parcialmente</label>
+          <label class="ro" onclick="selR(this,'desp_retiradas')"><input type="radio" name="desp_retiradas" value="nao">Não</label>
+        </div>
+      </div>
+      <div class="fg">
+        <label>Adiantamentos a sócios/diretores?</label>
+        <div class="radio-row">
+          <label class="ro" onclick="selR(this,'desp_adiantamentos')"><input type="radio" name="desp_adiantamentos" value="sim">Sim</label>
+          <label class="ro" onclick="selR(this,'desp_adiantamentos')"><input type="radio" name="desp_adiantamentos" value="nao">Não</label>
+        </div>
+      </div>
+      <div class="fg s2">
+        <label>Observações sobre custos e despesas</label>
+        <textarea id="desp_obs" rows="2" placeholder="Estrutura de custos, dedutibilidade, centro de custos, retiradas, adiantamentos, etc..."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- PLANO DE CONTAS -->
+  <div class="card">
+    <div class="card-title"><span class="ct-icon"></span> Plano de Contas</div>
+    <div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-sm);padding:14px 16px;margin-bottom:16px;font-size:12.5px;color:var(--muted);line-height:1.7">
+      Selecione as contas contábeis relevantes para este cliente. O plano de contas padrão GTCON é carregado automaticamente — marque as que se aplicam e informe o código interno quando necessário.
+    </div>
+
+    <!-- Grupos do plano de contas -->
+    <div id="plano-contas-container">
+
+      <div class="sec-div">Ativo</div>
+      <div class="check-row" id="pc-ativo">
+        <label class="co" onclick="togC(this,event)"><input type="checkbox" name="pc" value="1.1.01">Caixa e Equivalentes</label>
+        <label class="co" onclick="togC(this,event)"><input type="checkbox" name="pc" value="1.1.02">Contas a Receber</label>
+        <label class="co" onclick="togC(this,event)"><input type="checkbox" name="pc" value="1.1.03">Estoques</label>
+        <label class="co" onclick="togC(this,event)"><input type="checkbox" name="pc" value="1.1.04">Impostos a Recuperar</label>
+        <label class="co" onclick="togC(this,event)"><input type="checkbox" name="pc" value="1.1.05">Adiantamentos</label>
+        <label class="co" onclick="togC(this,event)"><input type="checkbox" name="pc" value="1.2.01">Imobilizado</label>
+        <label class="co" onclick="togC(this,event)"><input type="checkbox" name="pc" value="1.2.02">Depreciação Acumulada</label>
+        <label class="co" onclick="togC(this,event)"><input type="checkbox" name="pc" value="1.2.03">Intangível</label>
+        <label class="co" onclick="togC(this,event)"><input type="checkbox" name="pc" value="1.2.04">Diferido / Amortização</label>
+      </div>
+
+      <div class="sec-div">Passivo</div>
+      <div class="check-row" id="pc-passivo">
+        <label class="co" onclick="togC(this,event)"><input type="checkbox" name="pc" value="2.1.01">Fornecedores</label>
+        <label class="co" onclick="togC(this,event)"><input type="checkbox" name="pc" value="2.1.02">Obrigações Trabalhistas</label>
+        <label class="co" onclick="togC(this,event)"><input type="checkbox" name="pc" value="2.1.03">Obrigações Tributárias</label>
+        <label class="co" onclick="togC(this,event)"><input type="checkbox" name="pc" value="2.1.04">Empréstimos e Financiamentos CP</label>
+        <label class="co" onclick="togC(this,event)"><input type="checkbox" name="pc" value="2.1.05">Contas a Pagar</label>
+        <label class="co" onclick="togC(this,event)"><input type="checkbox" name="pc" value="2.2.01">Empréstimos LP</label>
+        <label class="co" onclick="togC(this,event)"><input type="checkbox" name="pc" value="2.2.02">Leasing / Arrendamento</label>
+        <label class="co" onclick="togC(this,event)"><input type="checkbox" name="pc" value="2.3.01">Capital Social</label>
+        <label class="co" onclick="togC(this,event)"><input type="checkbox" name="pc" value="2.3.02">Reservas de Lucros</label>
+        <label class="co" onclick="togC(this,event)"><input type="checkbox" name="pc" value="2.3.03">Lucros Acumulados</label>
+        <label class="co" onclick="togC(this,event)"><input type="checkbox" name="pc" value="2.3.04">Prejuízos Acumulados</label>
+      </div>
+
+      <div class="sec-div">Receitas</div>
+      <div class="check-row" id="pc-receitas">
+        <label class="co" onclick="togC(this,event)"><input type="checkbox" name="pc" value="3.1.01">Receita Bruta — Mercadorias</label>
+        <label class="co" onclick="togC(this,event)"><input type="checkbox" name="pc" value="3.1.02">Receita Bruta — Serviços</label>
+        <label class="co" onclick="togC(this,event)"><input type="checkbox" name="pc" value="3.1.03">Receita Bruta — Industrialização</label>
+        <label class="co" onclick="togC(this,event)"><input type="checkbox" name="pc" value="3.1.04">Deduções (Dev./Abat./Impostos)</label>
+        <label class="co" onclick="togC(this,event)"><input type="checkbox" name="pc" value="3.2.01">Receita Financeira</label>
+        <label class="co" onclick="togC(this,event)"><input type="checkbox" name="pc" value="3.2.02">Outras Receitas Operacionais</label>
+        <label class="co" onclick="togC(this,event)"><input type="checkbox" name="pc" value="3.2.03">Receitas Não Operacionais</label>
+      </div>
+
+      <div class="sec-div">Custos & Despesas</div>
+      <div class="check-row" id="pc-despesas">
+        <label class="co" onclick="togC(this,event)"><input type="checkbox" name="pc" value="4.1.01">CMV / CPV</label>
+        <label class="co" onclick="togC(this,event)"><input type="checkbox" name="pc" value="4.2.01">Despesas com Pessoal</label>
+        <label class="co" onclick="togC(this,event)"><input type="checkbox" name="pc" value="4.2.02">Pró-labore</label>
+        <label class="co" onclick="togC(this,event)"><input type="checkbox" name="pc" value="4.2.03">Encargos Sociais</label>
+        <label class="co" onclick="togC(this,event)"><input type="checkbox" name="pc" value="4.2.04">Despesas Administrativas</label>
+        <label class="co" onclick="togC(this,event)"><input type="checkbox" name="pc" value="4.2.05">Despesas Comerciais / Vendas</label>
+        <label class="co" onclick="togC(this,event)"><input type="checkbox" name="pc" value="4.2.06">Depreciação e Amortização</label>
+        <label class="co" onclick="togC(this,event)"><input type="checkbox" name="pc" value="4.2.07">Despesas Financeiras</label>
+        <label class="co" onclick="togC(this,event)"><input type="checkbox" name="pc" value="4.2.08">Provisões</label>
+        <label class="co" onclick="togC(this,event)"><input type="checkbox" name="pc" value="4.2.09">Outras Despesas Operacionais</label>
+        <label class="co" onclick="togC(this,event)"><input type="checkbox" name="pc" value="4.3.01">IRPJ / CSLL (Provisão)</label>
+      </div>
+
+    </div>
+
+    <div style="margin-top:16px;display:flex;align-items:center;gap:10px">
+      <span style="font-size:11.5px;color:var(--muted)" id="pc-count">0 contas selecionadas</span>
+      <button class="btn btn-s btn-sm" onclick="limparPlanoContas()" type="button">Limpar seleção</button>
+    </div>
+
+    <div class="fg" style="margin-top:14px">
+      <label>Observações sobre o Plano de Contas</label>
+      <textarea id="plano_contas_obs" rows="2" placeholder="Contas personalizadas, adaptações ao ramo, contas analíticas relevantes, etc..."></textarea>
+    </div>
   </div>
 
   
@@ -3782,9 +4344,17 @@ function collectData() {
     },
     fiscal: {
       apuracao: gr('apuracao'), icms_st: gr('icms_st'),
-      emissor: gv('emissor_sistema'), vol_saida: gv('vol_saida'),
-      vol_entrada: gv('vol_entrada'), estoque: gr('estoque'),
-      sped: gr('sped'), obs: gv('obs_fiscal'),
+      vol_saida: gv('vol_saida'),
+      vol_entrada: gv('vol_entrada'),
+      obs: gv('obs_fiscal'),
+      rec_mercadorias:  gr('rec_mercadorias'),
+      rec_servicos:     gr('rec_servicos'),
+      rec_industria:    gr('rec_industria'),
+      rec_financeira:   gr('rec_financeira'),
+      rec_aluguel:      gr('rec_aluguel'),
+      rec_exportacao:   gr('rec_exportacao'),
+      rec_isenta:       gr('rec_isenta'),
+      rec_segregacao:   gr('rec_segregacao'),
       vende_cf: gr('vende_cf'),
       perfil_comercial: gr('perfil_comercial'),
       ecommerce: gr('ecommerce'),
@@ -3797,6 +4367,54 @@ function collectData() {
       part_icms:       gv('part_icms'),
       part_ipi:        gv('part_ipi'),
       part_das:        gv('part_das'),
+      // Compras & Insumos
+      compra_insumos:      gr('compra_insumos'),
+      compra_revenda:      gr('compra_revenda'),
+      compra_ativo:        gr('compra_ativo'),
+      compra_servicos_pc:  gr('compra_servicos_pc'),
+      forn_simples:        gr('forn_simples'),
+      forn_exterior:       gr('forn_exterior'),
+      obs_compras:         gv('obs_compras'),
+      // PIS/COFINS detalhado
+      pc_regime:        gr('pc_regime'),
+      pc_monofasico:    gr('pc_monofasico'),
+      pc_exclusoes:     gr('pc_exclusoes'),
+      pc_cred_presumido:gr('pc_cred_presumido'),
+      pc_cred_insumos:  gr('pc_cred_insumos'),
+      pc_ciap:          gr('pc_ciap'),
+      // IRPJ/CSLL detalhado
+      irpj_forma:       gr('irpj_forma'),
+      irpj_periodo:     gr('irpj_periodo'),
+      irpj_distribuicao:gr('irpj_distribuicao'),
+      irpj_jscp:        gr('irpj_jscp'),
+      irpj_prejuizo:    gr('irpj_prejuizo'),
+      irpj_adicoes:     gr('irpj_adicoes'),
+      // ISS detalhado
+      iss_obrigado:     gr('iss_obrigado'),
+      iss_retido:       gr('iss_retido'),
+      iss_municipio:    gv('iss_municipio'),
+      iss_aliquota:     gv('iss_aliquota'),
+      iss_outro_mun:    gr('iss_outro_mun'),
+      iss_tomado:       gr('iss_tomado'),
+      // ICMS detalhado
+      icms_contrib:     gr('icms_contrib'),
+      icms_difal:       gr('icms_difal'),
+      icms_apuracao:    gr('icms_apuracao'),
+      icms_antecipacao: gr('icms_antecipacao'),
+      icms_saldo_credor:gr('icms_saldo_credor'),
+      icms_multiestado: gr('icms_multiestado'),
+      // IPI detalhado
+      ipi_contrib:      gr('ipi_contrib'),
+      ipi_credito:      gr('ipi_credito'),
+      ipi_ncm:          gr('ipi_ncm'),
+      ipi_suspensao:    gr('ipi_suspensao'),
+      // DAS detalhado
+      das_anexo:        gr('das_anexo'),
+      das_sublimite:    gr('das_sublimite'),
+      das_risco_exclusao:gr('das_risco_exclusao'),
+      das_parcelamento: gr('das_parcelamento'),
+      das_vedadas:      gr('das_vedadas'),
+      das_limite:       gr('das_limite'),
     },
     contabil: {
       balancete: gr('balancete'), imobilizado: gr('imobilizado'),
@@ -3806,7 +4424,24 @@ function collectData() {
       metodo_depreciacao: gr('metodo_depreciacao'),
       imob_sistema: gr('imob_sistema'),
       imob_obs: gv('imob_obs'),
+      desp_dedutiveis:    gr('desp_dedutiveis'),
+      desp_nao_dedutiveis:gr('desp_nao_dedutiveis'),
+      desp_custo_depto:   gr('desp_custo_depto'),
+      desp_custo_produto: gr('desp_custo_produto'),
+      desp_retiradas:     gr('desp_retiradas'),
+      desp_adiantamentos: gr('desp_adiantamentos'),
       contab_anterior: gv('contab_anterior'),
+      desp_cmv:          gr('desp_cmv'),
+      desp_folha:        gr('desp_folha'),
+      desp_prolabore:    gr('desp_prolabore'),
+      desp_depreciacao:  gr('desp_depreciacao'),
+      desp_financeiras:  gr('desp_financeiras'),
+      desp_leasing:      gr('desp_leasing'),
+      desp_centro_custo: gr('desp_centro_custo'),
+      desp_rateio:       gr('desp_rateio'),
+      desp_obs:          gv('desp_obs'),
+      plano_contas: Array.from(document.querySelectorAll('[name="pc"]:checked')).map(el => el.value),
+      plano_contas_obs: gv('plano_contas_obs'),
       r_cadastral: gv('risco_cadastral'), r_tributario: gv('risco_tributario'),
       r_trabalhista: gv('risco_trabalhista'), r_tecnologico: gv('risco_tecnologico'),
     },
@@ -4166,12 +4801,31 @@ function loadClient(data) {
   setRadio('estoque',       data.fiscal?.estoque);
   setRadio('sped',          data.fiscal?.sped);
   setRadio('vende_cf',          data.fiscal?.vende_cf);
+  ['rec_mercadorias','rec_servicos','rec_industria','rec_financeira',
+   'rec_aluguel','rec_exportacao','rec_isenta','rec_segregacao'].forEach(k => setRadio(k, data.fiscal?.[k]));
   setRadio('perfil_comercial',  data.fiscal?.perfil_comercial);
   setRadio('ecommerce',         data.fiscal?.ecommerce);
   sv('ecommerce_plat',          data.fiscal?.ecommerce_plat);
   setRadio('notas_entrada_100', data.fiscal?.notas_entrada_100);
   setRadio('notas_saida_100',   data.fiscal?.notas_saida_100);
-  sv('part_pis_cofins',     data.fiscal?.part_pis_cofins);
+  sv('part_pis_cofins',      data.fiscal?.part_pis_cofins);
+  sv('part_irpj_csll',      data.fiscal?.part_irpj_csll);
+  sv('part_iss',            data.fiscal?.part_iss);
+  sv('part_icms',           data.fiscal?.part_icms);
+  sv('part_ipi',            data.fiscal?.part_ipi);
+  sv('part_das',            data.fiscal?.part_das);
+  sv('obs_compras',         data.fiscal?.obs_compras);
+  sv('iss_municipio',       data.fiscal?.iss_municipio);
+  sv('iss_aliquota',        data.fiscal?.iss_aliquota);
+  const fiscalRadios = ['compra_insumos','compra_revenda','compra_ativo','compra_servicos_pc',
+    'forn_simples','forn_exterior','credito_pc_compras','credito_icms_compras',
+    'pc_regime','pc_monofasico','pc_exclusoes','pc_cred_presumido','pc_cred_insumos','pc_ciap',
+    'irpj_forma','irpj_periodo','irpj_distribuicao','irpj_jscp','irpj_prejuizo','irpj_adicoes',
+    'iss_obrigado','iss_retido','iss_outro_mun','iss_tomado',
+    'icms_contrib','icms_difal','icms_apuracao','icms_antecipacao','icms_saldo_credor','icms_multiestado',
+    'ipi_contrib','ipi_credito','ipi_ncm','ipi_suspensao',
+    'das_anexo','das_sublimite','das_risco_exclusao','das_parcelamento','das_vedadas','das_limite'];
+  fiscalRadios.forEach(k => setRadio(k, data.fiscal?.[k]));
   sv('part_irpj_csll',      data.fiscal?.part_irpj_csll);
   sv('part_iss',            data.fiscal?.part_iss);
   sv('part_icms',           data.fiscal?.part_icms);
@@ -4195,7 +4849,21 @@ function loadClient(data) {
   setRadio('laudo_avaliacao',    data.contabil?.laudo_avaliacao);
   setRadio('metodo_depreciacao', data.contabil?.metodo_depreciacao);
   setRadio('imob_sistema',       data.contabil?.imob_sistema);
-  sv('imob_obs',                  data.contabil?.imob_obs);
+  ['desp_dedutiveis','desp_nao_dedutiveis','desp_custo_depto',
+   'desp_custo_produto','desp_retiradas','desp_adiantamentos'
+  ].forEach(k => setRadio(k, data.contabil?.[k]));
+  sv('imob_obs',                 data.contabil?.imob_obs);
+  sv('desp_obs',                 data.contabil?.desp_obs);
+  sv('plano_contas_obs',         data.contabil?.plano_contas_obs);
+  ['desp_cmv','desp_folha','desp_prolabore','desp_depreciacao',
+   'desp_financeiras','desp_leasing','desp_centro_custo','desp_rateio'].forEach(k => setRadio(k, data.contabil?.[k]));
+  // Plano de contas — restaurar checkboxes
+  const pcSel = data.contabil?.plano_contas || [];
+  document.querySelectorAll('[name="pc"]').forEach(el => {
+    el.checked = pcSel.includes(el.value);
+    el.closest('label')?.classList.toggle('sel', el.checked);
+  });
+  atualizarContadorPC();
   sv('imob_obs',                 data.contabil?.imob_obs);
   setRadio('lead_origem',   data.comercial?.lead_origem);
 
@@ -5394,13 +6062,58 @@ async function adicionarReuniao() {
   renderReunioes();
   limparFormReuniao();
   limparArquivoReuniao();
-  toast('Reunião registrada.', 'ok');
+
+  // Persistir imediatamente no Supabase — patch direto no campo reunioes
+  await salvarReunioes();
 }
 
-function removerReuniao(id) {
+async function salvarReunioes() {
+  // Buscar o registro atual pelo CNPJ ou SCI
+  const cnpj = document.getElementById('cnpj_principal')?.value?.replace(/\D/g,'') || '';
+  const sci  = document.getElementById('codigo_sci')?.value || '';
+  if (!cnpj && !sci) {
+    toast('Salve a ficha do cliente primeiro antes de registrar reuniões.', 'err');
+    return;
+  }
+
+  try {
+    // Encontrar o registro existente
+    let existing = null;
+    if (cnpj) {
+      const rows = await sbFetch('GET', `clientes?cnpj=eq.${cnpj}&select=id,dados`);
+      if (rows?.length) existing = rows[0];
+    }
+    if (!existing && sci) {
+      const rows = await sbFetch('GET', `clientes?sci=eq.${encodeURIComponent(sci)}&select=id,dados`);
+      if (rows?.length) existing = rows[0];
+    }
+
+    if (!existing) {
+      toast('Salve a ficha do cliente antes de registrar reuniões.', 'err');
+      return;
+    }
+
+    // Montar dados atualizados preservando tudo, só substituindo reunioes
+    const dadosAtuais = typeof existing.dados === 'string'
+      ? JSON.parse(existing.dados)
+      : (existing.dados || {});
+
+    dadosAtuais.reunioes = _reunioes;
+    dadosAtuais.meta = { ...(dadosAtuais.meta || {}), savedAt: new Date().toISOString() };
+
+    await sbFetch('PATCH', `clientes?id=eq.${existing.id}`, { dados: dadosAtuais });
+    toast('Reunião registrada e salva.', 'ok');
+  } catch(e) {
+    toast('Reunião registrada localmente — salve a ficha para persistir.', 'inf');
+    console.error('salvarReunioes:', e);
+  }
+}
+
+async function removerReuniao(id) {
   if (!confirm('Remover este registro de reunião?')) return;
   _reunioes = _reunioes.filter(r => r.id !== id);
   renderReunioes();
+  await salvarReunioes();
 }
 
 function limparFormReuniao() {
@@ -5462,7 +6175,7 @@ function renderReunioes() {
         <div style="margin-top:8px;display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-sm)">
           <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style="color:var(--navy);flex-shrink:0"><rect x="2" y="1" width="12" height="14" rx="2" stroke="currentColor" stroke-width="1.3"/><path d="M5 5h6M5 8h6M5 11h4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity=".6"/></svg>
           <span style="font-size:12px;color:var(--text-2);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${r.arquivo_nome || 'Anexo'}</span>
-          <a href="${r.arquivo_url}" target="_blank" style="font-size:11.5px;font-weight:600;color:var(--accent);text-decoration:none;flex-shrink:0">Baixar →</a>
+          <a href="${r.arquivo_url}" ${r.arquivo_url.startsWith('data:') ? `download="${r.arquivo_nome||'anexo'}"` : 'target="_blank"'} style="font-size:11.5px;font-weight:600;color:var(--accent);text-decoration:none;flex-shrink:0">Baixar →</a>
         </div>` : ''}
       ${r.criadoPor ? `<div style="font-size:10.5px;color:var(--dim);margin-top:8px">Registrado por ${r.criadoPor}</div>` : ''}
     </div>`;
@@ -5678,9 +6391,10 @@ function formatFileSize(bytes) {
 
 async function uploadArquivoReuniao(file, reuniaoId) {
   const cnpj = document.getElementById('cnpj_principal')?.value?.replace(/\D/g,'') || 'sem-cnpj';
-  const ext  = file.name.split('.').pop();
+  const ext  = file.name.split('.').pop().toLowerCase();
   const path = `${cnpj}/${reuniaoId}.${ext}`;
 
+  // Tentar upload via Storage API
   const res = await fetch(`${SB_URL}/storage/v1/object/reunioes-arquivos/${path}`, {
     method: 'POST',
     headers: {
@@ -5688,20 +6402,50 @@ async function uploadArquivoReuniao(file, reuniaoId) {
       'Authorization': `Bearer ${SB_KEY}`,
       'Content-Type':  file.type || 'application/octet-stream',
       'x-upsert':      'true',
+      'Cache-Control': '3600',
     },
     body: file,
   });
 
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
-    throw new Error(err.message || err.error || `HTTP ${res.status}`);
+  if (res.ok) {
+    return `${SB_URL}/storage/v1/object/public/reunioes-arquivos/${path}`;
   }
 
-  // URL pública
-  return `${SB_URL}/storage/v1/object/public/reunioes-arquivos/${path}`;
+  // Se Storage falhou (bucket não criado ou sem policy), tentar base64 inline
+  // Só para arquivos <= 500KB para não explodir o JSONB
+  const errBody = await res.json().catch(() => ({}));
+  const errMsg  = errBody.message || errBody.error || `HTTP ${res.status}`;
+
+  if (file.size <= 500 * 1024) {
+    // Encode base64 e guardar inline no JSONB como data URI
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload  = () => resolve(reader.result); // data:mime;base64,...
+      reader.onerror = () => reject(new Error('Falha ao ler arquivo'));
+      reader.readAsDataURL(file);
+    });
+  }
+
+  throw new Error(`Storage: ${errMsg}. Para arquivos > 500KB, crie o bucket "reunioes-arquivos" no Supabase Storage.`);
 }
 
 // Drag and drop na área de upload
+
+// ── PLANO DE CONTAS ──
+function atualizarContadorPC() {
+  const total = document.querySelectorAll('[name="pc"]:checked').length;
+  const el = document.getElementById('pc-count');
+  if (el) el.textContent = total === 0 ? '0 contas selecionadas' : `${total} conta${total > 1 ? 's' : ''} selecionada${total > 1 ? 's' : ''}`;
+}
+
+function limparPlanoContas() {
+  document.querySelectorAll('[name="pc"]').forEach(el => {
+    el.checked = false;
+    el.closest('label')?.classList.remove('sel');
+  });
+  atualizarContadorPC();
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   const area = document.getElementById('reuniao-upload-area');
   if (!area) return;
